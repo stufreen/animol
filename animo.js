@@ -2,7 +2,7 @@
  * Easing Functions - inspired from http://gizma.com/easing/
  * only considering the t value for the range [0, 1] => [0, 1]
  */
-const EasingFunctions = {
+export const Easing = {
   // no easing, no acceleration
   linear: function (t) { return t },
   // accelerating from zero velocity
@@ -31,25 +31,47 @@ const EasingFunctions = {
   easeInOutQuint: function (t) { return t < .5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t }
 }
 
-const interpolate = (startTime, endTime, currentTime, startVal, endVal, curveFunction = linear) => {
+const interpolate = (startTime, endTime, currentTime, startVal, endVal, easingFunction) => {
   const distance = endVal - startVal;
-  const pctElapsed = (currentTime - startTime) / (endTime - startTime);
-  return curveFunction(pctElapsed) * distance;
+  const pctElapsed = Math.max(0, (currentTime - startTime) / (endTime - startTime));
+  return easingFunction(pctElapsed) * distance;
 };
 
-export const animate = (element, duration, from, to) => new Promise((resolve) => {
-  let start;
-  let end;
+const getKeys = (from, to) => {
+  const fromKeys = Object.keys(from);
+  return Object.keys(to).reduce((accumulator, key) => {
+    if (accumulator.indexOf(key) === -1) {
+      return [...accumulator, key];
+    }
+    return accumulator;
+  }, fromKeys);
+};
+
+export const animate = (
+  element,
+  duration,
+  from = {},
+  to = {}, 
+  easingFunc = Easing.linear,
+  delay = 0,
+) => new Promise((resolve) => {
+  let startTime;
+  let endTime;
+  const cssKeys = getKeys(from, to);
 
   const step = (timestamp) => {
-    if (typeof start === 'undefined') {
-      start = timestamp;
-      end = timestamp + duration;
-    } else if (timestamp >= end) {
+    if (typeof startTime === 'undefined') {
+      startTime = timestamp + delay;
+      endTime = timestamp + duration + delay;
+    } else if (timestamp >= endTime) {
       return resolve();
     }
-    const myVal = interpolate(start, end, timestamp, 0, 200, EasingFunctions.easeInOutCubic);
-    element.style.marginLeft = `${myVal}px`;
+
+    cssKeys.forEach((key) => {
+      const myVal = interpolate(startTime, endTime, timestamp, from[key], to[key], easingFunc);
+      element.style[key] = `${myVal}px`; // Only css and px for now
+    });
+    
     window.requestAnimationFrame(step);
   };
   

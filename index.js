@@ -1,7 +1,9 @@
-import { animate } from './animo.js';
+import { animate, Easing } from './animo.js';
 
-const blocky = document.getElementById('blocky');
-animate(blocky, 1000, null, null)
-  .then(() => {
-    console.log('done');
-  });
+animate(
+  document.getElementById('blocky'),
+  1000,
+  {marginTop: 0, marginLeft: 50},
+  {marginTop: 200, marginLeft: 100},
+  Easing.easeInOutCubic
+);
