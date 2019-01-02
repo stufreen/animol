@@ -31,10 +31,10 @@ export const Easing = {
   easeInOutQuint: function (t) { return t < .5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t }
 }
 
-const interpolate = (startTime, endTime, currentTime, startVal, endVal, easingFunction) => {
+const interpolateNumber = (startTime, endTime, currentTime, startVal, endVal, easingFunction) => {
   const distance = endVal - startVal;
   const pctElapsed = Math.max(0, (currentTime - startTime) / (endTime - startTime));
-  return easingFunction(pctElapsed) * distance;
+  return startVal + easingFunction(pctElapsed) * distance;
 };
 
 const getKeys = (from, to) => {
@@ -68,7 +68,7 @@ export const animate = (
     }
 
     cssKeys.forEach((key) => {
-      const myVal = interpolate(startTime, endTime, timestamp, from[key], to[key], easingFunc);
+      const myVal = interpolateNumber(startTime, endTime, timestamp, from[key], to[key], easingFunc);
       element.style[key] = `${myVal}px`; // Only css and px for now
     });
     

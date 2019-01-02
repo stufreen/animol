@@ -3,7 +3,7 @@ import { animate, Easing } from './animo.js';
 animate(
   document.getElementById('blocky'),
   1000,
-  {marginTop: 0, marginLeft: 50},
-  {marginTop: 200, marginLeft: 100},
+  {height: 0, borderRadius: 0},
+  {height: 500, borderRadius: 100},
   Easing.easeInOutCubic
 );
