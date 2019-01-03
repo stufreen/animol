@@ -31,6 +31,8 @@ export const Easing = {
   easeInOutQuint: function (t) { return t < .5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t }
 }
 
+const transformKeys = ['x', 'y', 'rotation', 'scaleX', 'scaleY'];
+
 function parseRGB(inputString) {
   const regex = /rgb\((\d{1,3}), *(\d{1,3}), *(\d{1,3})\)/;
   const result = inputString.match(regex);
@@ -66,6 +68,9 @@ function parseHexColor(inputString) {
 }
 
 function isColor(styleString) {
+  if (typeof styleString !== 'string') {
+    return false;
+  }
   if (styleString.charAt(0) === '#') {
     return parseHexColor(styleString);
   } 
@@ -93,6 +98,18 @@ function interpolateColor(startTime, endTime, currentTime, startVal, endVal, eas
     green: interpolate(startTime, endTime, currentTime, startVal.green, endVal.green, easingFunction),
     alpha: interpolate(startTime, endTime, currentTime, startVal.alpha, endVal.alpha, easingFunction),
   };
+}
+
+function interpolateMatrix(startTime, endTime, currentTime, startVal, endVal, easingFunction) {
+  if (startVal.length !== endVal.length) {
+    throw new Error('Transform matrix length mismatch');
+  }
+
+  const c = [];
+  for (let i = 0; i < startVal.length; i++) {
+    c.push(interpolate(startTime, endTime, currentTime, startVal[i], endVal[i], easingFunction));
+  }
+  return c;
 }
 
 function inferUnitVal(key, element, castToUnit = 'px') {
@@ -143,6 +160,60 @@ function getUnitVal(key, cssKeyAr, element) {
   }
 };
 
+function trimMatrix(matrix) {
+  console.log(matrix);
+  const regex = /\(.*\)/;
+  const result = matrix.match(regex)[0];
+  const noParens = result.slice(1, result.length - 1);
+  const numsList = noParens.split(',');
+  return numsList.map(num => parseFloat(num));
+}
+
+function getTransformMatrix(transformList) {
+  const dummyEl = document.createElement('div');
+  dummyEl.style.transform = transformList.join(' ');
+  document.body.appendChild(dummyEl);
+  const computed = window.getComputedStyle(dummyEl); // Computes the matrix
+  const transformMatrix = computed.transform;
+  document.body.removeChild(dummyEl);
+  return trimMatrix(transformMatrix);
+}
+
+function withTransformMatrix(fromToList) {
+  const fromTransforms = [];
+  const toTransforms = [];
+
+  fromToList.forEach((item) => {
+    switch (item.key) {
+      case 'x':
+        fromTransforms.push(`translateX(${item.fromVal}${item.unit})`);
+        toTransforms.push(`translateX(${item.toVal}${item.unit})`);
+        break;
+      case 'y':
+        fromTransforms.push(`translateY(${item.fromVal}${item.unit})`);
+        toTransforms.push(`translateY(${item.toVal}${item.unit})`);
+        break;
+      case 'scaleX':
+        fromTransforms.push(`scaleX(${item.fromVal})`);
+        toTransforms.push(`scaleX(${item.toVal})`);
+        break;
+      case 'scaleY':
+        fromTransforms.push(`scaleY(${item.fromVal})`);
+        toTransforms.push(`scaleY(${item.toVal})`);
+        break;
+    }
+  });
+
+  fromToList.push({
+    key: 'transform',
+    unit: 'matrix',
+    fromVal: getTransformMatrix(fromTransforms),
+    toVal: getTransformMatrix(toTransforms),
+  });
+
+  return fromToList
+}
+
 /*
 For each FROM item:
  - Figure out the value
@@ -191,8 +262,8 @@ function buildFromToList(el, from, to) {
     } else {
       throw new Error(`"from" and "to" unit mismatch: ${fromUnit} and ${toUnit} (at element ${el.outerHTML})`);
     }
-  });
-  return fromToList;
+  });  
+  return withTransformMatrix(fromToList);
 }
 
 export const animate = (
@@ -213,13 +284,18 @@ export const animate = (
       startTime = timestamp + delay;
       endTime = timestamp + duration + delay;
     } else if (timestamp >= endTime) {
-      return resolve(); // Done the animateion
+      return resolve(); // Done the animation
     } else if (timestamp >= startTime) {
       fromToList.forEach((item) => {
         if (item.unit === 'color') {
           const interpolated = interpolateColor(startTime, endTime, timestamp, item.fromVal, item.toVal, easingFunc);
           element.style[item.key] = `rgba(${interpolated.red}, ${interpolated.green}, ${interpolated.blue}, ${interpolated.alpha})`;
-        } else {
+        }
+        else if (item.unit === 'matrix') {
+          const interpolated = interpolateMatrix(startTime, endTime, timestamp, item.fromVal, item.toVal, easingFunc);
+          element.style[item.key] = `matrix(${interpolated.join(', ')})`;
+        }
+        else {
           const interpolated = interpolate(startTime, endTime, timestamp, item.fromVal, item.toVal, easingFunc);
           element.style[item.key] = `${interpolated}${item.unit}`;
         }
