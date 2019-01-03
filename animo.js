@@ -75,9 +75,7 @@ function isColor(styleString) {
   else if (styleString.substring(0, 3) === 'rgb') {
     return parseRGB(styleString);
   }
-  else if (styleString.substring(0, 3) === 'hsl') {
-    return parseHSL(styleString);
-  } else {
+  else {
     return false;
   }
 }
@@ -100,14 +98,23 @@ function interpolateColor(startTime, endTime, currentTime, startVal, endVal, eas
 function inferUnitVal(key, element, castToUnit = 'px') {
   const computedStyle = window.getComputedStyle(element);
   const styleString = computedStyle[key];
-  const val = getVal(styleString);
-  if (val === 0) {
-    return { unit: castToUnit, val: 0 };
-  } else {
+
+  const colorVal = isColor(styleString);
+  if (colorVal) {
     return {
-      unit: getUnit(styleString),
-      val: val,
+      unit: 'color',
+      val: colorVal,
     };
+  } else {
+    const val = getVal(styleString);
+    if (val === 0) {
+      return { unit: castToUnit, val: 0 };
+    } else {
+      return {
+        unit: getUnit(styleString),
+        val: val,
+      };
+    }
   }
 };
 
