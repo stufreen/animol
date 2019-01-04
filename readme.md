@@ -42,13 +42,13 @@ animate(
   { marginLeft: '200px'},
   Easing.easeInOutCubic,
 ).then(() => {
-  animate({
+  animate(
     myElement,
     2000,
     { marginLeft: '200px'},
     { marginLeft: '100px'},
     Easing.easeInOutCubic,
-  }));
+  ));
 ```
 
 ### Easing functions
