@@ -31,8 +31,6 @@ export const Easing = {
   easeInOutQuint: function (t) { return t < .5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t }
 }
 
-const transformKeys = ['x', 'y', 'rotation', 'scaleX', 'scaleY'];
-
 function parseRGB(inputString) {
   const regex = /rgb\((\d{1,3}), *(\d{1,3}), *(\d{1,3})\)/;
   const result = inputString.match(regex);
@@ -100,16 +98,14 @@ function interpolateColor(startTime, endTime, currentTime, startVal, endVal, eas
   };
 }
 
-function interpolateMatrix(startTime, endTime, currentTime, startVal, endVal, easingFunction) {
-  if (startVal.length !== endVal.length) {
-    throw new Error('Transform matrix length mismatch');
-  }
-
-  const c = [];
-  for (let i = 0; i < startVal.length; i++) {
-    c.push(interpolate(startTime, endTime, currentTime, startVal[i], endVal[i], easingFunction));
-  }
-  return c;
+// Interpolate two transform lists and build up a "transform" string
+function interpolateTransform(startTime, endTime, currentTime, startTransformList, endTransformList, easingFunction) {
+  const transforms = startTransformList.reduce((accumulator, { key, val: startVal }, index) => {
+    const endVal = endTransformList[index].val;
+    const interpolatedVal = interpolate(startTime, endTime, currentTime, startVal, endVal, easingFunction);
+    return [...accumulator, `${key}(${interpolatedVal}px)`]
+  }, []);
+  return transforms.join(' ');
 }
 
 function inferUnitVal(key, element, castToUnit = 'px') {
@@ -160,114 +156,91 @@ function getUnitVal(key, cssKeyAr, element) {
   }
 };
 
-function trimMatrix(matrix) {
-  console.log(matrix);
-  const regex = /\(.*\)/;
-  const result = matrix.match(regex)[0];
-  const noParens = result.slice(1, result.length - 1);
-  const numsList = noParens.split(',');
-  return numsList.map(num => parseFloat(num));
+function getTransformKey(transformObj) {
+  const keys = Object.keys(transformObj);
+  if (keys.length !== 1) {
+    throw new Error('Each transform object must have exactly one key with a string property.');
+  }
+  return keys[0];
 }
 
-function getTransformMatrix(transformList) {
-  const dummyEl = document.createElement('div');
-  dummyEl.style.transform = transformList.join(' ');
-  document.body.appendChild(dummyEl);
-  const computed = window.getComputedStyle(dummyEl); // Computes the matrix
-  const transformMatrix = computed.transform;
-  document.body.removeChild(dummyEl);
-  return trimMatrix(transformMatrix);
-}
-
-function withTransformMatrix(fromToList) {
-  const fromTransforms = [];
-  const toTransforms = [];
-
-  fromToList.forEach((item) => {
-    switch (item.key) {
-      case 'x':
-        fromTransforms.push(`translateX(${item.fromVal}${item.unit})`);
-        toTransforms.push(`translateX(${item.toVal}${item.unit})`);
-        break;
-      case 'y':
-        fromTransforms.push(`translateY(${item.fromVal}${item.unit})`);
-        toTransforms.push(`translateY(${item.toVal}${item.unit})`);
-        break;
-      case 'scaleX':
-        fromTransforms.push(`scaleX(${item.fromVal})`);
-        toTransforms.push(`scaleX(${item.toVal})`);
-        break;
-      case 'scaleY':
-        fromTransforms.push(`scaleY(${item.fromVal})`);
-        toTransforms.push(`scaleY(${item.toVal})`);
-        break;
-      case 'rotate':
-        fromTransforms.push(`rotate(${item.fromVal}deg)`);
-        toTransforms.push(`rotate(${item.toVal}deg)`);
-        break;
-    }
-  });
-
-  fromToList.push({
-    key: 'transform',
-    unit: 'matrix',
-    fromVal: getTransformMatrix(fromTransforms),
-    toVal: getTransformMatrix(toTransforms),
-  });
-
-  return fromToList
-}
-
-/*
-For each FROM item:
- - Figure out the value
- - Figure out the unit
- - Check if there's a corresponding TO value
-    - If YES:
-      - Use the TO value if the unit is the same, otherwise go to NO
-    - If NO:
-      - Use the element's current computed value as the TO value
-
-For each TO item:
- - Check if there's already a key for it. If there is: break
- - Figure out the value
- - Figure out the unit
- - Use the element's initial computed value as the TO value
-*/
 function buildFromToList(el, from, to) {
   const fromToList = [];
+
+  // Iterate through the "from" keys, adding matching "to" values if possible
   Object.keys(from).forEach((key) => {
-    const { unit: fromUnit, val: fromVal } = getUnitVal(key, from, el);
-    const { unit: toUnit, val: toVal } = getUnitVal(key, to, el);
-    if (fromUnit === toUnit) {
-      fromToList.push({
-        key,
-        unit: fromUnit,
-        fromVal,
-        toVal,
-      });
+    if (key === 'transform') {
+      return;
     } else {
-      throw new Error(`"from" and "to" unit mismatch: ${fromUnit} and ${toUnit} (at element ${el.outerHTML})`);
+      const { unit: fromUnit, val: fromVal } = getUnitVal(key, from, el);
+      const { unit: toUnit, val: toVal } = getUnitVal(key, to, el);
+      if (fromUnit === toUnit) {
+        fromToList.push({
+          key,
+          unit: fromUnit,
+          fromVal,
+          toVal,
+        });
+      } else {
+        throw new Error(`"from" and "to" unit mismatch: ${fromUnit} and ${toUnit} (at element ${el.outerHTML})`);
+      }
     }
   });
+
+  // Iterate through the "to" keys which did not have "from" values, inferring the "from" vals
   Object.keys(to).forEach((key) => {
-    if (typeof from[key] !== 'undefined') {
-      return;
-    }
-    const { unit: toUnit, val: toVal } = getUnitVal(key, to, el);
-    const { unit: fromUnit, val: fromVal } = inferUnitVal(key, el, toUnit);
-    if (fromUnit === toUnit) {
-      fromToList.push({
-        key,
-        unit: fromUnit,
-        fromVal,
-        toVal,
-      });
+    if (typeof from[key] !== 'undefined' || key === 'transform') {
+      return; // Don't do anything if the key was already handled in the "from" step
     } else {
-      throw new Error(`"from" and "to" unit mismatch: ${fromUnit} and ${toUnit} (at element ${el.outerHTML})`);
+      const { unit: toUnit, val: toVal } = getUnitVal(key, to, el);
+      const { unit: fromUnit, val: fromVal } = inferUnitVal(key, el, toUnit);
+      if (fromUnit === toUnit) {
+        fromToList.push({
+          key,
+          unit: fromUnit,
+          fromVal,
+          toVal,
+        });
+      } else {
+        throw new Error(`"from" and "to" unit mismatch: ${fromUnit} and ${toUnit} (at element ${el.outerHTML})`);
+      }
     }
-  });  
-  return withTransformMatrix(fromToList);
+  });
+
+  // If transform is defined on either "from" or "to", add a transform item
+  if (from.transform || to.transform) {
+    const { transformFrom, transformTo } = buildTransformFromToList(el, from.transform, to.transform);
+    fromToList.push({
+      key: 'transform',
+      unit: 'transformList',
+      fromVal: transformFrom,
+      toVal: transformTo, 
+    });
+  }
+
+  return fromToList;
+}
+
+function buildTransformFromToList(el, from, to) {
+  const transformFrom = [];
+  const transformTo = [];
+
+  // Iterate through the "from" keys, adding matching "to" values if possible
+  from.forEach((transform) => {
+    const key = getTransformKey(transform);
+    const fromVal = transform[key];
+    transformFrom.push({ key, val: fromVal });
+
+    // Search the "to" object to find a matching transform
+    const toTransform = to.find((toTransform) => {
+      const itemKey = getTransformKey(toTransform);
+      return itemKey === key;
+    });
+    const toVal = toTransform[key];
+    transformTo.push({ key, val: toVal });
+  });
+
+  return { transformFrom, transformTo };
 }
 
 export const animate = (
@@ -295,9 +268,10 @@ export const animate = (
           const interpolated = interpolateColor(startTime, endTime, timestamp, item.fromVal, item.toVal, easingFunc);
           element.style[item.key] = `rgba(${interpolated.red}, ${interpolated.green}, ${interpolated.blue}, ${interpolated.alpha})`;
         }
-        else if (item.unit === 'matrix') {
-          const interpolated = interpolateMatrix(startTime, endTime, timestamp, item.fromVal, item.toVal, easingFunc);
-          element.style[item.key] = `matrix(${interpolated.join(', ')})`;
+        else if (item.key === 'transform') {
+          const interpolated = interpolateTransform(startTime, endTime, timestamp, item.fromVal, item.toVal, easingFunc);
+          console.log(interpolated);
+          element.style.transform = interpolated;
         }
         else {
           const interpolated = interpolate(startTime, endTime, timestamp, item.fromVal, item.toVal, easingFunc);

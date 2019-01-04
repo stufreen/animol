@@ -3,8 +3,8 @@ import { animate, Easing } from './animo.js';
 animate(
   document.getElementById('blocky'),
   1000,
-  { rotate: 0, backgroundColor: 'rgba(0, 0, 0, 0)' },
-  { rotate: 90, backgroundColor: 'rgba(0, 0, 0, 1)' },
+  { transform: [{ translateX: 0 }] },
+  { transform: [{ translateX: 200 }] },
   Easing.easeInOutCubic,
   0,
 );
