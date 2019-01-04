@@ -1,4 +1,4 @@
-import { animate, Easing } from '../animol';
+import { animate, Easing } from '../animol.js';
 
 const blocks = [];
 

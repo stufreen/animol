@@ -30,7 +30,7 @@ function parseRGB(inputString) {
 }
 
 function parseRGBA(inputString) {
-  const regex = /rgba\((\d{1,3}), *(\d{1,3}), *(\d{1,3}), *(\d+[\.\d]?\d*)\)/;
+  const regex = /rgba\((\d{1,3}), *(\d{1,3}), *(\d{1,3}), *(\d+[.\d]?\d*)\)/;
   const result = inputString.match(regex);
   return {
     red: parseInt(result[1], 10),
