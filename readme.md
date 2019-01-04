@@ -1,6 +1,6 @@
 # Animol
 
-A very lightweight (~2KB minimized and gzipped) animation library with a Greensock-like API.
+A very lightweight (~2KB minimized and gzipped) JavaScript animation library with a Greensock-like API.
 
 ## API
 
@@ -79,3 +79,4 @@ Check out Greensock instead if file size is not an issue and you need any of the
  * Very high performance
  * Conversion between units and all CSS values
  * jQuery-like selectors
+ * Timeline control
