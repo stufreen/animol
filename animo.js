@@ -65,7 +65,7 @@ function parseHexColor(inputString) {
   }
 }
 
-function isColor(styleString) {
+function parseColor(styleString) {
   if (typeof styleString !== 'string') {
     return false;
   }
@@ -100,10 +100,10 @@ function interpolateColor(startTime, endTime, currentTime, startVal, endVal, eas
 
 // Interpolate two transform lists and build up a "transform" string
 function interpolateTransform(startTime, endTime, currentTime, startTransformList, endTransformList, easingFunction) {
-  const transforms = startTransformList.reduce((accumulator, { key, val: startVal }, index) => {
+  const transforms = startTransformList.reduce((accumulator, { key, val: startVal, unit }, index) => {
     const endVal = endTransformList[index].val;
     const interpolatedVal = interpolate(startTime, endTime, currentTime, startVal, endVal, easingFunction);
-    return [...accumulator, `${key}(${interpolatedVal}px)`]
+    return [...accumulator, `${key}(${interpolatedVal}${unit})`]
   }, []);
   return transforms.join(' ');
 }
@@ -112,7 +112,7 @@ function inferUnitVal(key, element, castToUnit = 'px') {
   const computedStyle = window.getComputedStyle(element);
   const styleString = computedStyle[key];
 
-  const colorVal = isColor(styleString);
+  const colorVal = parseColor(styleString);
   if (colorVal) {
     return {
       unit: 'color',
@@ -139,11 +139,11 @@ function getVal(input) {
   return parseFloat(input.match(/^\d+(\.\d)?\d*/)[0]);
 }
 
-function getUnitVal(key, cssKeyAr, element) {
-  if (typeof cssKeyAr[key] === 'undefined') {
+function getUnitVal(key, transformsObj, element) {
+  if (typeof transformsObj[key] === 'undefined') {
     return inferUnitVal(key, element);
   }
-  const colorVal = isColor(cssKeyAr[key]);
+  const colorVal = parseColor(transformsObj[key]);
   if (colorVal) {
     return {
       unit: 'color',
@@ -151,8 +151,8 @@ function getUnitVal(key, cssKeyAr, element) {
     };
   }
   return {
-    unit: typeof cssKeyAr[key] === 'number' ? 'px' : getUnit(cssKeyAr[key]),
-    val: typeof cssKeyAr[key] === 'number' ? cssKeyAr[key] : getVal(cssKeyAr[key]),
+    unit: typeof transformsObj[key] === 'number' ? 'px' : getUnit(transformsObj[key]),
+    val: typeof transformsObj[key] === 'number' ? transformsObj[key] : getVal(transformsObj[key]),
   }
 };
 
@@ -228,16 +228,21 @@ function buildTransformFromToList(el, from, to) {
   // Iterate through the "from" keys, adding matching "to" values if possible
   from.forEach((transform) => {
     const key = getTransformKey(transform);
-    const fromVal = transform[key];
-    transformFrom.push({ key, val: fromVal });
+    const { unit: fromUnit, val: fromVal } = getUnitVal(key, transform, el);
 
     // Search the "to" object to find a matching transform
     const toTransform = to.find((toTransform) => {
       const itemKey = getTransformKey(toTransform);
       return itemKey === key;
     });
-    const toVal = toTransform[key];
-    transformTo.push({ key, val: toVal });
+    const { unit: toUnit, val: toVal } = getUnitVal(key, toTransform, el);
+
+    if (fromUnit === toUnit) {
+      transformFrom.push({ key, val: fromVal, unit: fromUnit });
+      transformTo.push({ key, val: toVal, unit: toUnit });
+    } else {
+      throw new Error(`"from" and "to" unit mismatch: ${fromUnit} and ${toUnit} (at element ${el.outerHTML})`);
+    }
   });
 
   return { transformFrom, transformTo };
@@ -270,7 +275,6 @@ export const animate = (
         }
         else if (item.key === 'transform') {
           const interpolated = interpolateTransform(startTime, endTime, timestamp, item.fromVal, item.toVal, easingFunc);
-          console.log(interpolated);
           element.style.transform = interpolated;
         }
         else {
