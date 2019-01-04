@@ -48,7 +48,7 @@ animate(
     { marginLeft: '200px'},
     { marginLeft: '100px'},
     Easing.easeInOutCubic,
-  ));
+  )});
 ```
 
 ### Easing functions
