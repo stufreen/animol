@@ -99,6 +99,7 @@ function interpolateColor(startTime, endTime, currentTime, startVal, endVal, eas
 }
 
 // Interpolate two transform lists and build up a "transform" string
+// TO DO: Allow transforms with commas, e.g. translate(20px, 30px)
 function interpolateTransform(startTime, endTime, currentTime, startTransformList, endTransformList, easingFunction) {
   const transforms = startTransformList.reduce((accumulator, { key, val: startVal, unit }, index) => {
     const endVal = endTransformList[index].val;
@@ -136,7 +137,7 @@ function getUnit(input) {
 }
 
 function getVal(input) {
-  return parseFloat(input.match(/^\d+(\.\d)?\d*/)[0]);
+  return parseFloat(input.match(/^-?\d+(\.\d)?\d*/)[0]);
 }
 
 function getUnitVal(key, transformsObj, element) {
@@ -151,7 +152,7 @@ function getUnitVal(key, transformsObj, element) {
     };
   }
   return {
-    unit: typeof transformsObj[key] === 'number' ? 'px' : getUnit(transformsObj[key]),
+    unit: typeof transformsObj[key] === 'number' ? '' : getUnit(transformsObj[key]),
     val: typeof transformsObj[key] === 'number' ? transformsObj[key] : getVal(transformsObj[key]),
   }
 };
@@ -221,6 +222,7 @@ function buildFromToList(el, from, to) {
   return fromToList;
 }
 
+// TO DO: iterate through "to" as well, and infer values
 function buildTransformFromToList(el, from, to) {
   const transformFrom = [];
   const transformTo = [];
@@ -259,7 +261,6 @@ export const animate = (
   let startTime;
   let endTime;
   const fromToList = buildFromToList(element, from, to);
-  console.log(fromToList);
 
   const step = (timestamp) => {
     if (typeof startTime === 'undefined') {
