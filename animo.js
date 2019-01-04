@@ -201,6 +201,10 @@ function withTransformMatrix(fromToList) {
         fromTransforms.push(`scaleY(${item.fromVal})`);
         toTransforms.push(`scaleY(${item.toVal})`);
         break;
+      case 'rotate':
+        fromTransforms.push(`rotate(${item.fromVal}deg)`);
+        toTransforms.push(`rotate(${item.toVal}deg)`);
+        break;
     }
   });
 
