@@ -16,6 +16,6 @@ for (let i = 0; i < blocks.length; i++) {
     { transform: [{ scaleX: 1 }, { scaleY: 1 }, { translateX: '0px' }, { rotate: '0deg' }], backgroundColor: 'rgba(255, 0, 0, 1)' },
     { transform: [{ scaleX: 2 }, { scaleY: 2 }, { translateX: '500px' }, { rotate: '-765deg' }], backgroundColor: 'rgba(0, 0, 100, 0.1)' },
     Easing.easeInOutCubic,
-    i * 1,
+    i * 100,
   );
 }
