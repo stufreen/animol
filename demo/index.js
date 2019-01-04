@@ -1,14 +1,21 @@
-import { animate, Easing } from '../animo.js';
+import { animate, Easing } from '../animol.js';
 
-const blocks = document.getElementsByClassName('block');
+const blocks = [];
+
+for (let i = 0; i < 25; i++) {
+  const block = document.createElement('div');
+  block.classList.add('block');
+  document.body.appendChild(block);
+  blocks.push(block);
+}
 
 for(let i = 0; i < blocks.length; i++) {
   animate(
     blocks[i],
-    5000,
+    2000,
     { transform: [{ scaleX: 1 }, { scaleY: 1 }, { translateX: '0px' }, { rotate: '0deg' }], backgroundColor: 'rgba(255, 0, 0, 1)' },
     { transform: [{ scaleX: 2 }, { scaleY: 2 }, { translateX: '500px' }, { rotate: '-765deg' }], backgroundColor: 'rgba(0, 0, 100, 0.1)' },
     Easing.easeInOutCubic,
-    i * 8
+    i * 1
   );
 }

@@ -3,7 +3,7 @@ body {
 }
 
 .block {
-  width: 8;
-  height: 8;
+  width: 25;
+  height: 25;
   background-color: red;
 }

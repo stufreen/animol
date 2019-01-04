@@ -1,0 +1,14 @@
+{
+  "name": "animol",
+  "version": "1.0.0",
+  "description": "Super lightweight animation library",
+  "main": "animol.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "animation"
+  ],
+  "author": "Stu Freen",
+  "license": "MIT"
+}
