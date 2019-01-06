@@ -16,6 +16,8 @@ export const animate = (
   let endTime;
   const fromToList = buildFromToList(element, from, to);
 
+  console.log(fromToList);
+
   const step = (timestamp) => {
     if (typeof startTime === 'undefined') {
       startTime = timestamp + delay;

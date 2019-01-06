@@ -1,5 +1,42 @@
 import { parseColor, getUnit, getVal } from './parseCss.js';
 
+// TO DO: Reverse calculate the scale, rotation, skew and translation from matrix3D
+
+function inferTransform(transformKey) {
+  // TO DO: Reverse calculate the scale, rotation, skew and translation from matrix
+  if (transformKey === 'translateX') {
+    return {
+      unit: 'px',
+      val: 0,
+    };
+  }
+  if (transformKey === 'translateY') {
+    return {
+      unit: 'px',
+      val: 0,
+    };
+  }
+  if (transformKey === 'scaleX') {
+    return {
+      unit: '',
+      val: 1,
+    };
+  }
+  if (transformKey === 'scaleY') {
+    return {
+      unit: '',
+      val: 1,
+    };
+  }
+  if (transformKey === 'rotate') {
+    return {
+      unit: 'deg',
+      val: 0,
+    };
+  }
+  return false;
+}
+
 function inferUnitVal(key, element, castToUnit = 'px') {
   const computedStyle = window.getComputedStyle(element);
   const styleString = computedStyle[key];
@@ -12,6 +49,11 @@ function inferUnitVal(key, element, castToUnit = 'px') {
     };
   }
 
+  const inferredTransform = inferTransform(key);
+  if (inferredTransform) {
+    return inferredTransform;
+  }
+
   const val = getVal(styleString);
   if (val === 0) {
     return { unit: castToUnit, val: 0 };
@@ -22,11 +64,11 @@ function inferUnitVal(key, element, castToUnit = 'px') {
   };
 }
 
-function getUnitVal(key, transformsObj, element) {
-  if (typeof transformsObj[key] === 'undefined') {
+function getUnitVal(key, styleObj = {}, element) {
+  if (typeof styleObj[key] === 'undefined') {
     return inferUnitVal(key, element);
   }
-  const colorVal = parseColor(transformsObj[key]);
+  const colorVal = parseColor(styleObj[key]);
   if (colorVal) {
     return {
       unit: 'color',
@@ -34,8 +76,8 @@ function getUnitVal(key, transformsObj, element) {
     };
   }
   return {
-    unit: typeof transformsObj[key] === 'number' ? '' : getUnit(transformsObj[key]),
-    val: typeof transformsObj[key] === 'number' ? transformsObj[key] : getVal(transformsObj[key]),
+    unit: typeof styleObj[key] === 'number' ? '' : getUnit(styleObj[key]),
+    val: typeof styleObj[key] === 'number' ? styleObj[key] : getVal(styleObj[key]),
   };
 }
 
@@ -47,7 +89,6 @@ function getTransformKey(transformObj) {
   return keys[0];
 }
 
-// TO DO: iterate through "to" as well, and infer values
 function buildTransformFromToList(el, from, to) {
   const transformFrom = [];
   const transformTo = [];
@@ -69,6 +110,21 @@ function buildTransformFromToList(el, from, to) {
       transformTo.push({ key, val: toVal, unit: toUnit });
     } else {
       throw new Error(`"from" and "to" unit mismatch: ${fromUnit} and ${toUnit} (at element ${el.outerHTML})`);
+    }
+  });
+
+  // Iterate through the "to" keys which did not have "from" values, inferring the "from" vals
+  to.forEach((transform) => {
+    const key = getTransformKey(transform);
+    if (typeof transformFrom[key] === 'undefined') {
+      const { unit: toUnit, val: toVal } = getUnitVal(key, transform, el);
+      const { unit: fromUnit, val: fromVal } = inferUnitVal(key, el, toUnit);
+      if (fromUnit === toUnit) {
+        transformFrom.push({ key, val: fromVal, unit: fromUnit });
+        transformTo.push({ key, val: toVal, unit: toUnit });
+      } else {
+        throw new Error(`"from" and "to" unit mismatch: ${fromUnit} and ${toUnit} (at element ${el.outerHTML})`);
+      }
     }
   });
 
