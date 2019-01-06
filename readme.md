@@ -71,10 +71,10 @@ easeInOutQuint
 
 You can also provide a custom easing function where the parameter and return value are each numbers between 0-1.
 
-## Why?
-Animol is intended to be **lightweight**, **ease to use** and **relatively performant**. It is ideal for small projects where you want to keep the bundle size down without coding animations from scratch.
+## Motivation
+Animol is intended to be **very lightweight**, **ease to use** and **relatively performant**. It abstracts the repetetive logic for calling `requestAnimationFrame`, easing, and parsing CSS strings. It's ideal for small projects where you want to do some simple animations without reinventing the wheel, and you don't want to import a large library.
 
-Check out Greensock instead if file size is not an issue and you need any of the following:
+Check out [Greensock](https://greensock.com/) instead if file size is not an issue and you need any of the following:
  * SVG transformations
  * Very high performance
  * Conversion between units and all CSS values
