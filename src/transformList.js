@@ -120,7 +120,8 @@ function buildTransformFromToList(el, from, to) {
   // Iterate through the "to" keys which did not have "from" values, inferring the "from" vals
   to.forEach((transform) => {
     const key = getTransformKey(transform);
-    if (typeof transformFrom[key] === 'undefined') {
+    const fromTransform = transformFrom.find(item => item.key === key);
+    if (!fromTransform) {
       const { unit: toUnit, val: toVal } = getUnitVal(key, transform, el);
       const { unit: fromUnit, val: fromVal } = inferUnitVal(key, el, toUnit);
       if (fromUnit === toUnit) {
