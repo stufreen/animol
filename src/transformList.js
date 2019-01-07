@@ -4,6 +4,7 @@ import { parseColor, getUnit, getVal } from './parseCss.js';
 
 function inferTransform(transformKey) {
   // TO DO: Reverse calculate the scale, rotation, skew and translation from matrix
+  // TO DO: Only calculate once
   if (transformKey === 'translateX') {
     return {
       unit: 'px',
@@ -92,6 +93,9 @@ function getTransformKey(transformObj) {
 function buildTransformFromToList(el, from, to) {
   const transformFrom = [];
   const transformTo = [];
+  // TO DO: Calculate "from" and "to" lists from el's transform matrix, and
+  // mutate lists below so that we don't squash any css transforms but rather
+  // build on top of them
 
   // Iterate through the "from" keys, adding matching "to" values if possible
   from.forEach((transform) => {
