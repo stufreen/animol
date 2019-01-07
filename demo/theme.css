@@ -6,4 +6,5 @@ body {
   width: 25;
   height: 25;
   background-color: red;
+  transform: translateX(40vw) scaleX(2) scaleY(2);
 }

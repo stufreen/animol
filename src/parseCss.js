@@ -49,3 +49,9 @@ export const parseColor = (styleString) => {
   }
   return false;
 };
+
+export const parseMatrix2D = (matrixString) => {
+  const regex = /matrix\((.*)\)/;
+  const nums = matrixString.match(regex)[1].split(',').map(item => parseFloat(item));
+  return nums;
+};

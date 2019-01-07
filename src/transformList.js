@@ -1,41 +1,17 @@
-import { parseColor, getUnit, getVal } from './parseCss.js';
+import {
+  parseColor,
+  getUnit,
+  getVal,
+  parseMatrix2D,
+} from './parseCss.js';
+import { decomposeTransformMatrix2D } from './matrix.js';
 
-// TO DO: Reverse calculate the scale, rotation, skew and translation from matrix3D
-
-function inferTransform(transformKey) {
-  // TO DO: Reverse calculate the scale, rotation, skew and translation from matrix
-  // TO DO: Only calculate once
-  if (transformKey === 'translateX') {
-    return {
-      unit: 'px',
-      val: 0,
-    };
-  }
-  if (transformKey === 'translateY') {
-    return {
-      unit: 'px',
-      val: 0,
-    };
-  }
-  if (transformKey === 'scaleX') {
-    return {
-      unit: '',
-      val: 1,
-    };
-  }
-  if (transformKey === 'scaleY') {
-    return {
-      unit: '',
-      val: 1,
-    };
-  }
-  if (transformKey === 'rotate') {
-    return {
-      unit: 'deg',
-      val: 0,
-    };
-  }
-  return false;
+// TO DO: support 3d transforms
+function inferTransforms(el) {
+  const computedStyles = window.getComputedStyle(el);
+  const matrixString = computedStyles.transform || 'matrix(1, 0, 0, 1, 0, 0)';
+  const matrix = parseMatrix2D(matrixString);
+  return decomposeTransformMatrix2D(matrix);
 }
 
 function inferUnitVal(key, element, castToUnit = 'px') {
@@ -48,11 +24,6 @@ function inferUnitVal(key, element, castToUnit = 'px') {
       unit: 'color',
       val: colorVal,
     };
-  }
-
-  const inferredTransform = inferTransform(key);
-  if (inferredTransform) {
-    return inferredTransform;
   }
 
   const val = getVal(styleString);
@@ -91,13 +62,36 @@ function getTransformKey(transformObj) {
 }
 
 function buildTransformFromToList(el, from, to) {
-  const transformFrom = [];
-  const transformTo = [];
-  // TO DO: Calculate "from" and "to" lists from el's transform matrix, and
-  // mutate lists below so that we don't squash any css transforms but rather
-  // build on top of them
+  const inferredTransforms = inferTransforms(el);
 
-  // Iterate through the "from" keys, adding matching "to" values if possible
+  const transformFrom = inferredTransforms.map((item) => {
+    const match = from.find(a => item.key === getTransformKey(a));
+    if (!match) {
+      return item;
+    }
+    const { unit, val } = getUnitVal(item.key, match, el);
+    return {
+      key: item.key,
+      unit,
+      val,
+    };
+  });
+
+  const transformTo = inferredTransforms.map((item) => {
+    const match = to.find(a => item.key === getTransformKey(a));
+    if (!match) {
+      return item;
+    }
+    const { unit, val } = getUnitVal(item.key, match, el);
+    return {
+      key: item.key,
+      unit,
+      val,
+    };
+  });
+
+  /*
+  // Iterate through the "from" keys, replacing the inferred transforms
   from.forEach((transform) => {
     const key = getTransformKey(transform);
     const { unit: fromUnit, val: fromVal } = getUnitVal(key, transform, el);
@@ -132,6 +126,7 @@ function buildTransformFromToList(el, from, to) {
       }
     }
   });
+  */
 
   return { transformFrom, transformTo };
 }
