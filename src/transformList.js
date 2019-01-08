@@ -2,7 +2,7 @@ import {
   parseColor,
   getUnit,
   getVal,
-  parseMatrix2D,
+  parseMatrix,
 } from './parseCss.js';
 import { decomposeTransformMatrix2D } from './matrix.js';
 
@@ -10,7 +10,7 @@ import { decomposeTransformMatrix2D } from './matrix.js';
 function inferTransforms(el) {
   const computedStyles = window.getComputedStyle(el);
   const matrixString = computedStyles.transform || 'matrix(1, 0, 0, 1, 0, 0)';
-  const matrix = parseMatrix2D(matrixString);
+  const matrix = parseMatrix(matrixString);
   return decomposeTransformMatrix2D(matrix);
 }
 
@@ -89,44 +89,6 @@ function buildTransformFromToList(el, from, to) {
       val,
     };
   });
-
-  /*
-  // Iterate through the "from" keys, replacing the inferred transforms
-  from.forEach((transform) => {
-    const key = getTransformKey(transform);
-    const { unit: fromUnit, val: fromVal } = getUnitVal(key, transform, el);
-
-    // Search the "to" object to find a matching transform
-    const toTransform = to.find((item) => {
-      const itemKey = getTransformKey(item);
-      return itemKey === key;
-    });
-    const { unit: toUnit, val: toVal } = getUnitVal(key, toTransform, el);
-
-    if (fromUnit === toUnit) {
-      transformFrom.push({ key, val: fromVal, unit: fromUnit });
-      transformTo.push({ key, val: toVal, unit: toUnit });
-    } else {
-      throw new Error(`"from" and "to" unit mismatch: ${fromUnit} and ${toUnit} (at element ${el.outerHTML})`);
-    }
-  });
-
-  // Iterate through the "to" keys which did not have "from" values, inferring the "from" vals
-  to.forEach((transform) => {
-    const key = getTransformKey(transform);
-    const fromTransform = transformFrom.find(item => item.key === key);
-    if (!fromTransform) {
-      const { unit: toUnit, val: toVal } = getUnitVal(key, transform, el);
-      const { unit: fromUnit, val: fromVal } = inferUnitVal(key, el, toUnit);
-      if (fromUnit === toUnit) {
-        transformFrom.push({ key, val: fromVal, unit: fromUnit });
-        transformTo.push({ key, val: toVal, unit: toUnit });
-      } else {
-        throw new Error(`"from" and "to" unit mismatch: ${fromUnit} and ${toUnit} (at element ${el.outerHTML})`);
-      }
-    }
-  });
-  */
 
   return { transformFrom, transformTo };
 }

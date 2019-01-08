@@ -1,6 +1,9 @@
 function parseRGB(inputString) {
-  const regex = /rgb\((\d{1,3}), *(\d{1,3}), *(\d{1,3})\)/;
+  const regex = /rgb\( *(\d{1,3}), *(\d{1,3}), *(\d{1,3}) *\)/;
   const result = inputString.match(regex);
+  if (!result) {
+    return false;
+  }
   return {
     red: parseInt(result[1], 10),
     green: parseInt(result[2], 10),
@@ -10,8 +13,11 @@ function parseRGB(inputString) {
 }
 
 function parseRGBA(inputString) {
-  const regex = /rgba\((\d{1,3}), *(\d{1,3}), *(\d{1,3}), *(\d+[.\d]?\d*)\)/;
+  const regex = /rgba\( *(\d{1,3}), *(\d{1,3}), *(\d{1,3}), *(\d+[.\d]?\d*) *\)/;
   const result = inputString.match(regex);
+  if (!result) {
+    return false;
+  }
   return {
     red: parseInt(result[1], 10),
     green: parseInt(result[2], 10),
@@ -22,6 +28,9 @@ function parseRGBA(inputString) {
 
 function parseHexColor(inputString) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(inputString);
+  if (!result) {
+    return false;
+  }
   return {
     red: parseInt(result[1], 16),
     green: parseInt(result[2], 16),
@@ -30,9 +39,27 @@ function parseHexColor(inputString) {
   };
 }
 
-export const getUnit = input => input.match(/([a-zA-Z]+|%)/)[0];
+export const getUnit = (input) => {
+  if (typeof input !== 'string') {
+    return false;
+  }
+  const result = input.match(/([a-zA-Z]+|%)/);
+  if (!result) {
+    return false;
+  }
+  return result[0];
+};
 
-export const getVal = input => parseFloat(input.match(/^-?\d+(\.\d)?\d*/)[0]);
+export const getVal = (input) => {
+  if (typeof input !== 'string') {
+    return false;
+  }
+  const result = input.match(/^-?\d+(\.\d)?\d*/);
+  if (!result) {
+    return false;
+  }
+  return parseFloat(result[0]);
+}
 
 export const parseColor = (styleString) => {
   if (typeof styleString !== 'string') {
@@ -50,8 +77,14 @@ export const parseColor = (styleString) => {
   return false;
 };
 
-export const parseMatrix2D = (matrixString) => {
-  const regex = /matrix\((.*)\)/;
-  const nums = matrixString.match(regex)[1].split(',').map(item => parseFloat(item));
+export const parseMatrix = (matrixString) => {
+  if (typeof matrixString !== 'string') {
+    return false;
+  }
+  const result = matrixString.match(/matrix\((.*)\)/);
+  if (!result) {
+    return false;
+  }
+  const nums = result[1].split(',').map(item => parseFloat(item));
   return nums;
 };
