@@ -71,6 +71,20 @@ easeInOutQuint
 
 You can also provide a custom easing function where the parameter and return value are each numbers between 0-1.
 
+## Gotchas
+
+**Convenience properties and functions** such as `background`, `border`, `padding` and `transform` are not supported. Use the individual values like `backgroundColor`, `borderWidth`, `paddingLeft` and `transformX` instead.
+
+Animol **cannot convert between units**. For example, the following will throw an error:
+```javascript
+animol.css(
+  myElement,
+  2000,
+  { height: '100px' },
+  { height: '50em' },
+);
+```
+
 ## Motivation
 Animol is intended to be **very lightweight**, **ease to use** and **relatively performant**. It abstracts the repetetive logic for calling `requestAnimationFrame`, easing, and parsing CSS strings. It's ideal for small projects where you want to do some simple animations without reinventing the wheel, and you don't want to import a large library.
 
