@@ -136,4 +136,10 @@ describe('parseMatrix', () => {
     expect(parseMatrix('matrix(a, 0, 0, 1, 0, 0)')[0]).toBeNaN();
     expect(parseMatrix('matrix(  , 0, 0, 1, 0, 0)')[0]).toBeNaN();
   });
+
+  test('it returns false if passed a malformed value', () => {
+    expect(getVal('')).toBeFalsy();
+    expect(getVal(1)).toBeFalsy();
+    expect(getVal('matrix')).toBeFalsy();
+  });
 });
