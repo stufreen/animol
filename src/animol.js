@@ -1,10 +1,10 @@
-import { interpolate, interpolateColor, interpolateTransform } from './interpolate.js';
-import { buildFromToList } from './transformList.js';
-import { Easing } from './easing.js';
+import { interpolate, interpolateColor, interpolateTransform } from './interpolate';
+import { buildFromToList } from './transformList';
+import { Easing } from './easing';
 
-export { Easing } from './easing.js';
+export { Easing } from './easing';
 
-export const animate = (
+export const css = (
   element,
   duration,
   from = {},

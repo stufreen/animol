@@ -2,12 +2,11 @@
   <head>
     <title>Animol</title>
     <link rel="stylesheet" type="text/css" href="theme.css">
+    <script src="../dist/animol.min.js"></script>
   </head>
   <body>
     <h1>Animol</h1>
     <script type="module">
-      import { animate, Easing } from '../src/animol.js';
-
       const blocks = [];
 
       for (let i = 0; i < 1; i += 1) {
@@ -18,20 +17,20 @@
       }
 
       for (let i = 0; i < blocks.length; i++) {
-        animate(
+        animol.css(
           blocks[i],
           2000,
           { transform: [{ translateX: '0vw' }, { rotate: '0deg' }], backgroundColor: 'rgba(255, 0, 0, 1)' },
           { transform: [{ translateX: '90vw' }, { scaleX: 2 }, { scaleY: 2 }, { rotate: '-765deg' }], backgroundColor: 'rgba(0, 0, 100, 0.1)' },
-          Easing.easeInOutCubic,
+          animol.Easing.easeInOutCubic,
           i * 100,
         ).then(() => {
-          animate(
+          animol.css(
             blocks[i],
             2000,
             { transform: [{ translateX: '90vw' }, { scaleX: 2 }, { scaleY: 2 }, { rotate: '-765deg' }], backgroundColor: 'rgba(0, 0, 100, 0.1)' },
             { transform: [{ translateX: '0vw' }, { rotate: '0deg' }], backgroundColor: 'rgba(255, 0, 0, 1)' },
-            Easing.easeInOutCubic,
+            animol.Easing.easeInOutCubic,
           );
         });
       }
