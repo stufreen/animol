@@ -6,16 +6,16 @@ A very lightweight (~2KB minimized and gzipped) JavaScript animation library wit
 
 ### Basic usage
 ```javascript
-import { animate, Easing } from '../animol';
+import * as animol from 'animol';
 
 const myElement = document.getElementById('my-element');
 
-animate(
+animol.css(
   myElement, // DOM element
   2000, // Duration
   { marginLeft: '0px', backgroundColor: '#FF0000' }, // From
   { marginLeft: '200px', backgroundColor: '#00FF00' }, // To
-  Easing.easeInOutCubic, // Easing function (optional)
+  animol.Easing.easeInOutCubic, // Easing function (optional)
   1000, // Delay (optional)
 );
 ```
@@ -24,7 +24,7 @@ animate(
 CSS transforms are passed as an array where each item in the array is an object with a single key.
 
 ```javascript
-animate(
+animol.css(
   myElement,
   2000,
   { transform: [{ scaleX: 1 }, { translateX: '0px' }, { rotate: '0deg' }] },
@@ -35,24 +35,24 @@ animate(
 ### Chaining animations
 Each animation returns a promise which resolves when the animation is complete.
 ```javascript
-animate(
+animol.css(
   myElement,
   2000,
   { marginLeft: '0px'},
   { marginLeft: '200px'},
-  Easing.easeInOutCubic,
+  animol.Easing.easeInOutCubic,
 ).then(() => {
-  animate(
+  animol.css(
     myElement,
     2000,
     { marginLeft: '200px'},
     { marginLeft: '100px'},
-    Easing.easeInOutCubic,
+    animol.Easing.easeInOutCubic,
   )});
 ```
 
 ### Easing functions
-Some common easing functions are attached to the `Easing` import:
+Some common easing functions are attached to the `Easing` property:
 ```
 linear
 easeInQuad
