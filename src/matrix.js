@@ -49,6 +49,7 @@ function getRotate2D(matrix) {
   };
 }
 
+// TO DO: Allow skew as well
 export const decomposeTransformMatrix2D = (matrix) => {
   const translateX = getTranslateX2D(matrix);
   const translateY = getTranslateY2D(translateX.matrix);
