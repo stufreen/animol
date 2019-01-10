@@ -9,7 +9,7 @@ import { decomposeTransformMatrix2D } from './matrix.js';
 // TO DO: support 3d transforms
 function inferTransforms(el) {
   const computedStyles = window.getComputedStyle(el);
-  const matrixString = computedStyles.transform || 'matrix(1, 0, 0, 1, 0, 0)';
+  const matrixString = computedStyles.transform === 'none' ? 'matrix(1, 0, 0, 1, 0, 0)' : computedStyles.transform;
   const matrix = parseMatrix(matrixString);
   return decomposeTransformMatrix2D(matrix);
 }
@@ -61,7 +61,7 @@ function getTransformKey(transformObj) {
   return keys[0];
 }
 
-function buildTransformFromToList(el, from, to) {
+function buildTransformFromToList(el, from = [], to = []) {
   const inferredTransforms = inferTransforms(el);
 
   const transformFrom = inferredTransforms.map((item) => {

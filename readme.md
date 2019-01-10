@@ -86,11 +86,12 @@ animol.css(
 ```
 
 ## To do
- * Cancel animations
  * Animate properties
  * 3D transforms
  * More unit tests
  * Bounce and Overshoot easing functions
+ * Gradients
+ * Use a list of transforms instead of an object
 
 ## Motivation
 Animol is intended to be **very lightweight**, **ease to use** and **relatively performant**. It abstracts the repetetive logic for calling `requestAnimationFrame`, easing, and parsing CSS strings. It's ideal for small projects where you want to do some simple animations without reinventing the wheel, and you don't want to import a large library.

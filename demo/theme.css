@@ -2,9 +2,14 @@ body {
   font-family: sans-serif;
 }
 
+.tall {
+  height: 200vh;
+  position: relative;
+  background: linear-gradient(#e66465, #9198e5);
+}
+
 .block {
   width: 25;
   height: 25;
   background-color: red;
-  transform: translateX(40vw) scaleX(2) scaleY(2);
 }

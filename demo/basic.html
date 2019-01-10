@@ -6,26 +6,16 @@
   </head>
   <body>
     <h1>Animol</h1>
+    <div id="block" class="block"></div>
     <script>
-      const blocks = [];
-
-      for (let i = 0; i < 1; i += 1) {
-        const block = document.createElement('div');
-        block.classList.add('block');
-        document.body.appendChild(block);
-        blocks.push(block);
-      }
-
-      for (let i = 0; i < blocks.length; i++) {
-        animol.css(
-          blocks[i],
-          2000,
-          { transform: [{ rotate: '1rad' }], backgroundColor: 'rgba(255, 0, 0, 1)' },
-          { transform: [{ translateX: '300px' }, { scaleX: 3 }, { scaleY: 3 }], backgroundColor: 'rgba(0, 0, 100, 0.1)' },
-          animol.Easing.easeInOutCubic,
-          i * 100,
-        );
-      }
+      const promise = animol.css(
+        document.getElementById('block'),
+        2000,
+        { backgroundColor: 'rgba(255, 0, 0, 1)' },
+        { transform: [{ translateX: '300px' }, { scaleX: 3 }, { scaleY: 3 }, { rotate: '2rad' }], backgroundColor: 'rgba(0, 0, 100, 0.1)' },
+        animol.Easing.easeInOutCubic,
+        0,
+      );
     </script>
   </body>
 </html>
