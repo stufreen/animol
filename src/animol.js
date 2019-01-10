@@ -14,23 +14,32 @@ export const ease = (
   duration = 0,
   easingFunc = Easing.linear,
   delay = 0,
-) => new Promise((resolve) => {
-  let startTime;
-  let endTime;
+) => {
+  let animationFrameRequest;
 
-  const step = (timestamp) => {
-    if (typeof startTime === 'undefined') {
-      startTime = timestamp + delay;
-      endTime = timestamp + duration + delay;
-    } else if (timestamp >= endTime) {
-      resolve(); // Done the animation
-    } else if (timestamp >= startTime) {
-      callback(interpolate(startTime, endTime, timestamp, easingFunc));
-    }
-    window.requestAnimationFrame(step);
+  const promise = new Promise((resolve) => {
+    let startTime;
+    let endTime;
+    const step = (timestamp) => {
+      if (typeof startTime === 'undefined') {
+        startTime = timestamp + delay;
+        endTime = timestamp + duration + delay;
+      } else if (timestamp >= endTime) {
+        resolve(); // Done the animation
+      } else if (timestamp >= startTime) {
+        callback(interpolate(startTime, endTime, timestamp, easingFunc));
+      }
+      animationFrameRequest = window.requestAnimationFrame(step);
+    };
+    animationFrameRequest = window.requestAnimationFrame(step);
+  });
+
+  promise.cancel = () => {
+    window.cancelAnimationFrame(animationFrameRequest);
   };
-  window.requestAnimationFrame(step);
-});
+
+  return promise;
+};
 
 export const css = (
   element,
