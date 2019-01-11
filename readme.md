@@ -33,15 +33,17 @@ animol.css(
 ```
 
 ### Chaining animations
-Each animation returns a promise which resolves when the animation is complete.
+Each animation returns an object with a property `promise`, which resolves when the animation is complete.
 ```javascript
-animol.css(
+const myAnimation = animol.css(
   myElement,
   2000,
   { marginLeft: '0px'},
   { marginLeft: '200px'},
   animol.Easing.easeInOutCubic,
-).then(() => {
+);
+
+myAnimation.promise.then(() => {
   animol.css(
     myElement,
     2000,
@@ -49,6 +51,19 @@ animol.css(
     { marginLeft: '100px'},
     animol.Easing.easeInOutCubic,
   )});
+```
+
+In addition to regular promise functions, the promises returned by `css` and `ease` can also be **cancelled**.
+```javascript
+const myAnimation = animol.css(
+  myElement,
+  2000,
+  { marginLeft: '0px' },
+  { marginLeft: '200px' },
+  animol.Easing.easeInOutCubic,
+);
+
+myAnimation.cancel();
 ```
 
 ### Easing functions

@@ -16,8 +16,9 @@ export const ease = (
   delay = 0,
 ) => {
   let animationFrameRequest;
-
-  const promise = new Promise((resolve) => {
+  let rej;
+  const promise = new Promise((resolve, reject) => {
+    rej = reject;
     let startTime;
     let endTime;
     const step = (timestamp) => {
@@ -34,11 +35,12 @@ export const ease = (
     animationFrameRequest = window.requestAnimationFrame(step);
   });
 
-  promise.cancel = () => {
+  const cancel = () => {
     window.cancelAnimationFrame(animationFrameRequest);
+    rej();
   };
 
-  return promise;
+  return { promise, cancel };
 };
 
 export const css = (

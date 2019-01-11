@@ -9,6 +9,7 @@
     <script type="module">
       const blocks = [];
 
+      // Create several blocks and append them to the body
       for (let i = 0; i < 25; i += 1) {
         const block = document.createElement('div');
         block.classList.add('block');
@@ -17,14 +18,18 @@
       }
 
       for (let i = 0; i < blocks.length; i++) {
-        animol.css(
+        // Start the first animation
+        const myAnimation = animol.css(
           blocks[i],
           2000,
           { transform: [{ translateX: '0vw' }, { rotate: '0deg' }], backgroundColor: 'rgba(255, 0, 0, 1)' },
           { transform: [{ translateX: '90vw' }, { scaleX: 2 }, { scaleY: 2 }, { rotate: '-765deg' }], backgroundColor: 'rgba(0, 0, 100, 0.1)' },
           animol.Easing.easeInOutCubic,
           i * 100,
-        ).then(() => {
+        )
+        
+        // The css function returns an object with a "promise" property
+        myAnimation.promise.then(() => {
           animol.css(
             blocks[i],
             2000,
