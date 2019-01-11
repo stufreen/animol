@@ -61,15 +61,15 @@ function getTransformKey(transformObj) {
   return keys[0];
 }
 
-function buildTransformFromToList(el, from = [], to = []) {
+function buildTransformFromToList(el, from = {}, to = {}) {
   const inferredTransforms = inferTransforms(el);
 
   const transformFrom = inferredTransforms.map((item) => {
-    const match = from.find(a => item.key === getTransformKey(a));
+    const match = from[item.key];
     if (!match) {
       return item;
     }
-    const { unit, val } = getUnitVal(item.key, match, el);
+    const { unit, val } = getUnitVal(item.key, from, el);
     return {
       key: item.key,
       unit,
@@ -78,11 +78,11 @@ function buildTransformFromToList(el, from = [], to = []) {
   });
 
   const transformTo = inferredTransforms.map((item) => {
-    const match = to.find(a => item.key === getTransformKey(a));
+    const match = to[item.key];
     if (!match) {
       return item;
     }
-    const { unit, val } = getUnitVal(item.key, match, el);
+    const { unit, val } = getUnitVal(item.key, to, el);
     return {
       key: item.key,
       unit,

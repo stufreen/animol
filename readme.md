@@ -21,14 +21,14 @@ animol.css(
 ```
 
 ### CSS transforms
-CSS transforms are passed as an array where each item in the array is an object with a single key.
+CSS transforms are passed as an object where the keys are transform functions.
 
 ```javascript
 animol.css(
   myElement,
   2000,
-  { transform: [{ scaleX: 1 }, { translateX: '0px' }, { rotate: '0deg' }] },
-  { transform: [{ scaleX: 2 }, { translateX: '500px' }, { rotate: '-765deg' }] },
+  { transform: { scaleX: 1, translateX: '0px', rotate: '0deg' } },
+  { transform: { scaleX: 2, translateX: '500px', rotate: '-765deg' } },
 );
 ```
 
@@ -88,7 +88,7 @@ You can also provide a custom easing function where the parameter and return val
 
 ## Gotchas
 
-**Convenience properties and functions** such as `background`, `border`, `padding` and `transform` are not supported. Use the individual values like `backgroundColor`, `borderWidth`, `paddingLeft` and `transformX` instead.
+**Convenience properties and functions** such as `background`, `border`, `padding` and `translate` are not supported. Use the individual values like `backgroundColor`, `borderWidth`, `paddingLeft` and `translateX` instead.
 
 Animol **cannot convert between units**. For example, the following will throw an error:
 ```javascript
