@@ -7,4 +7,9 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     library: 'animol',
   },
+  devServer: {
+    contentBase: path.resolve(__dirname, 'demo'),
+    compress: true,
+    port: 9000,
+  },
 };
