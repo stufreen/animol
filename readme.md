@@ -33,7 +33,7 @@ animol.css(
 ```
 
 ### Chaining animations
-Each animation returns an object with a property `promise`, which resolves when the animation is complete.
+Each call to `css` and `ease` returns an object with a property `promise`, which resolves when the animation is complete.
 ```javascript
 const myAnimation = animol.css(
   myElement,
@@ -53,7 +53,7 @@ myAnimation.promise.then(() => {
   )});
 ```
 
-In addition to regular promise functions, the promises returned by `css` and `ease` can also be **cancelled**.
+Animation objects returned by `css` and `ease` can also be **cancelled**.
 ```javascript
 const myAnimation = animol.css(
   myElement,
@@ -106,7 +106,6 @@ animol.css(
  * More unit tests
  * Bounce and Overshoot easing functions
  * Gradients
- * Use a list of transforms instead of an object
 
 ## Motivation
 Animol is intended to be **very lightweight**, **ease to use** and **relatively performant**. It abstracts the repetetive logic for calling `requestAnimationFrame`, easing, and parsing CSS strings. It's ideal for small projects where you want to do some simple animations without reinventing the wheel, and you don't want to import a large library.

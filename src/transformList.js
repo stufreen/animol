@@ -53,14 +53,6 @@ function getUnitVal(key, styleObj = {}, element) {
   };
 }
 
-function getTransformKey(transformObj) {
-  const keys = Object.keys(transformObj);
-  if (keys.length !== 1) {
-    throw new Error('Each transform object must have exactly one key with a string property.');
-  }
-  return keys[0];
-}
-
 function buildTransformFromToList(el, from = {}, to = {}) {
   const inferredTransforms = inferTransforms(el);
 
@@ -89,6 +81,8 @@ function buildTransformFromToList(el, from = {}, to = {}) {
       val,
     };
   });
+
+  // TO DO: Check if units match
 
   return { transformFrom, transformTo };
 }

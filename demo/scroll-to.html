@@ -22,7 +22,7 @@
       // Calculate the total distance to scroll
       const distance = endScrollY - startScrollY;
 
-      // Smooth scroll to the bottom
+      // Smooth scroll to the bottom using animol.ease
       animol.ease(
         (progress) => {
           const scrollY = startScrollY + (progress * distance);
