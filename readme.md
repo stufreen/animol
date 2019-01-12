@@ -100,6 +100,12 @@ animol.css(
 );
 ```
 
+## Running demos and development
+```
+npm install
+npm run start
+```
+
 ## To do
  * Animate properties
  * 3D transforms
