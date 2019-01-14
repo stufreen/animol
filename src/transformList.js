@@ -46,10 +46,15 @@ function getUnitVal(key, styleObj = {}, element) {
       val: colorVal,
     };
   }
-  return {
-    unit: typeof styleObj[key] === 'number' ? '' : getUnit(styleObj[key]),
-    val: typeof styleObj[key] === 'number' ? styleObj[key] : getVal(styleObj[key]),
-  };
+  const unit = typeof styleObj[key] === 'number' ? '' : getUnit(styleObj[key]);
+  const val = typeof styleObj[key] === 'number' ? styleObj[key] : getVal(styleObj[key]);
+  if (unit === 'deg') {
+    return {
+      unit: 'rad',
+      val: val * (Math.PI / 180),
+    };
+  }
+  return { unit, val };
 }
 
 function buildTransformFromToList(el, from = {}, to = {}) {
