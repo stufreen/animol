@@ -123,13 +123,16 @@ describe('getValue', () => {
 });
 
 describe('parseMatrix', () => {
-  test('it can parse a well-formed matrix', () => {
-    expect(parseMatrix('matrix(1, 0, 0, 1, 0, 0)')).toEqual([1, 0, 0, 1, 0, 0]);
-    expect(parseMatrix('matrix(1,0,0,1,0,0)')).toEqual([1, 0, 0, 1, 0, 0]);
-    expect(parseMatrix('matrix(1.1,0,0,1,0,0)')).toEqual([1.1, 0, 0, 1, 0, 0]);
-    expect(parseMatrix('matrix(-1,0,0,1,0,0)')).toEqual([-1, 0, 0, 1, 0, 0]);
-    expect(parseMatrix('matrix(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0)'))
-      .toEqual([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0]);
+  test('it can parse a well-formed 2D matrix', () => {
+    expect(parseMatrix('matrix(1, 0, 0, 1, 0, 0)')).toEqual([1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+    expect(parseMatrix('matrix(1,0,0,1,0,0)')).toEqual([1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+    expect(parseMatrix('matrix(1.1,0,0,1,0,0)')).toEqual([1.1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+    expect(parseMatrix('matrix(-1,0,0,1,0,0)')).toEqual([-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+  });
+
+  test('it can parse a well-formed 3D matrix', () => {
+    expect(parseMatrix('matrix3d(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)'))
+      .toEqual([1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
   });
 
   test('it will use NaN for values that cannot be parsed to float', () => {
@@ -141,5 +144,6 @@ describe('parseMatrix', () => {
     expect(getVal('')).toBeFalsy();
     expect(getVal(1)).toBeFalsy();
     expect(getVal('matrix')).toBeFalsy();
+    expect(getVal('matrix3d')).toBeFalsy();
   });
 });

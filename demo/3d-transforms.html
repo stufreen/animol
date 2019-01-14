@@ -1,0 +1,26 @@
+<html>
+
+<head>
+  <title>Animol: 3D transforms</title>
+  <link rel="stylesheet" type="text/css" href="theme.css">
+  <script src="animol.min.js"></script>
+</head>
+
+<body>
+  <h1>3D transforms</h1>
+  <div class="perspective-container">
+    <img id="block" class="big-block" src="https://picsum.photos/400/400"></div>
+  </div>
+  <script>
+    animol.css(
+      document.getElementById('block'),
+      2000,
+      {},
+      { transform: { rotateY: '3.14rad', rotateX: '3.14rad',translateZ: '-50px' } },
+      animol.Easing.easeInOutCubic,
+      0,
+    );
+  </script>
+</body>
+
+</html>

@@ -1,16 +1,3 @@
-function getTranslate2D(matrix) {
-  const translateX = matrix[4];
-  const translateY = matrix[5];
-  const newMatrix = matrix.slice();
-  newMatrix[4] = 0;
-  newMatrix[5] = 0;
-  return {
-    x: { key: 'translateX', unit: 'px', val: translateX },
-    y: { key: 'translateY', unit: 'px', val: translateY },
-    matrix: newMatrix,
-  };
-}
-
 function getTranslate3D(matrix) {
   const translateX = matrix[9];
   const translateY = matrix[10];
@@ -23,21 +10,6 @@ function getTranslate3D(matrix) {
     x: { key: 'translateX', unit: 'px', val: translateX },
     y: { key: 'translateY', unit: 'px', val: translateY },
     z: { key: 'translateZ', unit: 'px', val: translateZ },
-    matrix: newMatrix,
-  };
-}
-
-function getScale2D(matrix) {
-  const scaleX = Math.sqrt((matrix[0] ** 2) + (matrix[1] ** 2));
-  const scaleY = Math.sqrt((matrix[2] ** 2) + (matrix[3] ** 2));
-  const newMatrix = matrix.slice();
-  newMatrix[0] = matrix[0] / scaleX;
-  newMatrix[1] = matrix[1] / scaleX;
-  newMatrix[2] = matrix[2] / scaleY;
-  newMatrix[3] = matrix[3] / scaleY;
-  return {
-    x: { key: 'scaleX', unit: '', val: scaleX },
-    y: { key: 'scaleY', unit: '', val: scaleY },
     matrix: newMatrix,
   };
 }
@@ -64,19 +36,6 @@ function getScale3D(matrix) {
   };
 }
 
-function getRotate2D(matrix) {
-  const angle = Math.atan2(matrix[1], matrix[0]);
-  const newMatrix = [
-    1, 0,
-    0, 1,
-    0, 0,
-  ];
-  return {
-    transform: { key: 'rotate', unit: 'rad', val: angle },
-    matrix: newMatrix,
-  };
-}
-
 const noNegZero = num => (Object.is(num, -0) ? 0 : num);
 
 function getRotate3D(matrix) {
@@ -99,20 +58,6 @@ function getRotate3D(matrix) {
     matrix: newMatrix,
   };
 }
-
-// TO DO: Allow skew as well
-export const decomposeTransformMatrix2D = (matrix) => {
-  const translate = getTranslate2D(matrix);
-  const scale = getScale2D(translate.matrix);
-  const rotate = getRotate2D(scale.matrix);
-  return [
-    translate.x,
-    translate.y,
-    scale.x,
-    scale.y,
-    rotate.transform,
-  ];
-};
 
 // TO DO: Allow skew as well
 export const decomposeTransformMatrix3D = (matrix) => {

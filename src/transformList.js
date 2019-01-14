@@ -4,14 +4,13 @@ import {
   getVal,
   parseMatrix,
 } from './parseCss.js';
-import { decomposeTransformMatrix2D } from './matrix.js';
+import { decomposeTransformMatrix3D } from './matrix.js';
 
-// TO DO: support 3d transforms
 function inferTransforms(el) {
   const computedStyles = window.getComputedStyle(el);
-  const matrixString = computedStyles.transform === 'none' ? 'matrix(1, 0, 0, 1, 0, 0)' : computedStyles.transform;
+  const matrixString = computedStyles.transform === 'none' ? 'matrix3d(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)' : computedStyles.transform;
   const matrix = parseMatrix(matrixString);
-  return decomposeTransformMatrix2D(matrix);
+  return decomposeTransformMatrix3D(matrix);
 }
 
 function inferUnitVal(key, element, castToUnit = 'px') {
