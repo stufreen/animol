@@ -46,7 +46,8 @@ export const ease = (
 
 export const blend = (colorA, colorB, progress) => {
   const newColor = calculateColor(colorA, colorB, progress);
-  return `rgba(${newColor.r}, ${newColor.g}, ${newColor.b}, ${newColor.a})`;
+  const r = Math.round;
+  return `rgba(${r(newColor.r)}, ${r(newColor.g)}, ${r(newColor.b)}, ${newColor.a})`;
 };
 
 export const css = (
