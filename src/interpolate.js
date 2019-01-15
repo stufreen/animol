@@ -14,10 +14,10 @@ export const calculateVal = (startVal, endVal, progress) => {
 };
 
 export const calculateColor = (startVal, endVal, progress) => ({
-  red: calculateVal(startVal.red, endVal.red, progress),
-  green: calculateVal(startVal.green, endVal.green, progress),
-  blue: calculateVal(startVal.blue, endVal.blue, progress),
-  alpha: calculateVal(startVal.alpha, endVal.alpha, progress),
+  r: calculateVal(startVal.r, endVal.r, progress),
+  g: calculateVal(startVal.g, endVal.g, progress),
+  b: calculateVal(startVal.b, endVal.b, progress),
+  a: calculateVal(startVal.a, endVal.a, progress),
 });
 
 // Interpolate two transform lists and build up a "transform" string
