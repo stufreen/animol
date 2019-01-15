@@ -7,6 +7,9 @@ module.exports = {
     "rules": {
         "compat/compat": "error"
     },
+    "settings": {
+        "polyfills": ["promises"]
+    },
     "parserOptions": {
         "sourceType": "module"
     }

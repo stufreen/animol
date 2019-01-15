@@ -164,10 +164,12 @@ npm install
 npm run start
 ```
 
+## Browser Compatibility
+Compatible with all modern browsers. Internet Explorer not supported.
+
 ## To do
  * Refactor easing functions
  * Increase test coverage
- * Improve browser compatibility
  * Improve demos
 
 ## Motivation
