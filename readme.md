@@ -165,7 +165,7 @@ npm run start
 ```
 
 ## To do
- * Bounce and Overshoot easing functions
+ * Refactor easing functions
  * Increase test coverage
  * Improve browser compatibility
  * Improve demos
