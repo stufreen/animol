@@ -5,10 +5,10 @@ function parseRGB(inputString) {
     return false;
   }
   return {
-    red: parseInt(result[1], 10),
-    green: parseInt(result[2], 10),
-    blue: parseInt(result[3], 10),
-    alpha: 1,
+    r: parseInt(result[1], 10),
+    g: parseInt(result[2], 10),
+    b: parseInt(result[3], 10),
+    a: 1,
   };
 }
 
@@ -19,10 +19,10 @@ function parseRGBA(inputString) {
     return false;
   }
   return {
-    red: parseInt(result[1], 10),
-    green: parseInt(result[2], 10),
-    blue: parseInt(result[3], 10),
-    alpha: parseFloat(result[4], 10),
+    r: parseInt(result[1], 10),
+    g: parseInt(result[2], 10),
+    b: parseInt(result[3], 10),
+    a: parseFloat(result[4], 10),
   };
 }
 
@@ -32,10 +32,10 @@ function parseHexColor(inputString) {
     return false;
   }
   return {
-    red: parseInt(result[1], 16),
-    green: parseInt(result[2], 16),
-    blue: parseInt(result[3], 16),
-    alpha: 1,
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16),
+    a: 1,
   };
 }
 
