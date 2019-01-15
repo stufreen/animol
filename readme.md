@@ -75,10 +75,10 @@ animol.ease(
 );
 ```
 
-For colors, you can use the helper functions `parseColor` and `blend`.
+For interpolating bewteen colors, you can use the helper functions `parseColor` and `blend`.
 ```javascript
 const turquoise = animol.parseColor('#40F090');
-const blue = animol.parseColor('#104060');
+const blue = animol.parseColor('rgb(15, 60, 100)');
 const myElement = document.getElementById('block');
 animol.ease(
   (progress) => {
