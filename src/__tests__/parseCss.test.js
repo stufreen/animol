@@ -124,10 +124,10 @@ describe('getValue', () => {
 
 describe('parseMatrix', () => {
   test('it can parse a well-formed 2D matrix', () => {
-    expect(parseMatrix('matrix(1, 0, 0, 1, 0, 0)')).toEqual([1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
-    expect(parseMatrix('matrix(1,0,0,1,0,0)')).toEqual([1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
-    expect(parseMatrix('matrix(1.1,0,0,1,0,0)')).toEqual([1.1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
-    expect(parseMatrix('matrix(-1,0,0,1,0,0)')).toEqual([-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+    expect(parseMatrix('matrix(1, 0, 0, 1, 0, 0)')).toEqual([1, 0, 0, 1, 0, 0]);
+    expect(parseMatrix('matrix(1,0,0,1,0,0)')).toEqual([1, 0, 0, 1, 0, 0]);
+    expect(parseMatrix('matrix(1.1,0,0,1,0,0)')).toEqual([1.1, 0, 0, 1, 0, 0]);
+    expect(parseMatrix('matrix(-1,0,0,1,0,0)')).toEqual([-1, 0, 0, 1, 0, 0]);
   });
 
   test('it can parse a well-formed 3D matrix', () => {

@@ -59,7 +59,7 @@ export const getVal = (input) => {
     return false;
   }
   return parseFloat(result[0]);
-}
+};
 
 export const parseColor = (styleString) => {
   if (typeof styleString !== 'string') {
@@ -77,36 +77,15 @@ export const parseColor = (styleString) => {
   return false;
 };
 
-export const matrixTo3D = m => [
-  m[0],
-  m[1],
-  0,
-  m[2],
-  m[3],
-  0,
-  0,
-  0,
-  1,
-  m[4],
-  m[5],
-  0,
-];
-
 export const parseMatrix = (matrixString) => {
   if (typeof matrixString !== 'string') {
     return false;
   }
 
-  const match2d = matrixString.match(/matrix\((.*)\)/);
-  if (match2d) {
-    const values = match2d[1].split(',').map(item => parseFloat(item));
-    return matrixTo3D(values);
+  const match = matrixString.match(/(matrix|matrix3d)\((.*)\)/);
+  if (!match) {
+    return false;
   }
 
-  const match3d = matrixString.match(/matrix3d\((.*)\)/);
-  if (match3d) {
-    return match3d[1].split(',').map(item => parseFloat(item));
-  }
-
-  return false;
+  return match[2].split(',').map(item => parseFloat(item));
 };

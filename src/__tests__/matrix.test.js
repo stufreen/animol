@@ -1,4 +1,4 @@
-import { decomposeTransformMatrix3D } from '../matrix';
+import { decomposeTransformMatrix3D, matrix2DTo3D } from '../matrix';
 
 describe('decomposeTransformMatrix3D', () => {
   test('it should calculate 3D x translation in pixels', () => {
@@ -64,5 +64,14 @@ describe('decomposeTransformMatrix3D', () => {
     const rotateZ3D = [Math.cos(a), Math.sin(a), 0, -1 * Math.sin(a), Math.cos(a), 0, 0, 0, 1, 0, 0, 0];
     const result = decomposeTransformMatrix3D(rotateZ3D);
     expect(result[8]).toEqual({ key: 'rotateZ', val: a, unit: 'rad' });
+  });
+});
+
+describe('matrix2Dto3D', () => {
+  test('it can convert a 2D matrix to 3D correctly', () => {
+    expect(matrix2DTo3D([1, 0, 0, 1, 0, 0])).toEqual([1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+    expect(matrix2DTo3D([1, 0, 0, 1, 0, 0])).toEqual([1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+    expect(matrix2DTo3D([1.1, 0, 0, 1, 0, 0])).toEqual([1.1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+    expect(matrix2DTo3D([-1, 0, 0, 1, 0, 0])).toEqual([-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
   });
 });

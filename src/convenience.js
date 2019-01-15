@@ -1,4 +1,4 @@
-export const reverseConvenienceTransforms = transformObj => Object.keys(transformObj)
+export const convenience = transformObj => Object.keys(transformObj)
   .reduce((accumulator, key) => {
     if (key === 'rotate') {
       return {

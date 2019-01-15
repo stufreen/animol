@@ -108,13 +108,14 @@ npm run start
 
 ## To do
  * Animate properties
- * 3D transforms
- * More unit tests
  * Bounce and Overshoot easing functions
  * Gradients
+ * Increase test coverage
+ * Improve browser compatibility
+ * Improve demos
 
 ## Motivation
-Animol is intended to be **very lightweight**, **ease to use** and **relatively performant**. It abstracts the repetetive logic for calling `requestAnimationFrame`, easing, and parsing CSS strings. It's ideal for small projects where you want to do some simple animations without reinventing the wheel, and you don't want to import a large library.
+Animol is intended to be **very lightweight**, **ease to use** and **relatively performant**. It abstracts the repetitive logic for calling `requestAnimationFrame`, easing, and parsing CSS strings. It's ideal for small projects where you want to do some simple animations without reinventing the wheel, and you don't want to import a large library.
 
 Check out [Greensock](https://greensock.com/) instead if file size is not an issue and you need any of the following:
  * SVG transformations

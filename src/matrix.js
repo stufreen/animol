@@ -76,3 +76,18 @@ export const decomposeTransformMatrix3D = (matrix) => {
     rotate.z,
   ];
 };
+
+export const matrix2DTo3D = m => [
+  m[0],
+  m[1],
+  0,
+  m[2],
+  m[3],
+  0,
+  0,
+  0,
+  1,
+  m[4],
+  m[5],
+  0,
+];

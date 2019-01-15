@@ -4,14 +4,29 @@ import {
   getVal,
   parseMatrix,
 } from './parseCss.js';
-import { decomposeTransformMatrix3D } from './matrix.js';
-import { reverseConvenienceTransforms } from './convenience.js';
+import { decomposeTransformMatrix3D, matrix2DTo3D } from './matrix.js';
+import { convenience } from './convenience.js';
+
+const IDENTITY = [
+  { key: 'translateX', unit: 'px', val: 0 },
+  { key: 'translateY', unit: 'px', val: 0 },
+  { key: 'translateZ', unit: 'px', val: 0 },
+  { key: 'scaleX', unit: '', val: 1 },
+  { key: 'scaleY', unit: '', val: 1 },
+  { key: 'scaleZ', unit: '', val: 1 },
+  { key: 'rotateX', unit: 'rad', val: 0 },
+  { key: 'rotateY', unit: 'rad', val: 0 },
+  { key: 'rotateZ', unit: 'rad', val: 0 },
+];
 
 function inferTransforms(el) {
   const computedStyles = window.getComputedStyle(el);
-  const matrixString = computedStyles.transform === 'none' ? 'matrix3d(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)' : computedStyles.transform;
-  const matrix = parseMatrix(matrixString);
-  return decomposeTransformMatrix3D(matrix);
+  if (computedStyles.transform === 'none') {
+    return IDENTITY;
+  }
+  const matrix = parseMatrix(computedStyles.transform);
+  const matrix3D = matrix.length === 6 ? matrix2DTo3D(matrix) : matrix;
+  return decomposeTransformMatrix3D(matrix3D);
 }
 
 function inferUnitVal(key, element, castToUnit = 'px') {
@@ -49,31 +64,22 @@ function getUnitVal(key, styleObj = {}, element) {
   }
   const unit = typeof styleObj[key] === 'number' ? '' : getUnit(styleObj[key]);
   const val = typeof styleObj[key] === 'number' ? styleObj[key] : getVal(styleObj[key]);
+
+  // Convert degrees to radians
   if (unit === 'deg') {
     return {
       unit: 'rad',
       val: val * (Math.PI / 180),
     };
   }
+
   return { unit, val };
 }
 
 const simplifyTransformLists = (transformFrom, transformTo) => {
-  const identity = [
-    { key: 'translateX', unit: 'px', val: 0 },
-    { key: 'translateY', unit: 'px', val: 0 },
-    { key: 'translateZ', unit: 'px', val: 0 },
-    { key: 'scaleX', unit: '', val: 1 },
-    { key: 'scaleY', unit: '', val: 1 },
-    { key: 'scaleZ', unit: '', val: 1 },
-    { key: 'rotateX', unit: 'rad', val: 0 },
-    { key: 'rotateY', unit: 'rad', val: 0 },
-    { key: 'rotateZ', unit: 'rad', val: 0 },
-  ];
-
   const fromFixed = [];
   const toFixed = [];
-  identity.forEach((identityTransform, index) => {
+  IDENTITY.forEach((identityTransform, index) => {
     if (identityTransform.val !== transformFrom[index].val
       || identityTransform.unit !== transformFrom[index].unit
       || identityTransform.val !== transformTo[index].val
@@ -91,8 +97,8 @@ const simplifyTransformLists = (transformFrom, transformTo) => {
 
 function buildTransformFromToList(el, from = {}, to = {}) {
   const inferredTransforms = inferTransforms(el);
-  const fromFixed = reverseConvenienceTransforms(from);
-  const toFixed = reverseConvenienceTransforms(to);
+  const fromFixed = convenience(from);
+  const toFixed = convenience(to);
 
   const transformFrom = inferredTransforms.map((item) => {
     const match = fromFixed[item.key];
