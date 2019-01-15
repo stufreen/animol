@@ -174,7 +174,7 @@ export const buildFromToList = (el, from, to) => {
     const { transformFrom, transformTo } = buildTransformFromToList(
       el,
       from.transform,
-      to.transform,
+      to.transform
     );
     fromToList.push({
       key: 'transform',

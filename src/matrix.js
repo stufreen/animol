@@ -15,9 +15,9 @@ function getTranslate3D(matrix) {
 }
 
 function getScale3D(matrix) {
-  const scaleX = Math.sqrt((matrix[0] ** 2) + (matrix[1] ** 2) + (matrix[2] ** 2));
-  const scaleY = Math.sqrt((matrix[3] ** 2) + (matrix[4] ** 2) + (matrix[5] ** 2));
-  const scaleZ = Math.sqrt((matrix[6] ** 2) + (matrix[7] ** 2) + (matrix[8] ** 2));
+  const scaleX = Math.sqrt(Math.pow(matrix[0], 2) + Math.pow(matrix[1], 2) + Math.pow(matrix[2], 2));
+  const scaleY = Math.sqrt(Math.pow(matrix[3], 2) + Math.pow(matrix[4], 2) + Math.pow(matrix[5], 2));
+  const scaleZ = Math.sqrt(Math.pow(matrix[6], 2) + Math.pow(matrix[7], 2) + Math.pow(matrix[8], 2));
   const newMatrix = matrix.slice();
   newMatrix[0] = matrix[0] / scaleX;
   newMatrix[1] = matrix[1] / scaleX;
@@ -41,7 +41,7 @@ const noNegZero = num => (Object.is(num, -0) ? 0 : num);
 function getRotate3D(matrix) {
   const beta = Math.atan2(
     -1 * matrix[2],
-    Math.sqrt((matrix[0] ** 2) + (matrix[1] ** 2)),
+    Math.sqrt(Math.pow(matrix[0], 2) + Math.pow(matrix[1], 2))
   );
   const alpha = Math.atan2(matrix[5] / Math.cos(beta), matrix[8] / Math.cos(beta));
   const gamma = Math.atan2(matrix[1] / Math.cos(beta), matrix[0] / Math.cos(beta));

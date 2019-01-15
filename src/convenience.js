@@ -1,13 +1,7 @@
 export const convenience = transformObj => Object.keys(transformObj)
   .reduce((accumulator, key) => {
     if (key === 'rotate') {
-      return {
-        ...accumulator,
-        rotateZ: transformObj[key],
-      };
+      return Object.assign({ rotateZ: transformObj[key]}, accumulator);
     }
-    return {
-      ...accumulator,
-      [key]: transformObj[key],
-    };
+    return Object.assign({ [key]: transformObj[key] }, accumulator);
   }, {});

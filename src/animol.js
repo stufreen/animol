@@ -14,7 +14,7 @@ export const ease = (
   callback = () => {},
   duration = 0,
   easingFunc = Easing.linear,
-  delay = 0,
+  delay = 0
 ) => {
   let animationFrameRequest;
   let rej;
@@ -56,7 +56,7 @@ export const css = (
   from = {},
   to = {},
   easingFunc = Easing.linear,
-  delay = 0,
+  delay = 0
 ) => {
   const fromToList = buildFromToList(element, from, to);
   const callback = (progress) => {

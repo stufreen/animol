@@ -2,7 +2,7 @@ export const interpolate = (
   startTime,
   endTime,
   currentTime,
-  easingFunction,
+  easingFunction
 ) => {
   const pctElapsed = Math.max(0, (currentTime - startTime) / (endTime - startTime));
   return easingFunction(pctElapsed);
@@ -28,7 +28,6 @@ export const calculateTransform = (startTransformList, endTransformList, progres
       const endVal = endTransformList[index].val;
       const newVal = calculateVal(startVal, endVal, progress);
       return [...accumulator, `${key}(${newVal}${unit})`];
-    }, [],
-  );
+    }, []);
   return transforms.join(' ');
 };

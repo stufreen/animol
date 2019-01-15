@@ -1,16 +1,13 @@
 module.exports = {
-    "extends": "airbnb-base",
     "env": {
         "browser": true,
-        "jest": true
+        "es6": true
     },
+    "plugins": ["compat"],
     "rules": {
-        "import/prefer-default-export": 0,
-        "global-require": 0,
-        "jsx-a11y/label-has-for": [
-            0
-        ],
-        "no-plusplus": "off",
-        "no-param-reassign": "off"
+        "compat/compat": "error"
+    },
+    "parserOptions": {
+        "sourceType": "module"
     }
 };

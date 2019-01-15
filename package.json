@@ -19,14 +19,17 @@
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
     "eslint": "^5.11.1",
-    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-compat": "^2.6.3",
     "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^6.1.2",
-    "eslint-plugin-react": "^7.12.2",
     "jest": "^23.6.0",
     "regenerator-runtime": "^0.13.1",
     "webpack": "^4.28.3",
     "webpack-cli": "^3.2.1",
     "webpack-dev-server": "^3.1.14"
-  }
+  },
+  "browserslist": [
+    "last 1 version",
+    "> 1%",
+    "IE 10"
+  ]
 }
