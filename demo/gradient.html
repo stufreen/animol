@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title>Animol: Gradient</title>
+    <link rel="stylesheet" type="text/css" href="theme.css">
+    <script src="animol.min.js"></script>
+  </head>
+  <body>
+    <h1>Gradient</h1>
+    <div id="block" class="big-block"></div>
+    <script>
+      const turquoise = animol.parseColor('#40F090');
+      const blue = animol.parseColor('#104060');
+      const myElement = document.getElementById('block');
+      animol.ease(
+        (progress) => {
+          colorA = animol.blend(turquoise, blue, progress);
+          colorB = animol.blend(blue, turquoise, progress);
+          myElement.style.background = `linear-gradient(${colorA}, ${colorB})`;
+        },
+        2000,
+        animol.Easing.easeInOutCubic
+      );
+    </script>
+  </body>
+</html>

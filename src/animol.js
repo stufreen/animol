@@ -8,6 +8,7 @@ import { buildFromToList } from './transformList';
 import { Easing } from './easing';
 
 export { Easing } from './easing';
+export { parseColor } from './parseCss';
 
 export const ease = (
   callback = () => {},
@@ -43,6 +44,11 @@ export const ease = (
   return { promise, cancel };
 };
 
+export const blend = (colorA, colorB, progress) => {
+  const newColor = calculateColor(colorA, colorB, progress);
+  return `rgba(${newColor.red}, ${newColor.green}, ${newColor.blue}, ${newColor.alpha})`;
+};
+
 export const css = (
   element,
   duration,
@@ -55,8 +61,7 @@ export const css = (
   const callback = (progress) => {
     fromToList.forEach((item) => {
       if (item.unit === 'color') {
-        const newColor = calculateColor(item.fromVal, item.toVal, progress);
-        element.style[item.key] = `rgba(${newColor.red}, ${newColor.green}, ${newColor.blue}, ${newColor.alpha})`;
+        element.style[item.key] = blend(item.fromVal, item.toVal, progress);
       } else if (item.key === 'transform') {
         const newTransform = calculateTransform(item.fromVal, item.toVal, progress);
         element.style.transform = newTransform;

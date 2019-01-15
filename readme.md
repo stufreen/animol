@@ -15,8 +15,8 @@ animol.css(
   2000, // Duration
   { marginLeft: '0px', backgroundColor: '#FF0000' }, // From
   { marginLeft: '200px', backgroundColor: '#00FF00' }, // To
-  animol.Easing.easeInOutCubic, // Easing function (optional)
-  1000, // Delay (optional)
+  animol.Easing.easeInOutCubic, // Easing function (defaults to Easing.linear)
+  1000, // Delay (defaults to 0)
 );
 ```
 
@@ -29,6 +29,65 @@ animol.css(
   2000,
   { transform: { scaleX: 1, translateX: '0px', rotate: '0deg' } },
   { transform: { scaleX: 2, translateX: '500px', rotate: '-765deg' } },
+);
+```
+
+### Ease
+A low-level `ease` function is exposed which allows you to animate values other than CSS. The callback will be called each animation frame and receives a "progress" parameter which is a number between 0 and 1.
+
+```javascript
+animol.ease(
+  (progress) => {
+    const percent = Math.round(progress * 100);
+    document.title = `${percent}% complete`;
+  }, // Callback
+  2000, // Duration
+  animol.Easing.easeInOutQuint, // Easing function (defaults to Easing.linear)
+  1000, // Delay (defaults to 0)
+);
+```
+
+### Props
+You can use Animol's `ease` function and the standard `Element.setAttribute` function to animate props.
+```javascript
+const myShape = document.getElementById('my-shape');
+
+animol.ease(
+  (progress) => {
+    myShape.setAttribute('cx', `${progress * 300}`);
+  },
+  2000,
+  animol.Easing.easeOutQuart,
+  1000,
+);
+```
+
+### Complex CSS
+For complex CSS animations, or properties not supported by `css`, you can also use the `ease` function.
+```javascript
+animol.ease(
+  myElement,
+  2000,
+  (progress) => {
+    myElement.style.backgroundColor = progress > 0.5 ? 'PapayaWhip' : 'Crimson';
+  },
+  animol.Easing.easeInOutCubic
+);
+```
+
+For colors, you can use the helper functions `parseColor` and `blend`.
+```javascript
+const turquoise = animol.parseColor('#40F090');
+const blue = animol.parseColor('#104060');
+const myElement = document.getElementById('block');
+animol.ease(
+  (progress) => {
+    colorA = animol.blend(turquoise, blue, progress);
+    colorB = animol.blend(blue, turquoise, progress);
+    myElement.style.background = `linear-gradient(${colorA}, ${colorB})`;
+  },
+  2000,
+  animol.Easing.easeInOutCubic
 );
 ```
 
@@ -88,7 +147,7 @@ You can also provide a custom easing function where the parameter and return val
 
 ## Gotchas
 
-**Convenience properties and functions** such as `background`, `border`, `padding` and `translate` are not supported. Use the individual values like `backgroundColor`, `borderWidth`, `paddingLeft` and `translateX` instead.
+**Convenience properties and functions** such as `background`, `border`, `padding` and `translate` are not supported. Use the individual values like `backgroundColor`, `borderWidth`, `paddingLeft` and `translateX` instead. Similarly, you can't use color shorthands like `black` or `IndianRed`.
 
 Animol **cannot convert between units**. For example, the following will throw an error:
 ```javascript
@@ -107,9 +166,7 @@ npm run start
 ```
 
 ## To do
- * Animate properties
  * Bounce and Overshoot easing functions
- * Gradients
  * Increase test coverage
  * Improve browser compatibility
  * Improve demos
