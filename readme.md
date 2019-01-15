@@ -47,8 +47,8 @@ animol.ease(
 );
 ```
 
-### Props
-You can use Animol's `ease` function and the standard `Element.setAttribute` function to animate props.
+### Attributes
+You can use Animol's `ease` function and the standard `Element.setAttribute` function to animate attributes.
 ```javascript
 const myShape = document.getElementById('my-shape');
 
