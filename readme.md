@@ -66,11 +66,10 @@ animol.ease(
 For complex CSS animations, or properties not supported by `css`, you can also use the `ease` function.
 ```javascript
 animol.ease(
-  myElement,
-  2000,
   (progress) => {
     myElement.style.backgroundColor = progress > 0.5 ? 'PapayaWhip' : 'Crimson';
   },
+  2000,
   animol.Easing.easeInOutCubic
 );
 ```
