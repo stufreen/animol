@@ -5,6 +5,7 @@ import {
   parseMatrix,
 } from './parseCss.js';
 import { decomposeTransformMatrix3D } from './matrix.js';
+import { reverseConvenienceTransforms } from './convenience.js';
 
 function inferTransforms(el) {
   const computedStyles = window.getComputedStyle(el);
@@ -57,15 +58,48 @@ function getUnitVal(key, styleObj = {}, element) {
   return { unit, val };
 }
 
+const simplifyTransformLists = (transformFrom, transformTo) => {
+  const identity = [
+    { key: 'translateX', unit: 'px', val: 0 },
+    { key: 'translateY', unit: 'px', val: 0 },
+    { key: 'translateZ', unit: 'px', val: 0 },
+    { key: 'scaleX', unit: '', val: 1 },
+    { key: 'scaleY', unit: '', val: 1 },
+    { key: 'scaleZ', unit: '', val: 1 },
+    { key: 'rotateX', unit: 'rad', val: 0 },
+    { key: 'rotateY', unit: 'rad', val: 0 },
+    { key: 'rotateZ', unit: 'rad', val: 0 },
+  ];
+
+  const fromFixed = [];
+  const toFixed = [];
+  identity.forEach((identityTransform, index) => {
+    if (identityTransform.val !== transformFrom[index].val
+      || identityTransform.unit !== transformFrom[index].unit
+      || identityTransform.val !== transformTo[index].val
+      || identityTransform.unit !== transformTo[index].unit) {
+      fromFixed.push(transformFrom[index]);
+      toFixed.push(transformTo[index]);
+    }
+  });
+
+  return {
+    transformFrom: fromFixed,
+    transformTo: toFixed,
+  };
+};
+
 function buildTransformFromToList(el, from = {}, to = {}) {
   const inferredTransforms = inferTransforms(el);
+  const fromFixed = reverseConvenienceTransforms(from);
+  const toFixed = reverseConvenienceTransforms(to);
 
   const transformFrom = inferredTransforms.map((item) => {
-    const match = from[item.key];
+    const match = fromFixed[item.key];
     if (!match) {
       return item;
     }
-    const { unit, val } = getUnitVal(item.key, from, el);
+    const { unit, val } = getUnitVal(item.key, fromFixed, el);
     return {
       key: item.key,
       unit,
@@ -74,11 +108,11 @@ function buildTransformFromToList(el, from = {}, to = {}) {
   });
 
   const transformTo = inferredTransforms.map((item) => {
-    const match = to[item.key];
+    const match = toFixed[item.key];
     if (!match) {
       return item;
     }
-    const { unit, val } = getUnitVal(item.key, to, el);
+    const { unit, val } = getUnitVal(item.key, toFixed, el);
     return {
       key: item.key,
       unit,
@@ -86,9 +120,7 @@ function buildTransformFromToList(el, from = {}, to = {}) {
     };
   });
 
-  // TO DO: Check if units match
-
-  return { transformFrom, transformTo };
+  return simplifyTransformLists(transformFrom, transformTo);
 }
 
 export const buildFromToList = (el, from, to) => {
