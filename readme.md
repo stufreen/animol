@@ -140,6 +140,20 @@ easeInOutQuart
 easeInQuint
 easeOutQuint
 easeInOutQuint
+easeInElastic
+easeOutElastic
+easeInOutElastic
+easeInBack
+easeOutBack
+easeInOutBack
+easeInBounce
+easeOutBounce
+easeInOutBounce
+```
+
+For `elastic` and `back`, you must pass in the power of the animation, e.g.
+```javascript
+animol.Easing.easeInOutElastic(1.5) // Power of 1 is the default
 ```
 
 You can also provide a custom easing function where the parameter and return value are each numbers between 0-1.
@@ -168,7 +182,6 @@ npm run start
 Compatible with all modern browsers. Internet Explorer not supported.
 
 ## To do
- * Refactor easing functions
  * Increase test coverage
  * Improve demos
 

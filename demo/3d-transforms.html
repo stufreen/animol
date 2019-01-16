@@ -14,10 +14,10 @@
   <script>
     animol.css(
       document.getElementById('block'),
-      2000,
+      3000,
       {},
-      { transform: { rotateY: '45deg', rotateX: '45deg', rotateZ: '45deg', translateZ: '-250px' } },
-      animol.Easing.easeInOutQuart,
+      { transform: { rotateY: '360deg', rotateX: '-10deg', rotateZ: '2deg', translateZ: '-10px' } },
+      animol.Easing.easeInOutElastic(1.5),
       0,
     );
   </script>
