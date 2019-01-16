@@ -1,8 +1,16 @@
+function shallowCopy(ar) {
+  const ret = [];
+  for (let i = 0; i < ar.length; i += 1 ) {
+    ret.push(ar[i]);
+  }
+  return ret;
+}
+
 function getTranslate3D(matrix) {
   const translateX = matrix[9];
   const translateY = matrix[10];
   const translateZ = matrix[11];
-  const newMatrix = matrix.slice();
+  const newMatrix = shallowCopy(matrix);
   newMatrix[9] = 0;
   newMatrix[10] = 0;
   newMatrix[11] = 0;
@@ -24,7 +32,7 @@ function getScale3D(matrix) {
   const scaleZ = Math.sqrt(
     Math.pow(matrix[6], 2) + Math.pow(matrix[7], 2) + Math.pow(matrix[8], 2)
   );
-  const newMatrix = matrix.slice();
+  const newMatrix = shallowCopy(matrix);
   newMatrix[0] = matrix[0] / scaleX;
   newMatrix[1] = matrix[1] / scaleX;
   newMatrix[2] = matrix[2] / scaleX;

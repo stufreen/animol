@@ -8,14 +8,14 @@
     <h1>Gradient</h1>
     <div id="block" class="big-block"></div>
     <script>
-      const turquoise = animol.parseColor('#40F090');
-      const blue = animol.parseColor('rgb(15, 60, 100)');
-      const myElement = document.getElementById('block');
+      var turquoise = animol.parseColor('#40F090');
+      var blue = animol.parseColor('rgb(15, 60, 100)');
+      var myElement = document.getElementById('block');
       animol.ease(
-        (progress) => {
+        function (progress) {
           colorA = animol.blend(turquoise, blue, progress);
           colorB = animol.blend(blue, turquoise, progress);
-          myElement.style.background = `linear-gradient(${colorA}, ${colorB})`;
+          myElement.style.background = 'linear-gradient(' + colorA + ', ' + colorB + ')';
         },
         2000,
         animol.Easing.easeInOutCubic

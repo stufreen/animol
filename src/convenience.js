@@ -1,7 +1,11 @@
-export const convenience = transformObj => Object.keys(transformObj)
-  .reduce((accumulator, key) => {
+export const convenience = oldObj => {
+  const newObj = {};
+  Object.keys(oldObj).forEach((key) => {
     if (key === 'rotate') {
-      return Object.assign({ rotateZ: transformObj[key] }, accumulator);
+      newObj.rotateZ = oldObj[key];
+    } else {
+      newObj[key] = oldObj[key];
     }
-    return Object.assign({ [key]: transformObj[key] }, accumulator);
-  }, {});
+  });
+  return newObj;
+};

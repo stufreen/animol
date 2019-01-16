@@ -18,7 +18,13 @@ export const ease = (
 ) => {
   let animationFrameRequest;
   let rej;
-  const promise = new Promise((resolve, reject) => {
+
+  // If Promise is unsupported we treat it as void
+  const PromiseSafe = (typeof Promise !== 'undefined' && Promise.toString().indexOf('[native code]') !== -1)
+    ? Promise
+    : (exec) => { exec(); };
+
+  const promise = new PromiseSafe((resolve, reject) => {
     rej = reject;
     let startTime;
     let endTime;
@@ -27,7 +33,7 @@ export const ease = (
         startTime = timestamp + delay;
         endTime = timestamp + duration + delay;
       } else if (timestamp >= endTime) {
-        resolve(); // Done the animation
+        if (typeof resolve !== 'undefined') resolve(); // Done the animation
       } else if (timestamp >= startTime) {
         callback(interpolate(startTime, endTime, timestamp, easingFunc));
       }
@@ -38,7 +44,7 @@ export const ease = (
 
   const cancel = () => {
     window.cancelAnimationFrame(animationFrameRequest);
-    rej();
+    if (typeof rej !== 'undefined') rej();
   };
 
   return { promise, cancel };

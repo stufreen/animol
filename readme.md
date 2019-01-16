@@ -1,6 +1,6 @@
 # Animol
 
-A very lightweight (~2KB minimized and gzipped) JavaScript animation library with a Greensock-like API.
+A very lightweight (~5KB minimized and gzipped) JavaScript animation library with a Greensock-like API.
 
 ## API
 
@@ -179,7 +179,7 @@ npm run start
 ```
 
 ## Browser Compatibility
-Compatible with all modern browsers. Internet Explorer not supported.
+Compatible with all modern browsers and IE 10+.
 
 ## To do
  * Increase test coverage
