@@ -7,7 +7,7 @@ import {
 import { decomposeTransformMatrix3D, matrix2DTo3D } from './matrix.js';
 import { convenience } from './convenience.js';
 
-const IDENTITY = [
+export const IDENTITY = [
   { key: 'translateX', unit: 'px', val: 0 },
   { key: 'translateY', unit: 'px', val: 0 },
   { key: 'translateZ', unit: 'px', val: 0 },
@@ -19,7 +19,7 @@ const IDENTITY = [
   { key: 'rotateZ', unit: 'rad', val: 0 }
 ];
 
-function inferTransforms(el) {
+export const inferTransforms = (el) => {
   const computedStyles = window.getComputedStyle(el);
   if (computedStyles.transform === 'none') {
     return IDENTITY;

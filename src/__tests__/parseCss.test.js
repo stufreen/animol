@@ -2,17 +2,12 @@ import {
   parseColor,
   getUnit,
   getVal,
-  parseMatrix,
+  parseMatrix
 } from '../parseCss';
 
 describe('parseColor', () => {
   test('it can parse a proper rgb string', () => {
-    const expected = {
-      red: 1,
-      green: 2,
-      blue: 3,
-      alpha: 1,
-    };
+    const expected = [1, 2, 3, 1];
     expect(parseColor('rgb(1, 2, 3)')).toEqual(expected);
     expect(parseColor('rgb(1,2,3)')).toEqual(expected);
     expect(parseColor('rgb(  1, 2,    3) ')).toEqual(expected);
@@ -26,21 +21,11 @@ describe('parseColor', () => {
   });
 
   test('it can parse a proper rgba string', () => {
-    const expected = {
-      red: 1,
-      green: 2,
-      blue: 3,
-      alpha: 0.5,
-    };
+    const expected = [1, 2, 3, 0.5];
     expect(parseColor('rgba(1, 2, 3, 0.5)')).toEqual(expected);
     expect(parseColor('rgba(1,2,3,0.5)')).toEqual(expected);
     expect(parseColor('rgba(  1, 2,    3, 0.5  ) ')).toEqual(expected);
-    expect(parseColor('rgba(1, 2, 3, 1)')).toEqual({
-      red: 1,
-      green: 2,
-      blue: 3,
-      alpha: 1,
-    });
+    expect(parseColor('rgba(1, 2, 3, 1)')).toEqual([1, 2, 3, 1]);
   });
 
   test('it returns false if passed a malformed rgba string', () => {
@@ -51,30 +36,10 @@ describe('parseColor', () => {
   });
 
   test('it can parse a proper hex value', () => {
-    expect(parseColor('#001020')).toEqual({
-      red: 0,
-      green: 16,
-      blue: 32,
-      alpha: 1,
-    });
-    expect(parseColor('#000000')).toEqual({
-      red: 0,
-      green: 0,
-      blue: 0,
-      alpha: 1,
-    });
-    expect(parseColor('#FFFFFF')).toEqual({
-      red: 255,
-      green: 255,
-      blue: 255,
-      alpha: 1,
-    });
-    expect(parseColor('#ffffff')).toEqual({
-      red: 255,
-      green: 255,
-      blue: 255,
-      alpha: 1,
-    });
+    expect(parseColor('#001020')).toEqual([0, 16, 32, 1]);
+    expect(parseColor('#000000')).toEqual([0, 0, 0, 1]);
+    expect(parseColor('#FFFFFF')).toEqual([255, 255, 255, 1]);
+    expect(parseColor('#ffffff')).toEqual([255, 255, 255, 1]);
   });
 
   test('it returns false if passed a malformed hex string', () => {
