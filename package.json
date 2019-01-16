@@ -25,6 +25,7 @@
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.12.3",
     "jest": "^23.6.0",
+    "pre-commit": "^1.2.2",
     "regenerator-runtime": "^0.13.1",
     "webpack": "^4.28.3",
     "webpack-cli": "^3.2.1",
@@ -34,5 +35,6 @@
     "last 1 version",
     "> 1%",
     "IE 11"
-  ]
+  ],
+  "pre-commit": [ "build" ]
 }
