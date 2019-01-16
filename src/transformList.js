@@ -2,7 +2,7 @@ import {
   parseColor,
   getUnit,
   getVal,
-  parseMatrix,
+  parseMatrix
 } from './parseCss.js';
 import { decomposeTransformMatrix3D, matrix2DTo3D } from './matrix.js';
 import { convenience } from './convenience.js';
@@ -16,7 +16,7 @@ const IDENTITY = [
   { key: 'scaleZ', unit: '', val: 1 },
   { key: 'rotateX', unit: 'rad', val: 0 },
   { key: 'rotateY', unit: 'rad', val: 0 },
-  { key: 'rotateZ', unit: 'rad', val: 0 },
+  { key: 'rotateZ', unit: 'rad', val: 0 }
 ];
 
 function inferTransforms(el) {
@@ -37,7 +37,7 @@ function inferUnitVal(key, element, castToUnit = 'px') {
   if (colorVal) {
     return {
       unit: 'color',
-      val: colorVal,
+      val: colorVal
     };
   }
 
@@ -47,7 +47,7 @@ function inferUnitVal(key, element, castToUnit = 'px') {
   }
   return {
     unit: getUnit(styleString),
-    val,
+    val
   };
 }
 
@@ -59,7 +59,7 @@ function getUnitVal(key, styleObj = {}, element) {
   if (colorVal) {
     return {
       unit: 'color',
-      val: colorVal,
+      val: colorVal
     };
   }
   const unit = typeof styleObj[key] === 'number' ? '' : getUnit(styleObj[key]);
@@ -69,7 +69,7 @@ function getUnitVal(key, styleObj = {}, element) {
   if (unit === 'deg') {
     return {
       unit: 'rad',
-      val: val * (Math.PI / 180),
+      val: val * (Math.PI / 180)
     };
   }
 
@@ -91,7 +91,7 @@ const simplifyTransformLists = (transformFrom, transformTo) => {
 
   return {
     transformFrom: fromFixed,
-    transformTo: toFixed,
+    transformTo: toFixed
   };
 };
 
@@ -109,7 +109,7 @@ function buildTransformFromToList(el, from = {}, to = {}) {
     return {
       key: item.key,
       unit,
-      val,
+      val
     };
   });
 
@@ -122,7 +122,7 @@ function buildTransformFromToList(el, from = {}, to = {}) {
     return {
       key: item.key,
       unit,
-      val,
+      val
     };
   });
 
@@ -144,10 +144,10 @@ export const buildFromToList = (el, from, to) => {
         key,
         unit: fromUnit,
         fromVal,
-        toVal,
+        toVal
       });
     } else {
-      throw new Error(`"from" and "to" unit mismatch: ${fromUnit} and ${toUnit} (at element ${el.outerHTML})`);
+      throw new Error('"from" and "to" unit mismatch: ' + fromUnit + ' and ' + toUnit + ' (at element ' + el.outerHTML + ')');
     }
   });
 
@@ -161,10 +161,10 @@ export const buildFromToList = (el, from, to) => {
           key,
           unit: fromUnit,
           fromVal,
-          toVal,
+          toVal
         });
       } else {
-        throw new Error(`"from" and "to" unit mismatch: ${fromUnit} and ${toUnit} (at element ${el.outerHTML})`);
+        throw new Error('"from" and "to" unit mismatch: ' + fromUnit + ' and ' + toUnit + ' (at element ' + el.outerHTML + ')');
       }
     }
   });
@@ -180,7 +180,7 @@ export const buildFromToList = (el, from, to) => {
       key: 'transform',
       unit: 'transformList',
       fromVal: transformFrom,
-      toVal: transformTo,
+      toVal: transformTo
     });
   }
 

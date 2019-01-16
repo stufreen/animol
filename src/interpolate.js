@@ -13,21 +13,22 @@ export const calculateVal = (startVal, endVal, progress) => {
   return startVal + (progress * distance);
 };
 
-export const calculateColor = (startVal, endVal, progress) => ({
-  r: calculateVal(startVal.r, endVal.r, progress),
-  g: calculateVal(startVal.g, endVal.g, progress),
-  b: calculateVal(startVal.b, endVal.b, progress),
-  a: calculateVal(startVal.a, endVal.a, progress),
-});
+export const calculateColor = (startVal, endVal, progress) => ([
+  Math.round(calculateVal(startVal[0], endVal[0], progress)),
+  Math.round(calculateVal(startVal[1], endVal[1], progress)),
+  Math.round(calculateVal(startVal[2], endVal[2], progress)),
+  calculateVal(startVal[3], endVal[3], progress)
+]);
 
 // Interpolate two transform lists and build up a "transform" string
-// TO DO: Allow transforms with commas, e.g. translate(20px, 30px)
 export const calculateTransform = (startTransformList, endTransformList, progress) => {
   const transforms = startTransformList.reduce(
     (accumulator, { key, val: startVal, unit }, index) => {
       const endVal = endTransformList[index].val;
       const newVal = calculateVal(startVal, endVal, progress);
-      return [...accumulator, `${key}(${newVal}${unit})`];
-    }, []);
+      const transformString = key + '(' + newVal + unit + ')';
+      return [...accumulator, transformString];
+    }, []
+  );
   return transforms.join(' ');
 };

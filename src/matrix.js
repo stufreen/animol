@@ -10,14 +10,20 @@ function getTranslate3D(matrix) {
     x: { key: 'translateX', unit: 'px', val: translateX },
     y: { key: 'translateY', unit: 'px', val: translateY },
     z: { key: 'translateZ', unit: 'px', val: translateZ },
-    matrix: newMatrix,
+    matrix: newMatrix
   };
 }
 
 function getScale3D(matrix) {
-  const scaleX = Math.sqrt(Math.pow(matrix[0], 2) + Math.pow(matrix[1], 2) + Math.pow(matrix[2], 2));
-  const scaleY = Math.sqrt(Math.pow(matrix[3], 2) + Math.pow(matrix[4], 2) + Math.pow(matrix[5], 2));
-  const scaleZ = Math.sqrt(Math.pow(matrix[6], 2) + Math.pow(matrix[7], 2) + Math.pow(matrix[8], 2));
+  const scaleX = Math.sqrt(
+    Math.pow(matrix[0], 2) + Math.pow(matrix[1], 2) + Math.pow(matrix[2], 2)
+  );
+  const scaleY = Math.sqrt(
+    Math.pow(matrix[3], 2) + Math.pow(matrix[4], 2) + Math.pow(matrix[5], 2)
+  );
+  const scaleZ = Math.sqrt(
+    Math.pow(matrix[6], 2) + Math.pow(matrix[7], 2) + Math.pow(matrix[8], 2)
+  );
   const newMatrix = matrix.slice();
   newMatrix[0] = matrix[0] / scaleX;
   newMatrix[1] = matrix[1] / scaleX;
@@ -32,7 +38,7 @@ function getScale3D(matrix) {
     x: { key: 'scaleX', unit: '', val: scaleX },
     y: { key: 'scaleY', unit: '', val: scaleY },
     z: { key: 'scaleZ', unit: '', val: scaleZ },
-    matrix: newMatrix,
+    matrix: newMatrix
   };
 }
 
@@ -49,13 +55,13 @@ function getRotate3D(matrix) {
     1, 0, 0,
     0, 1, 0,
     0, 0, 1,
-    0, 0, 0,
+    0, 0, 0
   ];
   return {
     x: { key: 'rotateX', unit: 'rad', val: noNegZero(alpha) },
     y: { key: 'rotateY', unit: 'rad', val: noNegZero(beta) },
     z: { key: 'rotateZ', unit: 'rad', val: noNegZero(gamma) },
-    matrix: newMatrix,
+    matrix: newMatrix
   };
 }
 
@@ -73,7 +79,7 @@ export const decomposeTransformMatrix3D = (matrix) => {
     scale.z,
     rotate.x,
     rotate.y,
-    rotate.z,
+    rotate.z
   ];
 };
 
@@ -89,5 +95,5 @@ export const matrix2DTo3D = m => [
   1,
   m[4],
   m[5],
-  0,
+  0
 ];

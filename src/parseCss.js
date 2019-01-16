@@ -4,12 +4,12 @@ function parseRGB(inputString) {
   if (!result) {
     return false;
   }
-  return {
-    r: parseInt(result[1], 10),
-    g: parseInt(result[2], 10),
-    b: parseInt(result[3], 10),
-    a: 1,
-  };
+  return [
+    parseInt(result[1], 10),
+    parseInt(result[2], 10),
+    parseInt(result[3], 10),
+    1
+  ];
 }
 
 function parseRGBA(inputString) {
@@ -18,12 +18,12 @@ function parseRGBA(inputString) {
   if (!result) {
     return false;
   }
-  return {
-    r: parseInt(result[1], 10),
-    g: parseInt(result[2], 10),
-    b: parseInt(result[3], 10),
-    a: parseFloat(result[4], 10),
-  };
+  return [
+    parseInt(result[1], 10),
+    parseInt(result[2], 10),
+    parseInt(result[3], 10),
+    parseFloat(result[4], 10)
+  ];
 }
 
 function parseHexColor(inputString) {
@@ -31,12 +31,12 @@ function parseHexColor(inputString) {
   if (!result) {
     return false;
   }
-  return {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16),
-    a: 1,
-  };
+  return [
+    parseInt(result[1], 16),
+    parseInt(result[2], 16),
+    parseInt(result[3], 16),
+    1
+  ];
 }
 
 export const getUnit = (input) => {

@@ -2,7 +2,7 @@ import {
   interpolate,
   calculateVal,
   calculateColor,
-  calculateTransform,
+  calculateTransform
 } from './interpolate';
 import { buildFromToList } from './transformList';
 import { Easing } from './easing';
@@ -46,8 +46,7 @@ export const ease = (
 
 export const blend = (colorA, colorB, progress) => {
   const newColor = calculateColor(colorA, colorB, progress);
-  const r = Math.round;
-  return `rgba(${r(newColor.r)}, ${r(newColor.g)}, ${r(newColor.b)}, ${newColor.a})`;
+  return 'rgba(' + newColor.join(', ') + ')';
 };
 
 export const css = (
@@ -68,7 +67,7 @@ export const css = (
         element.style.transform = newTransform;
       } else {
         const newVal = calculateVal(item.fromVal, item.toVal, progress);
-        element.style[item.key] = `${newVal}${item.unit}`;
+        element.style[item.key] = newVal.toString() + item.unit;
       }
     });
   };

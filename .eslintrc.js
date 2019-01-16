@@ -1,11 +1,13 @@
 module.exports = {
+    "extends": "airbnb-base/legacy",
     "env": {
         "browser": true,
         "es6": true
     },
     "plugins": ["compat"],
     "rules": {
-        "compat/compat": "error"
+        "compat/compat": "error",
+        "no-param-reassign": 0
     },
     "settings": {
         "polyfills": ["promises"]
