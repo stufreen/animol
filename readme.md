@@ -151,7 +151,7 @@ easeOutBounce
 easeInOutBounce
 ```
 
-For `elastic` and `back`, you must pass in the power of the animation, e.g.
+For `elastic` and `back` easing functions you must pass in the power of the animation, e.g.
 ```javascript
 animol.Easing.easeInOutElastic(1.5) // Power of 1 is the default
 ```
