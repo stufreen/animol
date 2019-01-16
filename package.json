@@ -7,7 +7,8 @@
     "test": "jest",
     "lint": "eslint 'src/*.{js,jsx}'",
     "build": "webpack && git add dist/animol.min.js",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "precommit-msg": "echo 'Building minimized version...' && exit 0"
   },
   "keywords": [
     "animation"
@@ -36,5 +37,5 @@
     "> 1%",
     "IE 11"
   ],
-  "pre-commit": [ "build" ]
+  "pre-commit": [ "precommit-msg", "build" ]
 }
