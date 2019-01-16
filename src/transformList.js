@@ -27,7 +27,7 @@ export const inferTransforms = (el) => {
   const matrix = parseMatrix(computedStyles.transform);
   const matrix3D = matrix.length === 6 ? matrix2DTo3D(matrix) : matrix;
   return decomposeTransformMatrix3D(matrix3D);
-}
+};
 
 function inferUnitVal(key, element, castToUnit = 'px') {
   const computedStyle = window.getComputedStyle(element);
@@ -51,9 +51,9 @@ function inferUnitVal(key, element, castToUnit = 'px') {
   };
 }
 
-function getUnitVal(key, styleObj = {}, element) {
+function getUnitVal(key, styleObj = {}, element, castToUnit) {
   if (typeof styleObj[key] === 'undefined') {
-    return inferUnitVal(key, element);
+    return inferUnitVal(key, element, castToUnit);
   }
   const colorVal = parseColor(styleObj[key]);
   if (colorVal) {
@@ -138,7 +138,7 @@ export const buildFromToList = (el, from, to) => {
       return;
     }
     const { unit: fromUnit, val: fromVal } = getUnitVal(key, from, el);
-    const { unit: toUnit, val: toVal } = getUnitVal(key, to, el);
+    const { unit: toUnit, val: toVal } = getUnitVal(key, to, el, fromUnit);
     if (fromUnit === toUnit) {
       fromToList.push({
         key,
