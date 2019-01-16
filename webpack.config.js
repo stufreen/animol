@@ -6,6 +6,7 @@ module.exports = {
     filename: 'animol.min.js',
     path: path.resolve(__dirname, 'dist'),
     library: 'animol',
+    libraryTarget: 'umd'
   },
   module: {
     rules: [
@@ -24,6 +25,6 @@ module.exports = {
   devServer: {
     contentBase: path.resolve(__dirname, 'demo'),
     compress: true,
-    port: 9000,
-  },
+    port: 9000
+  }
 };
