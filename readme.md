@@ -2,6 +2,11 @@
 
 A very lightweight (~5KB minimized and gzipped) JavaScript animation library with a Greensock-like API.
 
+## Installation
+```
+npm install stufreen/animol --save
+```
+
 ## API
 
 ### Basic usage
