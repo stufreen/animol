@@ -187,7 +187,6 @@ npm run start
 Compatible with all modern browsers and IE 10+.
 
 ## To do
- * Increase test coverage
  * Improve demos
 
 ## Motivation
