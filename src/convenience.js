@@ -1,4 +1,5 @@
 export var convenience = function (oldObj) {
+  oldObj = oldObj || {};
   var newObj = {};
   Object.keys(oldObj).forEach((key) => {
     if (key === 'rotate') {

@@ -29,8 +29,7 @@ export var inferTransforms = function (el) {
   return decomposeTransformMatrix3D(matrix3D);
 };
 
-function inferUnitVal(key, element, castToUnit) {
-  castToUnit = castToUnit || 'px';
+function inferUnitVal(key, element) {
   var computedStyle = window.getComputedStyle(element);
   var styleString = computedStyle[key];
 
@@ -42,21 +41,14 @@ function inferUnitVal(key, element, castToUnit) {
     };
   }
 
-  var val = getVal(styleString);
-  if (val === 0) {
-    return { unit: castToUnit, val: 0 };
-  }
   return {
     unit: getUnit(styleString),
-    val: val
+    val: getVal(styleString)
   };
 }
 
-function getUnitVal(key, styleObj, element, castToUnit) {
+function getUnitVal(key, styleObj) {
   styleObj = styleObj || {};
-  if (typeof styleObj[key] === 'undefined') {
-    return inferUnitVal(key, element, castToUnit);
-  }
 
   var colorVal = parseColor(styleObj[key]);
   if (colorVal) {
@@ -76,7 +68,7 @@ function getUnitVal(key, styleObj, element, castToUnit) {
     };
   }
 
-  return { unit, val };
+  return { unit: unit, val: val };
 }
 
 function simplifyTransformLists(transformFrom, transformTo) {
@@ -87,8 +79,9 @@ function simplifyTransformLists(transformFrom, transformTo) {
       || identityTransform.unit !== transformFrom[index].unit
       || identityTransform.val !== transformTo[index].val
       || identityTransform.unit !== transformTo[index].unit) {
-      fromFixed.push(transformFrom[index]);
-      toFixed.push(transformTo[index]);
+      var reconciled = reconcileUnits(transformFrom[index], transformTo[index]);
+      fromFixed.push(reconciled.from);
+      toFixed.push(reconciled.to);
     }
   });
 
@@ -98,43 +91,47 @@ function simplifyTransformLists(transformFrom, transformTo) {
   };
 }
 
+function reconcileUnits(fromStyle, toStyle) {
+  if (fromStyle.unit !== toStyle.unit) {
+    if (fromStyle.val === 0) {
+      fromStyle.unit = toStyle.unit;
+    } else if (toStyle.val === 0) {
+      toStyle.unit = fromStyle.unit;
+    } else {
+      throw new Error('"from" and "to" unit mismatch: ' + fromStyle.unit + ' and ' + toStyle.unit + ')');
+    }
+  }
+  return {
+    from: fromStyle,
+    to: toStyle
+  };
+}
+
+var defaultToInferred = function (inferredTransforms, transformList) {
+  return inferredTransforms.map(function (item) {
+    var match = transformList[item.key];
+    if (!match) {
+      return item;
+    }
+    var transform = getUnitVal(item.key, transformList);
+    return {
+      key: item.key,
+      unit: transform.unit,
+      val: transform.val
+    };
+  });
+};
+
 function buildTransformFromToList(el, from, to) {
-  from = from || {};
-  to = to || {};
   var inferredTransforms = inferTransforms(el);
-  var fromFixed = convenience(from);
-  var toFixed = convenience(to);
-
-  var transformFrom = inferredTransforms.map(function (item) {
-    var match = fromFixed[item.key];
-    if (!match) {
-      return item;
-    }
-    var transform = getUnitVal(item.key, fromFixed, el);
-    return {
-      key: item.key,
-      unit: transform.unit,
-      val: transform.val
-    };
-  });
-
-  var transformTo = inferredTransforms.map(function (item) {
-    var match = toFixed[item.key];
-    if (!match) {
-      return item;
-    }
-    var transform = getUnitVal(item.key, toFixed, el);
-    return {
-      key: item.key,
-      unit: transform.unit,
-      val: transform.val
-    };
-  });
-
+  var transformFrom = defaultToInferred(inferredTransforms, convenience(from));
+  var transformTo = defaultToInferred(inferredTransforms, convenience(to));
   return simplifyTransformLists(transformFrom, transformTo);
 }
 
 export const buildFromToList = (el, from, to) => {
+  from = from || {};
+  to = to || {};
   var fromToList = [];
 
   // Iterate through the "from" keys, adding matching "to" values if possible
@@ -142,35 +139,26 @@ export const buildFromToList = (el, from, to) => {
     if (key === 'transform') {
       return;
     }
-    var fromStyle = getUnitVal(key, from, el);
-    var toStyle = getUnitVal(key, to, el, fromStyle.unit);
-    if (fromStyle.unit === toStyle.unit) {
-      fromToList.push({
-        key: key,
-        unit: fromStyle.unit,
-        fromVal: fromStyle.val,
-        toVal: toStyle.val
-      });
-    } else {
-      throw new Error('"from" and "to" unit mismatch: ' + fromStyle.unit + ' and ' + toStyle.unit + ' (at element ' + el.outerHTML + ')');
-    }
+    const toStyle = typeof to[key] === 'undefined' ? inferUnitVal(key, el) : getUnitVal(key, to);
+    var styles = reconcileUnits(getUnitVal(key, from), toStyle);
+    fromToList.push({
+      key: key,
+      unit: styles.from.unit,
+      fromVal: styles.from.val,
+      toVal: styles.to.val
+    });
   });
 
   // Iterate through the "to" keys which did not have "from" values, inferring the "from" vals
   Object.keys(to).forEach(function (key) {
     if (typeof from[key] === 'undefined' && key !== 'transform') {
-      var toStyle = getUnitVal(key, to, el);
-      var fromStyle = inferUnitVal(key, el, toStyle.unit);
-      if (fromStyle.unit === toStyle.unit) {
-        fromToList.push({
-          key: key,
-          unit: fromStyle.unit,
-          fromVal: fromStyle.val,
-          toVal: toStyle.val
-        });
-      } else {
-        throw new Error('"from" and "to" unit mismatch: ' + fromStyle.unit + ' and ' + toStyle.unit + ' (at element ' + el.outerHTML + ')');
-      }
+      var styles = reconcileUnits(inferUnitVal(key, el), getUnitVal(key, to));
+      fromToList.push({
+        key: key,
+        unit: styles.from.unit,
+        fromVal: styles.from.val,
+        toVal: styles.to.val
+      });
     }
   });
 

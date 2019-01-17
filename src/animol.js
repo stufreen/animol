@@ -14,7 +14,7 @@ export var ease = function (callback, duration, easingFunc, delay) {
   duration = duration || 0;
   delay = delay || 0;
   callback = callback || function () {};
-  easingFunc = Easing.easeInOutQuad;
+  easingFunc = easingFunc || Easing.easeInOutQuad;
 
   var animationFrameRequest;
   var rej;

@@ -15,7 +15,7 @@ describe('inferTransforms', () => {
 });
 
 describe('buildFromToList', () => {
-  const fromList = { height: '0px', width: '0rem' };
+  const fromList = { height: '0px', width: '0px' };
   const toList = { height: '100px', width: '100rem' };
   const fromListTransform = { transform: { rotateZ: '0rad' } };
   const toListTransform = { transform: { rotateZ: '1rad' } };
@@ -38,7 +38,7 @@ describe('buildFromToList', () => {
   });
 
   test('it should infer from values if fromList is empty', () => {
-    expect(buildFromToList(null, {}, toList)).toEqual([
+    expect(buildFromToList(null, null, toList)).toEqual([
       {
         fromVal: 0,
         key: 'height',
@@ -74,19 +74,55 @@ describe('buildFromToList', () => {
   test('it should handle transform objects', () => {
     expect(buildFromToList(null, fromListTransform, toListTransform)).toEqual([
       {
+        key: 'transform',
+        unit: 'transformList',
         fromVal: [{
           key: 'rotateZ',
           unit: 'rad',
           val: 0
         }],
-        key: 'transform',
         toVal: [{
           key: 'rotateZ',
           unit: 'rad',
           val: 1
+        }]
+      }
+    ]);
+  });
+
+  test('it should handle translations in rem', () => {
+    expect(buildFromToList(null, null, { transform: { translateX: '100rem' } })).toEqual([
+      {
+        key: 'transform',
+        unit: 'transformList',
+        fromVal: [{
+          key: 'translateX',
+          unit: 'rem',
+          val: 0
         }],
-        unit: 'transformList'
-      },
+        toVal: [{
+          key: 'translateX',
+          unit: 'rem',
+          val: 100
+        }]
+      }
+    ]);
+
+    expect(buildFromToList(null, { transform: { translateX: '100rem' } }, null)).toEqual([
+      {
+        key: 'transform',
+        unit: 'transformList',
+        fromVal: [{
+          key: 'translateX',
+          unit: 'rem',
+          val: 100
+        }],
+        toVal: [{
+          key: 'translateX',
+          unit: 'rem',
+          val: 0
+        }]
+      }
     ]);
   });
 });
