@@ -25,10 +25,11 @@ export var calculateColor = function (startVal, endVal, progress) {
 // Interpolate two transform lists and build up a "transform" string
 export var calculateTransform = function (startTransformList, endTransformList, progress) {
   var transforms = startTransformList.reduce(
-    function (accumulator, { key, val: startVal, unit }, index) {
+    // { key, val: startVal, unit }
+    function (accumulator, item, index) {
       var endVal = endTransformList[index].val;
-      var newVal = calculateVal(startVal, endVal, progress);
-      var transformString = key + '(' + newVal + unit + ')';
+      var newVal = calculateVal(item.val, endVal, progress);
+      var transformString = item.key + '(' + newVal + item.unit + ')';
       return [...accumulator, transformString];
     }, []
   );

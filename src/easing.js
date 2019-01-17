@@ -1,6 +1,3 @@
-/* eslint no-plusplus: 0 */
-/* eslint max-len: 0 */
-
 var pow = Math.pow;
 var sin = Math.sin;
 var PI = Math.PI;

@@ -29,11 +29,12 @@ export var inferTransforms = function (el) {
   return decomposeTransformMatrix3D(matrix3D);
 };
 
-function inferUnitVal(key, element, castToUnit = 'px') {
-  const computedStyle = window.getComputedStyle(element);
-  const styleString = computedStyle[key];
+function inferUnitVal(key, element, castToUnit) {
+  castToUnit = castToUnit || 'px';
+  var computedStyle = window.getComputedStyle(element);
+  var styleString = computedStyle[key];
 
-  const colorVal = parseColor(styleString);
+  var colorVal = parseColor(styleString);
   if (colorVal) {
     return {
       unit: 'color',
@@ -41,29 +42,31 @@ function inferUnitVal(key, element, castToUnit = 'px') {
     };
   }
 
-  const val = getVal(styleString);
+  var val = getVal(styleString);
   if (val === 0) {
     return { unit: castToUnit, val: 0 };
   }
   return {
     unit: getUnit(styleString),
-    val
+    val: val
   };
 }
 
-function getUnitVal(key, styleObj = {}, element, castToUnit) {
+function getUnitVal(key, styleObj, element, castToUnit) {
+  styleObj = styleObj || {};
   if (typeof styleObj[key] === 'undefined') {
     return inferUnitVal(key, element, castToUnit);
   }
-  const colorVal = parseColor(styleObj[key]);
+
+  var colorVal = parseColor(styleObj[key]);
   if (colorVal) {
     return {
       unit: 'color',
       val: colorVal
     };
   }
-  const unit = typeof styleObj[key] === 'number' ? '' : getUnit(styleObj[key]);
-  const val = typeof styleObj[key] === 'number' ? styleObj[key] : getVal(styleObj[key]);
+  var unit = typeof styleObj[key] === 'number' ? '' : getUnit(styleObj[key]);
+  var val = typeof styleObj[key] === 'number' ? styleObj[key] : getVal(styleObj[key]);
 
   // Convert degrees to radians
   if (unit === 'deg') {
@@ -76,10 +79,10 @@ function getUnitVal(key, styleObj = {}, element, castToUnit) {
   return { unit, val };
 }
 
-const simplifyTransformLists = (transformFrom, transformTo) => {
-  const fromFixed = [];
-  const toFixed = [];
-  IDENTITY.forEach((identityTransform, index) => {
+function simplifyTransformLists(transformFrom, transformTo) {
+  var fromFixed = [];
+  var toFixed = [];
+  IDENTITY.forEach(function (identityTransform, index) {
     if (identityTransform.val !== transformFrom[index].val
       || identityTransform.unit !== transformFrom[index].unit
       || identityTransform.val !== transformTo[index].val
@@ -90,39 +93,41 @@ const simplifyTransformLists = (transformFrom, transformTo) => {
   });
 
   return {
-    transformFrom: fromFixed,
-    transformTo: toFixed
+    from: fromFixed,
+    to: toFixed
   };
-};
+}
 
-function buildTransformFromToList(el, from = {}, to = {}) {
-  const inferredTransforms = inferTransforms(el);
-  const fromFixed = convenience(from);
-  const toFixed = convenience(to);
+function buildTransformFromToList(el, from, to) {
+  from = from || {};
+  to = to || {};
+  var inferredTransforms = inferTransforms(el);
+  var fromFixed = convenience(from);
+  var toFixed = convenience(to);
 
-  const transformFrom = inferredTransforms.map((item) => {
-    const match = fromFixed[item.key];
+  var transformFrom = inferredTransforms.map(function (item) {
+    var match = fromFixed[item.key];
     if (!match) {
       return item;
     }
-    const { unit, val } = getUnitVal(item.key, fromFixed, el);
+    var transform = getUnitVal(item.key, fromFixed, el);
     return {
       key: item.key,
-      unit,
-      val
+      unit: transform.unit,
+      val: transform.val
     };
   });
 
-  const transformTo = inferredTransforms.map((item) => {
-    const match = toFixed[item.key];
+  var transformTo = inferredTransforms.map(function (item) {
+    var match = toFixed[item.key];
     if (!match) {
       return item;
     }
-    const { unit, val } = getUnitVal(item.key, toFixed, el);
+    var transform = getUnitVal(item.key, toFixed, el);
     return {
       key: item.key,
-      unit,
-      val
+      unit: transform.unit,
+      val: transform.val
     };
   });
 
@@ -130,57 +135,53 @@ function buildTransformFromToList(el, from = {}, to = {}) {
 }
 
 export const buildFromToList = (el, from, to) => {
-  const fromToList = [];
+  var fromToList = [];
 
   // Iterate through the "from" keys, adding matching "to" values if possible
-  Object.keys(from).forEach((key) => {
+  Object.keys(from).forEach(function (key) {
     if (key === 'transform') {
       return;
     }
-    const { unit: fromUnit, val: fromVal } = getUnitVal(key, from, el);
-    const { unit: toUnit, val: toVal } = getUnitVal(key, to, el, fromUnit);
-    if (fromUnit === toUnit) {
+    var fromStyle = getUnitVal(key, from, el);
+    var toStyle = getUnitVal(key, to, el, fromStyle.unit);
+    if (fromStyle.unit === toStyle.unit) {
       fromToList.push({
-        key,
-        unit: fromUnit,
-        fromVal,
-        toVal
+        key: key,
+        unit: fromStyle.unit,
+        fromVal: fromStyle.val,
+        toVal: toStyle.val
       });
     } else {
-      throw new Error('"from" and "to" unit mismatch: ' + fromUnit + ' and ' + toUnit + ' (at element ' + el.outerHTML + ')');
+      throw new Error('"from" and "to" unit mismatch: ' + fromStyle.unit + ' and ' + toStyle.unit + ' (at element ' + el.outerHTML + ')');
     }
   });
 
   // Iterate through the "to" keys which did not have "from" values, inferring the "from" vals
-  Object.keys(to).forEach((key) => {
+  Object.keys(to).forEach(function (key) {
     if (typeof from[key] === 'undefined' && key !== 'transform') {
-      const { unit: toUnit, val: toVal } = getUnitVal(key, to, el);
-      const { unit: fromUnit, val: fromVal } = inferUnitVal(key, el, toUnit);
-      if (fromUnit === toUnit) {
+      var toStyle = getUnitVal(key, to, el);
+      var fromStyle = inferUnitVal(key, el, toStyle.unit);
+      if (fromStyle.unit === toStyle.unit) {
         fromToList.push({
-          key,
-          unit: fromUnit,
-          fromVal,
-          toVal
+          key: key,
+          unit: fromStyle.unit,
+          fromVal: fromStyle.val,
+          toVal: toStyle.val
         });
       } else {
-        throw new Error('"from" and "to" unit mismatch: ' + fromUnit + ' and ' + toUnit + ' (at element ' + el.outerHTML + ')');
+        throw new Error('"from" and "to" unit mismatch: ' + fromStyle.unit + ' and ' + toStyle.unit + ' (at element ' + el.outerHTML + ')');
       }
     }
   });
 
   // If transform is defined on either "from" or "to", add a transform item
   if (from.transform || to.transform) {
-    const { transformFrom, transformTo } = buildTransformFromToList(
-      el,
-      from.transform,
-      to.transform
-    );
+    var transform = buildTransformFromToList(el, from.transform, to.transform);
     fromToList.push({
       key: 'transform',
       unit: 'transformList',
-      fromVal: transformFrom,
-      toVal: transformTo
+      fromVal: transform.from,
+      toVal: transform.to
     });
   }
 
