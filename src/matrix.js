@@ -1,16 +1,16 @@
 function shallowCopy(ar) {
-  const ret = [];
+  var newAr = [];
   for (let i = 0; i < ar.length; i += 1 ) {
-    ret.push(ar[i]);
+    newAr.push(ar[i]);
   }
-  return ret;
+  return newAr;
 }
 
 function getTranslate3D(matrix) {
-  const translateX = matrix[9];
-  const translateY = matrix[10];
-  const translateZ = matrix[11];
-  const newMatrix = shallowCopy(matrix);
+  var translateX = matrix[9];
+  var translateY = matrix[10];
+  var translateZ = matrix[11];
+  var newMatrix = shallowCopy(matrix);
   newMatrix[9] = 0;
   newMatrix[10] = 0;
   newMatrix[11] = 0;
@@ -23,16 +23,16 @@ function getTranslate3D(matrix) {
 }
 
 function getScale3D(matrix) {
-  const scaleX = Math.sqrt(
+  var scaleX = Math.sqrt(
     Math.pow(matrix[0], 2) + Math.pow(matrix[1], 2) + Math.pow(matrix[2], 2)
   );
-  const scaleY = Math.sqrt(
+  var scaleY = Math.sqrt(
     Math.pow(matrix[3], 2) + Math.pow(matrix[4], 2) + Math.pow(matrix[5], 2)
   );
-  const scaleZ = Math.sqrt(
+  var scaleZ = Math.sqrt(
     Math.pow(matrix[6], 2) + Math.pow(matrix[7], 2) + Math.pow(matrix[8], 2)
   );
-  const newMatrix = shallowCopy(matrix);
+  var newMatrix = shallowCopy(matrix);
   newMatrix[0] = matrix[0] / scaleX;
   newMatrix[1] = matrix[1] / scaleX;
   newMatrix[2] = matrix[2] / scaleX;
@@ -50,16 +50,18 @@ function getScale3D(matrix) {
   };
 }
 
-const noNegZero = num => (Object.is(num, -0) ? 0 : num);
+function noNegZero(num) {
+  return (Object.is(num, -0) ? 0 : num);
+}
 
 function getRotate3D(matrix) {
-  const beta = Math.atan2(
+  var beta = Math.atan2(
     -1 * matrix[2],
     Math.sqrt(Math.pow(matrix[0], 2) + Math.pow(matrix[1], 2))
   );
-  const alpha = Math.atan2(matrix[5] / Math.cos(beta), matrix[8] / Math.cos(beta));
-  const gamma = Math.atan2(matrix[1] / Math.cos(beta), matrix[0] / Math.cos(beta));
-  const newMatrix = [
+  var alpha = Math.atan2(matrix[5] / Math.cos(beta), matrix[8] / Math.cos(beta));
+  var gamma = Math.atan2(matrix[1] / Math.cos(beta), matrix[0] / Math.cos(beta));
+  var newMatrix = [
     1, 0, 0,
     0, 1, 0,
     0, 0, 1,
@@ -74,10 +76,10 @@ function getRotate3D(matrix) {
 }
 
 // TO DO: Allow skew as well
-export const decomposeTransformMatrix3D = (matrix) => {
-  const translate = getTranslate3D(matrix);
-  const scale = getScale3D(translate.matrix);
-  const rotate = getRotate3D(scale.matrix);
+export var decomposeTransformMatrix3D = function(matrix) {
+  var translate = getTranslate3D(matrix);
+  var scale = getScale3D(translate.matrix);
+  var rotate = getRotate3D(scale.matrix);
   return [
     translate.x,
     translate.y,
@@ -91,17 +93,19 @@ export const decomposeTransformMatrix3D = (matrix) => {
   ];
 };
 
-export const matrix2DTo3D = m => [
-  m[0],
-  m[1],
-  0,
-  m[2],
-  m[3],
-  0,
-  0,
-  0,
-  1,
-  m[4],
-  m[5],
-  0
-];
+export var matrix2DTo3D = function(m) {
+  return [
+    m[0],
+    m[1],
+    0,
+    m[2],
+    m[3],
+    0,
+    0,
+    0,
+    1,
+    m[4],
+    m[5],
+    0
+  ];
+}

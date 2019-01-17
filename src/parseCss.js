@@ -1,6 +1,6 @@
 function parseRGB(inputString) {
-  const regex = /rgb\( *(\d{1,3}), *(\d{1,3}), *(\d{1,3}) *\)/;
-  const result = inputString.match(regex);
+  var regex = /rgb\( *(\d{1,3}), *(\d{1,3}), *(\d{1,3}) *\)/;
+  var result = inputString.match(regex);
   if (!result) {
     return false;
   }
@@ -13,8 +13,8 @@ function parseRGB(inputString) {
 }
 
 function parseRGBA(inputString) {
-  const regex = /rgba\( *(\d{1,3}), *(\d{1,3}), *(\d{1,3}), *(\d+[.\d]?\d*) *\)/;
-  const result = inputString.match(regex);
+  var regex = /rgba\( *(\d{1,3}), *(\d{1,3}), *(\d{1,3}), *(\d+[.\d]?\d*) *\)/;
+  var result = inputString.match(regex);
   if (!result) {
     return false;
   }
@@ -27,7 +27,7 @@ function parseRGBA(inputString) {
 }
 
 function parseHexColor(inputString) {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(inputString);
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(inputString);
   if (!result) {
     return false;
   }
@@ -39,29 +39,29 @@ function parseHexColor(inputString) {
   ];
 }
 
-export const getUnit = (input) => {
+export var getUnit = function(input) {
   if (typeof input !== 'string') {
     return false;
   }
-  const result = input.match(/([a-zA-Z]+|%)/);
+  var result = input.match(/([a-zA-Z]+|%)/);
   if (!result) {
     return false;
   }
   return result[0];
 };
 
-export const getVal = (input) => {
+export var getVal = function(input) {
   if (typeof input !== 'string') {
     return false;
   }
-  const result = input.match(/^-?\d+(\.\d)?\d*/);
+  var result = input.match(/^-?\d+(\.\d)?\d*/);
   if (!result) {
     return false;
   }
   return parseFloat(result[0]);
 };
 
-export const parseColor = (styleString) => {
+export var parseColor = function(styleString) {
   if (typeof styleString !== 'string') {
     return false;
   }
@@ -77,12 +77,12 @@ export const parseColor = (styleString) => {
   return false;
 };
 
-export const parseMatrix = (matrixString) => {
+export var parseMatrix = function(matrixString) {
   if (typeof matrixString !== 'string') {
     return false;
   }
 
-  const match = matrixString.match(/(matrix|matrix3d)\((.*)\)/);
+  var match = matrixString.match(/(matrix|matrix3d)\((.*)\)/);
   if (!match) {
     return false;
   }
