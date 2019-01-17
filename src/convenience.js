@@ -1,4 +1,4 @@
-export var convenience = function(oldObj) {
+export var convenience = function (oldObj) {
   var newObj = {};
   Object.keys(oldObj).forEach((key) => {
     if (key === 'rotate') {

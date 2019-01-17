@@ -10,25 +10,25 @@ import { Easing } from './easing';
 export { Easing } from './easing';
 export { parseColor } from './parseCss';
 
-export const ease = (
-  callback = () => {},
-  duration = 0,
-  easingFunc = Easing.linear,
-  delay = 0
-) => {
-  let animationFrameRequest;
-  let rej;
+export var ease = function (callback, duration, easingFunc, delay) {
+  duration = duration || 0;
+  delay = delay || 0;
+  callback = callback || function () {};
+  easingFunc = Easing.easeInOutQuad;
+
+  var animationFrameRequest;
+  var rej;
 
   // If Promise is unsupported we treat it as void
-  const PromiseSafe = (typeof Promise !== 'undefined' && Promise.toString().indexOf('[native code]') !== -1)
+  var PromiseSafe = (typeof Promise !== 'undefined' && Promise.toString().indexOf('[native code]') !== -1)
     ? Promise
-    : (exec) => { exec(); };
+    : function (exec) { exec(); };
 
-  const promise = new PromiseSafe((resolve, reject) => {
+  var promise = new PromiseSafe(function (resolve, reject) {
     rej = reject;
-    let startTime;
-    let endTime;
-    const step = (timestamp) => {
+    var startTime;
+    var endTime;
+    var step = function (timestamp) {
       if (typeof startTime === 'undefined') {
         startTime = timestamp + delay;
         endTime = timestamp + duration + delay;
@@ -42,7 +42,7 @@ export const ease = (
     animationFrameRequest = window.requestAnimationFrame(step);
   });
 
-  const cancel = () => {
+  var cancel = function () {
     window.cancelAnimationFrame(animationFrameRequest);
     if (typeof rej !== 'undefined') rej();
   };
@@ -50,29 +50,25 @@ export const ease = (
   return { promise, cancel };
 };
 
-export const blend = (colorA, colorB, progress) => {
-  const newColor = calculateColor(colorA, colorB, progress);
+export var blend = function (colorA, colorB, progress) {
+  var newColor = calculateColor(colorA, colorB, progress);
   return 'rgba(' + newColor.join(', ') + ')';
 };
 
-export const css = (
-  element,
-  duration,
-  from = {},
-  to = {},
-  easingFunc = Easing.linear,
-  delay = 0
-) => {
-  const fromToList = buildFromToList(element, from, to);
-  const callback = (progress) => {
-    fromToList.forEach((item) => {
+export var css = function (element, duration, from, to, easingFunc, delay) {
+  from = from || {};
+  to = to || {};
+
+  var fromToList = buildFromToList(element, from, to);
+  var callback = function (progress) {
+    fromToList.forEach(function (item) {
       if (item.unit === 'color') {
         element.style[item.key] = blend(item.fromVal, item.toVal, progress);
       } else if (item.key === 'transform') {
-        const newTransform = calculateTransform(item.fromVal, item.toVal, progress);
+        var newTransform = calculateTransform(item.fromVal, item.toVal, progress);
         element.style.transform = newTransform;
       } else {
-        const newVal = calculateVal(item.fromVal, item.toVal, progress);
+        var newVal = calculateVal(item.fromVal, item.toVal, progress);
         element.style[item.key] = newVal.toString() + item.unit;
       }
     });

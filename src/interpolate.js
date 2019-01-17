@@ -1,32 +1,34 @@
-export const interpolate = (
+export var interpolate = function (
   startTime,
   endTime,
   currentTime,
   easingFunction
-) => {
-  const pctElapsed = Math.max(0, (currentTime - startTime) / (endTime - startTime));
+) {
+  var pctElapsed = Math.max(0, (currentTime - startTime) / (endTime - startTime));
   return easingFunction(pctElapsed);
 };
 
-export const calculateVal = (startVal, endVal, progress) => {
-  const distance = endVal - startVal;
+export var calculateVal = function (startVal, endVal, progress) {
+  var distance = endVal - startVal;
   return startVal + (progress * distance);
 };
 
-export const calculateColor = (startVal, endVal, progress) => ([
-  Math.round(calculateVal(startVal[0], endVal[0], progress)),
-  Math.round(calculateVal(startVal[1], endVal[1], progress)),
-  Math.round(calculateVal(startVal[2], endVal[2], progress)),
-  calculateVal(startVal[3], endVal[3], progress)
-]);
+export var calculateColor = function (startVal, endVal, progress) {
+  return [
+    Math.round(calculateVal(startVal[0], endVal[0], progress)),
+    Math.round(calculateVal(startVal[1], endVal[1], progress)),
+    Math.round(calculateVal(startVal[2], endVal[2], progress)),
+    calculateVal(startVal[3], endVal[3], progress)
+  ];
+};
 
 // Interpolate two transform lists and build up a "transform" string
-export const calculateTransform = (startTransformList, endTransformList, progress) => {
-  const transforms = startTransformList.reduce(
-    (accumulator, { key, val: startVal, unit }, index) => {
-      const endVal = endTransformList[index].val;
-      const newVal = calculateVal(startVal, endVal, progress);
-      const transformString = key + '(' + newVal + unit + ')';
+export var calculateTransform = function (startTransformList, endTransformList, progress) {
+  var transforms = startTransformList.reduce(
+    function (accumulator, { key, val: startVal, unit }, index) {
+      var endVal = endTransformList[index].val;
+      var newVal = calculateVal(startVal, endVal, progress);
+      var transformString = key + '(' + newVal + unit + ')';
       return [...accumulator, transformString];
     }, []
   );

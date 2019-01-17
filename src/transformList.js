@@ -7,7 +7,7 @@ import {
 import { decomposeTransformMatrix3D, matrix2DTo3D } from './matrix.js';
 import { convenience } from './convenience.js';
 
-export const IDENTITY = [
+export var IDENTITY = [
   { key: 'translateX', unit: 'px', val: 0 },
   { key: 'translateY', unit: 'px', val: 0 },
   { key: 'translateZ', unit: 'px', val: 0 },
@@ -19,13 +19,13 @@ export const IDENTITY = [
   { key: 'rotateZ', unit: 'rad', val: 0 }
 ];
 
-export const inferTransforms = (el) => {
-  const computedStyles = window.getComputedStyle(el);
+export var inferTransforms = function (el) {
+  var computedStyles = window.getComputedStyle(el);
   if (computedStyles.transform === 'none') {
     return IDENTITY;
   }
-  const matrix = parseMatrix(computedStyles.transform);
-  const matrix3D = matrix.length === 6 ? matrix2DTo3D(matrix) : matrix;
+  var matrix = parseMatrix(computedStyles.transform);
+  var matrix3D = matrix.length === 6 ? matrix2DTo3D(matrix) : matrix;
   return decomposeTransformMatrix3D(matrix3D);
 };
 

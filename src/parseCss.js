@@ -39,7 +39,7 @@ function parseHexColor(inputString) {
   ];
 }
 
-export var getUnit = function(input) {
+export var getUnit = function (input) {
   if (typeof input !== 'string') {
     return false;
   }
@@ -50,7 +50,7 @@ export var getUnit = function(input) {
   return result[0];
 };
 
-export var getVal = function(input) {
+export var getVal = function (input) {
   if (typeof input !== 'string') {
     return false;
   }
@@ -61,7 +61,7 @@ export var getVal = function(input) {
   return parseFloat(result[0]);
 };
 
-export var parseColor = function(styleString) {
+export var parseColor = function (styleString) {
   if (typeof styleString !== 'string') {
     return false;
   }
@@ -77,7 +77,7 @@ export var parseColor = function(styleString) {
   return false;
 };
 
-export var parseMatrix = function(matrixString) {
+export var parseMatrix = function (matrixString) {
   if (typeof matrixString !== 'string') {
     return false;
   }

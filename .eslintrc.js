@@ -1,17 +1,14 @@
 module.exports = {
-    "extends": "airbnb-base/legacy",
+    "extends": "eslint-config-airbnb-es5",
     "env": {
         "browser": true,
-        "es6": true,
-        "jest": true
+        "jest": true,
+        "es6": true
     },
-    "plugins": ["compat"],
     "rules": {
-        "compat/compat": "error",
-        "no-param-reassign": 0
-    },
-    "settings": {
-        "polyfills": ["promises"]
+        "no-param-reassign": 0,
+        "vars-on-top": 0,
+        "func-names": 0
     },
     "parserOptions": {
         "sourceType": "module"

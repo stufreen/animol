@@ -76,7 +76,7 @@ function getRotate3D(matrix) {
 }
 
 // TO DO: Allow skew as well
-export var decomposeTransformMatrix3D = function(matrix) {
+export var decomposeTransformMatrix3D = function (matrix) {
   var translate = getTranslate3D(matrix);
   var scale = getScale3D(translate.matrix);
   var rotate = getRotate3D(scale.matrix);
@@ -93,7 +93,7 @@ export var decomposeTransformMatrix3D = function(matrix) {
   ];
 };
 
-export var matrix2DTo3D = function(m) {
+export var matrix2DTo3D = function (m) {
   return [
     m[0],
     m[1],
@@ -108,4 +108,4 @@ export var matrix2DTo3D = function(m) {
     m[5],
     0
   ];
-}
+};
