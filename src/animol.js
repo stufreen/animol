@@ -47,7 +47,7 @@ export var ease = function (callback, duration, easingFunc, delay) {
     if (typeof rej !== 'undefined') rej();
   };
 
-  return { promise, cancel };
+  return { promise: promise, cancel: cancel };
 };
 
 export var blend = function (colorA, colorB, progress) {
