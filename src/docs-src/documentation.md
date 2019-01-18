@@ -40,10 +40,26 @@ CSS transforms are also supported. The `transform` value should be an object whe
 animol.css(
   myElement,
   1000,
-  { transform: { translateX: '0px' } },
-  { transform: { translateX: '100px' } }
+  { transform: { translateX: '-100%', rotate: '0deg' } },
+  { transform: { translateX: '100%', rotate: '50deg' } },
 );
 ```
+
+<Css-2 />
+
+3D transforms are also supported:
+
+```javascript
+animol.css(
+  myElement,
+  3000,
+  { transform: { rotateY: '0deg', rotateZ: '0deg' } },
+  { transform: { rotateY: '360deg', rotateZ: '90deg' } },
+  animol.Easing.easeInOutElastic(1.5),
+);
+```
+
+<Css-3 />
 
 The `css` function will try to infer the value of a style if you don't explicitly provide it, based on the computed style of the element. Accordingly, it's ok to do things like this:
 
@@ -66,7 +82,7 @@ animol.ease(
   duration: number, //milliseconds
   easing: (number) => number,
   delay: number // milliseconds
-): Promise;
+);
 ```
 
 The `ease` function can be used to animate DOM element attributes (among other things).
@@ -74,11 +90,13 @@ The `ease` function can be used to animate DOM element attributes (among other t
 ```javascript
 animol.ease(
   (progress) => {
-    myElement.setAttribute('cx', `${progress * 300}`);
+    myElement.setAttribute('stroke-dashoffset', `${1000 - (progress * 1000)}`)
   },
   2000
-): Promise;
+);
 ```
+
+<EaseSvg/>
 
 ## Easing
 
@@ -180,8 +198,11 @@ myAnimation.promise.then(() => {
     { marginLeft: '200px'},
     { marginLeft: '100px'},
     animol.Easing.easeInOutCubic,
-  )});
+  );
+});
 ```
+
+<Promises/>
 
 ## Cancelling animations
 

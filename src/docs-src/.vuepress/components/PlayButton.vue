@@ -1,5 +1,5 @@
 <template>
-  <button class="play-button" @click="onClick">Replay</button>
+  <button class="play-button" @click="onClick">Play</button>
 </template>
 
 <script>

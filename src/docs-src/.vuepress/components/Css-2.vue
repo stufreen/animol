@@ -1,6 +1,6 @@
 <template>
   <Artboard id="my-artboard">
-    <div id="my-element" />
+    <div id="my-element-2" />
     <PlayButton class="play-button" :onClick="play">Replay</PlayButton>
   </Artboard>
 </template>
@@ -10,13 +10,13 @@ module.exports = {
   methods: {
     play: () => {
       import('../../../../dist/animol.min.js').then(() => {
-        const myElement = document.getElementById('my-element');
+        const myElement = document.getElementById('my-element-2');
 
         animol.css(
           myElement,
           1000,
-          { height: '100px' },
-          { height: '200px' }
+          { transform: { translateX: '-100%', rotate: '0deg' } },
+          { transform: { translateX: '100%', rotate: '50deg' } },
         );
       })
     }
@@ -25,15 +25,15 @@ module.exports = {
 </script>
 
 <style scoped>
-#my-element {
+#my-element-2 {
   width: 100px;
   height: 100px;
   border-radius: 0.2em;
   background-color: rgb(10, 160, 120);
+  transform: translateX(-100%);
 }
 
 #my-artboard {
-  height: 200px;
   display: flex;
   align-items: flex-start;
   justify-content: center;

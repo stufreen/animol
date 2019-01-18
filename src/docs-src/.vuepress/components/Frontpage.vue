@@ -1,18 +1,17 @@
 <template>
-  <Artboard :inView="play">
-    <div id="my-element" ref="foobar" />
+  <Artboard>
+    <div id="my-element"/>
     <PlayButton class="play-button" :onClick="play">Replay</PlayButton>
   </Artboard>
 </template>
 
 <script>
 module.exports = {
-  data: () => ({}),
-  mounted () {
-    // this.methods.play();
+  mounted() {
+    this.play();
   },
   methods: {
-    play: () => {
+    play() {
       import('../../../../dist/animol.min.js').then(() => {
         const myElement = document.getElementById('my-element');
 
@@ -24,7 +23,7 @@ module.exports = {
           animol.Easing.easeInOutBack(1),
           200,
         );
-      })
+      });
     }
   }
 }
