@@ -55,15 +55,12 @@ animol.ease(
 ### Attributes
 You can use Animol's `ease` function and the standard `Element.setAttribute` function to animate attributes.
 ```javascript
-const myShape = document.getElementById('my-shape');
-
 animol.ease(
   (progress) => {
     myShape.setAttribute('cx', `${progress * 300}`);
   },
   2000,
-  animol.Easing.easeOutQuart,
-  1000,
+  animol.Easing.easeOutQuart
 );
 ```
 

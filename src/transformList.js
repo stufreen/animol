@@ -47,6 +47,21 @@ function inferUnitVal(key, element) {
   };
 }
 
+function defaultToInferred(inferredTransforms, transformList) {
+  return inferredTransforms.map(function (item) {
+    var match = transformList[item.key];
+    if (!match) {
+      return item;
+    }
+    var transform = getUnitVal(item.key, transformList);
+    return {
+      key: item.key,
+      unit: transform.unit,
+      val: transform.val
+    };
+  });
+}
+
 function getUnitVal(key, styleObj) {
   styleObj = styleObj || {};
 
@@ -57,6 +72,7 @@ function getUnitVal(key, styleObj) {
       val: colorVal
     };
   }
+
   var unit = typeof styleObj[key] === 'number' ? '' : getUnit(styleObj[key]);
   var val = typeof styleObj[key] === 'number' ? styleObj[key] : getVal(styleObj[key]);
 
@@ -106,21 +122,6 @@ function reconcileUnits(fromStyle, toStyle) {
     to: toStyle
   };
 }
-
-var defaultToInferred = function (inferredTransforms, transformList) {
-  return inferredTransforms.map(function (item) {
-    var match = transformList[item.key];
-    if (!match) {
-      return item;
-    }
-    var transform = getUnitVal(item.key, transformList);
-    return {
-      key: item.key,
-      unit: transform.unit,
-      val: transform.val
-    };
-  });
-};
 
 function buildTransformFromToList(el, from, to) {
   var inferredTransforms = inferTransforms(el);

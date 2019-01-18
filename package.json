@@ -7,7 +7,9 @@
     "test": "jest",
     "lint": "eslint 'src/*.{js,jsx}'",
     "build": "webpack",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "docs:dev": "vuepress dev docs/src",
+    "docs:build": "vuepress build docs/src"
   },
   "keywords": [
     "animation"
@@ -19,13 +21,14 @@
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.6.0",
     "babel-eslint": "^10.0.1",
-    "eslint-plugin-react": "^7.12.4",
+    "babel-jest": "^23.6.0",
     "eslint": "^5.3.0",
     "eslint-config-airbnb-es5": "^1.2.0",
     "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-react": "^7.12.4",
     "jest": "^23.6.0",
+    "vuepress": "^0.14.8",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
     "webpack-dev-server": "^3.1.14"
