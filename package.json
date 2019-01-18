@@ -8,8 +8,8 @@
     "lint": "eslint 'src/*.{js,jsx}'",
     "build": "webpack",
     "start": "webpack-dev-server",
-    "docs:dev": "vuepress dev docs/src",
-    "docs:build": "vuepress build docs/src"
+    "docs:dev": "vuepress dev src/docs-src",
+    "docs:build": "vuepress build src/docs-src"
   },
   "keywords": [
     "animation"
