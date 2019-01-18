@@ -25,7 +25,7 @@ animol.css(
 
 ## Documentation
 
-[View the full documentation.](/documentation.html)
+[Go to the documentation](/documentation.html)
 
 ## Motivation
 Animol is intended to be **very lightweight**, **ease to use** and **relatively performant**. It abstracts the repetitive logic for calling `requestAnimationFrame`, easing, and parsing CSS strings.
