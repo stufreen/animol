@@ -45,7 +45,7 @@ animol.css(
 
 The `css` function will try to infer the value of a style if you don't explicitly provide it, based on the computed style of the element. Accordingly, it's ok to do things like this:
 
-```javascript
+```javascript{4}
 animol.css(
   myElement,
   1000,
@@ -64,7 +64,7 @@ animol.ease(
   duration: number, //milliseconds
   easing: (number) => number,
   delay: number // milliseconds
-);
+): Promise;
 ```
 
 The `ease` function can be used to animate DOM element attributes (among other things).
@@ -75,7 +75,7 @@ animol.ease(
     myElement.setAttribute('cx', `${progress * 300}`);
   },
   2000
-);
+): Promise;
 ```
 
 ## Easing
@@ -134,7 +134,7 @@ Parses a color string (`hex`, `rgb`, or `rgba`) into an array `[red, green, blue
 ```javascript
 animol.parseColor(
   color: string // rgb, rgba, or hex
-);
+): Array<number>;
 ```
 
 ## blend
@@ -146,7 +146,7 @@ animol.blend(
   fromColor: Array<number>,
   toColor: Array<number>,
   ratio: number
-);
+): string;
 ```
 
 You can use `parseColor` and `blend` together to interpolate between colors.
@@ -155,4 +155,59 @@ You can use `parseColor` and `blend` together to interpolate between colors.
 const red = animol.parseColor('#FF0000');
 const blue = animol.parseColor('#0000FF');
 const purple = animol.blend(red, blue, 0.5); // 'rgba(128, 0, 128, 1)'
+```
+
+## Promises
+
+The `css` and `ease` functions return return an object with a `promise` property which (surprise!) a `Promise`. This allows you to do something after the animation completes. For example: 
+
+```javascript{9}
+const myAnimation = animol.css(
+  myElement,
+  2000,
+  { marginLeft: '0px'},
+  { marginLeft: '200px'},
+  animol.Easing.easeInOutCubic,
+);
+
+myAnimation.promise.then(() => {
+  // Start a new animation after the initial one finishes
+  animol.css(
+    myElement,
+    2000,
+    { marginLeft: '200px'},
+    { marginLeft: '100px'},
+    animol.Easing.easeInOutCubic,
+  )});
+```
+
+## Cancelling animations
+
+You can also cancel animations by calling the `cancel` function. This will stop the animation and cause the `promise` to reject.
+
+Animation objects returned by `css` and `ease` can also be **cancelled**.
+```javascript{9}
+const myAnimation = animol.css(
+  myElement,
+  2000,
+  { marginLeft: '0px' },
+  { marginLeft: '200px' },
+  animol.Easing.easeInOutCubic,
+);
+
+myAnimation.cancel();
+```
+
+## Gotchas
+
+**Convenience properties and functions** such as `background`, `border`, `padding` and `translate` are not supported. Use the individual values like `backgroundColor`, `borderWidth`, `paddingLeft` and `translateX` instead. Similarly, you can't use color shorthands like `black` or `IndianRed`.
+
+Animol **cannot convert between units**. For example, the following will throw an error:
+```javascript
+animol.css(
+  myElement,
+  2000,
+  { height: '100px' },
+  { height: '50em' },
+);
 ```
