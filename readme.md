@@ -1,6 +1,6 @@
 # Animol
 
-A very lightweight (less than 3KB minimized and gzipped) JavaScript animation library with a Greensock-like API.
+A very lightweight (less than 3KB minimized and gzipped), zero dependency, JavaScript animation library with a Greensock-like API.
 
 ## Installation
 ```

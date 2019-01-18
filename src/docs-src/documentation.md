@@ -17,7 +17,7 @@ animol.css(
 );
 ```
 
-The `from` and `to` parameters are objects where the keys are CSS properties.
+The `from` and `to` parameters are objects where the keys are CSS properties written in [camel case](https://en.wikipedia.org/wiki/Camel_case).
 
 ```javascript
 import * as animol from 'animol';
@@ -177,9 +177,9 @@ const blue = animol.parseColor('#0000FF');
 const purple = animol.blend(red, blue, 0.5); // 'rgba(128, 0, 128, 1)'
 ```
 
-## Promises
+## promise
 
-The `css` and `ease` functions return return an object with a `promise` property which (surprise!) a `Promise`. This allows you to do something after the animation completes. For example: 
+The `css` and `ease` functions return return an object which has a `promise` property that is (surprise!) a `Promise`. This allows you to do something after the animation completes. For example: 
 
 ```javascript{9}
 const myAnimation = animol.css(
@@ -204,11 +204,10 @@ myAnimation.promise.then(() => {
 
 <Promises/>
 
-## Cancelling animations
+## cancel
 
-You can also cancel animations by calling the `cancel` function. This will stop the animation and cause the `promise` to reject.
+Animation objects returned by `css` and `ease` can also be **cancelled** by calling the `cancel` function. This will stop the animation and cause the `promise` to reject.
 
-Animation objects returned by `css` and `ease` can also be **cancelled**.
 ```javascript{9}
 const myAnimation = animol.css(
   myElement,
