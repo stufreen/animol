@@ -185,8 +185,8 @@ The `css` and `ease` functions return return an object with a `promise` property
 const myAnimation = animol.css(
   myElement,
   2000,
-  { marginLeft: '0px'},
-  { marginLeft: '200px'},
+  { transform: { translateX: '0px' } },
+  { transform: { translateX: '200px' } },
   animol.Easing.easeInOutCubic,
 );
 
@@ -195,8 +195,8 @@ myAnimation.promise.then(() => {
   animol.css(
     myElement,
     2000,
-    { marginLeft: '200px'},
-    { marginLeft: '100px'},
+    { transform: { translateX: '200px' } },
+    { transform: { translateX: '100px' } },
     animol.Easing.easeInOutCubic,
   );
 });
