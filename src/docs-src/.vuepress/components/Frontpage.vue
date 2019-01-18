@@ -34,7 +34,7 @@ module.exports = {
   width: 3em;
   height: 3em;
   border-radius: 0.2em;
-  background-color: rgb(10, 160, 120);
+  background-color: #da5a47;
   margin: 0 auto;
 }
 </style>

@@ -10,7 +10,7 @@ module.exports = {}
 
 <style scoped>
 .artboard {
-  background-color: rgb(245, 245, 245);
+  background-color: #eaeef1;
   padding: 5em;
   position: relative;
   perspective: 300px;

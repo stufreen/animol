@@ -1,14 +1,27 @@
 module.exports = {
   title: 'Animol',
+  description: 'A very lightweight (less than 3KB minimized and gzipped) JavaScript animation library with a Greensock-like API.',
   base: '/animol/',
   dest: 'docs',
+  theme: 'craftdocs',
   themeConfig: {
     sidebar: [
       '/',
-      '/documentation'
+      '/documentation',
+    ],
+    nav: [
+      { text: 'Home', link: '/' },
+      { text: 'Documentation', link: '/documentation' },
+      { text: 'Github', link: 'https://www.github.com/stufreen/animol/' },
     ]
   },
   markdown: {
-    lineNumbers: true
-  }
+    anchor: { level: [2, 3] },
+    config(md) {
+      let markup = require('vuepress-theme-craftdocs/markup')
+      md.use(markup)
+    },
+    lineNumbers: true,
+  },
+  port: 39081
 }

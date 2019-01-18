@@ -41,7 +41,7 @@ module.exports = {
   width: 100px;
   height: 100px;
   border-radius: 0.2em;
-  background-color: rgb(10, 160, 120);
+  background-color: #da5a47;
 }
 
 #my-artboard {
