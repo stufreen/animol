@@ -1,6 +1,6 @@
 module.exports = {
   title: 'Animol',
-  base: 'animol',
+  base: '/animol/',
   dest: 'docs',
   themeConfig: {
     sidebar: [
