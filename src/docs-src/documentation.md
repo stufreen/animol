@@ -32,6 +32,8 @@ animol.css(
 );
 ```
 
+<Css-1 />
+
 CSS transforms are also supported. The `transform` value should be an object where the keys are CSS transform functions. The functions will always be applied in this order: `translate`, `scale`, `rotate`.
 
 ```javascript
