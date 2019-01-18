@@ -1,8 +1,8 @@
 <template>
-  <div class="artboard">
-    <div id="my-element" ref="foobar" />
+  <Artboard :inView="play" id="my-artboard">
+    <div id="my-element" />
     <PlayButton class="play-button" :onClick="play">Replay</PlayButton>
-  </div>
+  </Artboard>
 </template>
 
 <script>
@@ -34,13 +34,11 @@ module.exports = {
   background-color: rgb(10, 160, 120);
 }
 
-.artboard {
-  background-color: rgb(245, 245, 245);
+#my-artboard {
   height: 200px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   padding: 40px;
-  position: relative;
 }
 </style>

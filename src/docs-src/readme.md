@@ -2,7 +2,9 @@
 
 A very lightweight (less than 3KB minimized and gzipped) JavaScript animation library with a Greensock-like API.
 
-<Frontpage/>
+<ClientOnly>
+  <Frontpage/>
+</ClientOnly>
 
 ## Installation
 ```
