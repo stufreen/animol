@@ -33,6 +33,7 @@ export var ease = function (callback, duration, easingFunc, delay) {
         startTime = timestamp + delay;
         endTime = timestamp + duration + delay;
       } else if (timestamp >= endTime) {
+        callback(interpolate(startTime, endTime, endTime, easingFunc));
         if (typeof resolve !== 'undefined') resolve(); // Done the animation
       } else if (timestamp >= startTime) {
         callback(interpolate(startTime, endTime, timestamp, easingFunc));

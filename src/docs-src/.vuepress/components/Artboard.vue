@@ -14,5 +14,6 @@ module.exports = {}
   padding: 5em;
   position: relative;
   perspective: 300px;
+  overflow: hidden;
 }
 </style>

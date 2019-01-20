@@ -1,6 +1,6 @@
 # Animol
 
-A very lightweight (less than 3KB minimized and gzipped), zero dependency, JavaScript animation library with a Greensock-like API.
+A minimal, super lightweight (<3KB minimized and gzipped), zero dependency, JavaScript animation library.
 
 <ClientOnly>
   <Frontpage/>
@@ -22,19 +22,19 @@ animol.css(
   2000, // Duration
   { marginLeft: '0px', backgroundColor: '#FF0000' }, // From
   { marginLeft: '200px', backgroundColor: '#00FF00' }, // To
-  animol.Easing.easeInOutCubic, // Easing function (defaults to Easing.linear)
-  1000, // Delay (defaults to 0)
+  animol.Easing.easeInOutCubic, // Easing function
+  1000 // Delay
 );
 ```
 
 ## Documentation
 
-[Go to the documentation](/documentation.html)
+[Go to Documentation](/documentation.html)
 
 ## Motivation
-Animol is intended to be **very lightweight**, **ease to use** and **relatively performant**. It abstracts the repetitive logic for calling `requestAnimationFrame`, easing, and parsing CSS strings.
+Animol is intended to be **super lightweight**, **ease to use** and **performant**. It abstracts the repetitive logic for calling `requestAnimationFrame`, easing, and parsing CSS strings.
 
-It's ideal for small projects where you want to do some simple animations without reinventing the wheel, and you don't want to import a large library.
+It's ideal for small projects where you want to do some JavaScript animations without reinventing the wheel, and you don't want to import a large library.
 
 For advanced use cases involving timelines, svg, etc. check out Greensock or Anime.js.
 
