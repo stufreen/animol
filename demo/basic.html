@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>Animol: Basic</title>
+    <link rel="stylesheet" type="text/css" href="theme.css">
+    <script src="animol.min.js"></script>
+  </head>
+  <body>
+    <h1>Basic</h1>
+    <div id="block" class="block"></div>
+    <script>
+      animol.css(
+        document.getElementById('block'),
+        2000,
+        {},
+        { transform: { translateX: '300px', scaleX: 3, scaleY: 3, rotate: '2rad' } },
+        animol.Easing.easeInOutBack(0.5),
+        0
+      );
+    </script>
+  </body>
+</html>
