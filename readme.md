@@ -1,4 +1,4 @@
-<img src="./src/docs-src/wordmark.svg" style="width: 250px; margin-bottom: 2em;" />
+<img src="./src/docs-src/wordmark.svg" style="width: 250px; margin-bottom: 2em;" width="250" />
 
 A minimal, super lightweight (<3KB minimized and gzipped), zero dependency, JavaScript animation library.
 
