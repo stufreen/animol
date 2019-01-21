@@ -1,4 +1,4 @@
-# Animol
+<img src="./src/docs-src/wordmark.svg" style="width: 250px; margin-bottom: 2em; display: block;" />
 
 A minimal, super lightweight (<3KB minimized and gzipped), zero dependency, JavaScript animation library.
 

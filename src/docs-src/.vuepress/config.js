@@ -1,6 +1,6 @@
 module.exports = {
   title: 'Animol',
-  description: 'A very lightweight (less than 3KB minimized and gzipped) JavaScript animation library with a Greensock-like API.',
+  description: 'A minimal, super lightweight (<3KB minimized and gzipped), zero dependency, JavaScript animation library.',
   base: '/animol/',
   dest: 'docs',
   theme: 'craftdocs',

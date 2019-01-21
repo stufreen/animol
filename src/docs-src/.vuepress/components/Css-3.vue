@@ -15,8 +15,8 @@ module.exports = {
         animol.css(
           myElement,
           3000,
-          { transform: { rotateX: '0deg', rotateY: '0deg', rotateZ: '0deg' } },
-          { transform: { rotateX: '0deg', rotateY: '360deg', rotateZ: '90deg' } },
+          { transform: { rotateY: '0deg', rotateZ: '0deg' } },
+          { transform: { rotateY: '360deg', rotateZ: '90deg' } },
           animol.Easing.easeInOutElastic(1.5),
         );
       })
