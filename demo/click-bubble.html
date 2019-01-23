@@ -28,22 +28,44 @@
   <script>
     const myButton = document.getElementById('my-button');
 
-    myButton.addEventListener('click', (evt) => {
-      animol.css(
-        myButton,
-        3000,
-        {},
-        { transform: { scaleX: 3, scaleY: 3 } },
-        animol.Easing.easeOutElastic(1),
-        0
-      );
+    let isOpen = false;
 
-      animol.ease(
-        (progress) => {
-          myButton.style.boxShadow = `5px 5px 1px 1px rgba(0, 0, 0, ${progress * 0.2})`;
-        },
-        300,
-      );
+    myButton.addEventListener('click', (evt) => {
+
+      if (isOpen) {
+        isOpen = false;
+        animol.css(
+          myButton,
+          3000,
+          {},
+          { transform: { scaleX: 1, scaleY: 1 } },
+          animol.Easing.easeOutElastic(1),
+          0
+        );
+        animol.ease(
+          (progress) => {
+            myButton.style.boxShadow = `5px 5px 1px 1px rgba(0, 0, 0, ${(1 - progress) * 0.2})`;
+          },
+          300,
+        );
+      } else {
+        isOpen = true;
+        animol.css(
+          myButton,
+          3000,
+          {},
+          { transform: { scaleX: 3, scaleY: 3 } },
+          animol.Easing.easeOutElastic(1),
+          0
+        );
+        animol.ease(
+          (progress) => {
+            myButton.style.boxShadow = `5px 5px 1px 1px rgba(0, 0, 0, ${progress * 0.2})`;
+          },
+          300,
+        );
+      }
+      
     });
   </script>
 </body>
