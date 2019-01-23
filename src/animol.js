@@ -2,7 +2,8 @@ import {
   interpolate,
   calculateVal,
   calculateColor,
-  calculateTransform
+  calculateTransform,
+  prepareTransformString
 } from './interpolate';
 import { buildFromToList } from './transformList';
 import { Easing } from './easing';
@@ -62,7 +63,6 @@ export var blend = function (colorA, colorB, progress) {
 export var css = function (element, duration, from, to, easingFunc, delay) {
   from = from || {};
   to = to || {};
-
   var fromToList = buildFromToList(element, from, to);
   var callback = function (progress) {
     fromToList.forEach(function (item) {
@@ -70,7 +70,8 @@ export var css = function (element, duration, from, to, easingFunc, delay) {
         element.style[item.key] = blend(item.fromVal, item.toVal, progress);
       } else if (item.key === 'transform') {
         var newTransform = calculateTransform(item.fromVal, item.toVal, progress);
-        element.style.transform = newTransform;
+        var transformString = prepareTransformString(element.style.transform, newTransform);
+        element.style.transform = transformString;
       } else {
         var newVal = calculateVal(item.fromVal, item.toVal, progress);
         element.style[item.key] = newVal.toString() + item.unit;

@@ -6,18 +6,19 @@ import {
 } from './parseCss.js';
 import { decomposeTransformMatrix3D, matrix2DTo3D } from './matrix.js';
 import { convenience } from './convenience.js';
+import { roundTo } from './math.js';
 
-export var IDENTITY = [
-  { key: 'translateX', unit: 'px', val: 0 },
-  { key: 'translateY', unit: 'px', val: 0 },
-  { key: 'translateZ', unit: 'px', val: 0 },
-  { key: 'scaleX', unit: '', val: 1 },
-  { key: 'scaleY', unit: '', val: 1 },
-  { key: 'scaleZ', unit: '', val: 1 },
-  { key: 'rotateX', unit: 'rad', val: 0 },
-  { key: 'rotateY', unit: 'rad', val: 0 },
-  { key: 'rotateZ', unit: 'rad', val: 0 }
-];
+export var IDENTITY = {
+  translateX: { unit: 'px', val: 0 },
+  translateY: { unit: 'px', val: 0 },
+  translateZ: { unit: 'px', val: 0 },
+  scaleX: { unit: '', val: 1 },
+  scaleY: { unit: '', val: 1 },
+  scaleZ: { unit: '', val: 1 },
+  rotateX: { unit: 'rad', val: 0 },
+  rotateY: { unit: 'rad', val: 0 },
+  rotateZ: { unit: 'rad', val: 0 }
+};
 
 export var inferTransforms = function (el) {
   var computedStyles = window.getComputedStyle(el);
@@ -48,18 +49,21 @@ function inferUnitVal(key, element) {
 }
 
 function defaultToInferred(inferredTransforms, transformList) {
-  return inferredTransforms.map(function (item) {
-    var match = transformList[item.key];
-    if (!match) {
-      return item;
+  return Object.keys(inferredTransforms).reduce((accumulator, tKey) => {
+    if (typeof transformList[tKey] === 'undefined') {
+      accumulator[tKey] = {
+        unit: inferredTransforms[tKey].unit,
+        val: inferredTransforms[tKey].val
+      };
+    } else {
+      var transform = getUnitVal(tKey, transformList);
+      accumulator[tKey] = {
+        unit: transform.unit,
+        val: transform.val
+      };
     }
-    var transform = getUnitVal(item.key, transformList);
-    return {
-      key: item.key,
-      unit: transform.unit,
-      val: transform.val
-    };
-  });
+    return accumulator;
+  }, {});
 }
 
 function getUnitVal(key, styleObj) {
@@ -87,17 +91,18 @@ function getUnitVal(key, styleObj) {
   return { unit: unit, val: val };
 }
 
-function simplifyTransformLists(transformFrom, transformTo) {
-  var fromFixed = [];
-  var toFixed = [];
-  IDENTITY.forEach(function (identityTransform, index) {
-    if (identityTransform.val !== transformFrom[index].val
-      || identityTransform.unit !== transformFrom[index].unit
-      || identityTransform.val !== transformTo[index].val
-      || identityTransform.unit !== transformTo[index].unit) {
-      var reconciled = reconcileUnits(transformFrom[index], transformTo[index]);
-      fromFixed.push(reconciled.from);
-      toFixed.push(reconciled.to);
+function simplifyTransformLists(tFrom, tTo) {
+  var fromFixed = {};
+  var toFixed = {};
+
+  Object.keys(IDENTITY).forEach((tKey) => {
+    if (IDENTITY[tKey].val !== roundTo(tFrom[tKey].val, 3)
+      || IDENTITY[tKey].unit !== tFrom[tKey].unit
+      || IDENTITY[tKey].val !== roundTo(tTo[tKey].val, 3)
+      || IDENTITY[tKey].unit !== tTo[tKey].unit) {
+      var reconciled = reconcileUnits(tFrom[tKey], tTo[tKey]);
+      fromFixed[tKey] = reconciled.from;
+      toFixed[tKey] = reconciled.to;
     }
   });
 

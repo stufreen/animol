@@ -1,0 +1,77 @@
+<html>
+
+<head>
+  <title>Animol: Basic</title>
+  <link rel="stylesheet" type="text/css" href="theme.css">
+  <script src="animol.min.js"></script>
+  <style>
+    .card {
+      width: 20em;
+      height: 20em;
+      border-radius: 0.2em;
+      background-color: rgb(50, 90, 120);
+      border: none;
+      box-shadow: 0 0 rgba(0, 0, 0, 0);
+    }
+
+    .container {
+      width: 20em;
+      height: 20em;
+      margin: 10em;
+      perspective: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Card</h1>
+  <div class="container">
+    <div id="my-card" class="card"></div>
+  </div>
+  <script>
+    const myCard = document.getElementById('my-card');
+
+    myCard.addEventListener('mouseover', (evt) => {
+      console.log('mousover');
+      animol.css(
+        myCard,
+        200,
+        {},
+        { transform: { translateZ: '50px' } },
+        animol.Easing.easeOutCubic
+      );
+    });
+
+    myCard.addEventListener('mouseleave', (evt) => {
+      console.log('mouseleave');
+      animol.css(
+        myCard,
+        200,
+        {},
+        { transform: { translateZ: '0px', rotateY: '0deg', rotateX: '0deg' } },
+        animol.Easing.easeOutCubic
+      );
+    });
+
+    myCard.addEventListener('mousemove', (evt) => {
+      console.log('mousemove');
+      const bb = myCard.getBoundingClientRect();
+      const pctLeft = ((evt.x - bb.x) / bb.width) - 0.5;
+      const pctTop = (((evt.y - bb.y) / bb.height) - 0.5) * -1;
+      const rotateAmount = 10;
+      animol.css(
+        myCard,
+        200,
+        {},
+        { transform: {
+          rotateY: `${rotateAmount * pctLeft}deg`,
+          rotateX: `${rotateAmount * pctTop}deg`,
+          rotateZ: '0deg'
+        } },
+        animol.Easing.easeOutCubic
+      );
+    });
+  </script>
+</body>
+
+</html>

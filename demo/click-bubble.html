@@ -1,0 +1,51 @@
+<html>
+
+<head>
+  <title>Animol: Basic</title>
+  <link rel="stylesheet" type="text/css" href="theme.css">
+  <script src="animol.min.js"></script>
+  <style>
+    .click-bubble {
+      width: 10em;
+      height: 10em;
+      border-radius: 15em;
+      background-color: rgb(50, 90, 120);
+      appearance: none;
+      border: none;
+      margin: 10em;
+      box-shadow: 0 0 rgba(0, 0, 0, 0);
+    }
+
+    .click-bubble:focus {
+      outline: none;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Basic</h1>
+  <button id="my-button" class="click-bubble"></button>
+  <script>
+    const myButton = document.getElementById('my-button');
+
+    myButton.addEventListener('click', (evt) => {
+      animol.css(
+        myButton,
+        3000,
+        {},
+        { transform: { scaleX: 3, scaleY: 3 } },
+        animol.Easing.easeOutElastic(1),
+        0
+      );
+
+      animol.ease(
+        (progress) => {
+          myButton.style.boxShadow = `5px 5px 1px 1px rgba(0, 0, 0, ${progress * 0.2})`;
+        },
+        300,
+      );
+    });
+  </script>
+</body>
+
+</html>

@@ -7,17 +7,17 @@ function shallowCopy(ar) {
 }
 
 function getTranslate3D(matrix) {
-  var translateX = matrix[9];
-  var translateY = matrix[10];
-  var translateZ = matrix[11];
+  var translateX = matrix[12];
+  var translateY = matrix[13];
+  var translateZ = matrix[14];
   var newMatrix = shallowCopy(matrix);
-  newMatrix[9] = 0;
-  newMatrix[10] = 0;
-  newMatrix[11] = 0;
+  newMatrix[12] = 0;
+  newMatrix[13] = 0;
+  newMatrix[14] = 0;
   return {
-    x: { key: 'translateX', unit: 'px', val: translateX },
-    y: { key: 'translateY', unit: 'px', val: translateY },
-    z: { key: 'translateZ', unit: 'px', val: translateZ },
+    x: { unit: 'px', val: translateX },
+    y: { unit: 'px', val: translateY },
+    z: { unit: 'px', val: translateZ },
     matrix: newMatrix
   };
 }
@@ -27,25 +27,25 @@ function getScale3D(matrix) {
     Math.pow(matrix[0], 2) + Math.pow(matrix[1], 2) + Math.pow(matrix[2], 2)
   );
   var scaleY = Math.sqrt(
-    Math.pow(matrix[3], 2) + Math.pow(matrix[4], 2) + Math.pow(matrix[5], 2)
+    Math.pow(matrix[4], 2) + Math.pow(matrix[5], 2) + Math.pow(matrix[6], 2)
   );
   var scaleZ = Math.sqrt(
-    Math.pow(matrix[6], 2) + Math.pow(matrix[7], 2) + Math.pow(matrix[8], 2)
+    Math.pow(matrix[8], 2) + Math.pow(matrix[9], 2) + Math.pow(matrix[10], 2)
   );
   var newMatrix = shallowCopy(matrix);
   newMatrix[0] = matrix[0] / scaleX;
   newMatrix[1] = matrix[1] / scaleX;
   newMatrix[2] = matrix[2] / scaleX;
-  newMatrix[3] = matrix[3] / scaleY;
   newMatrix[4] = matrix[4] / scaleY;
   newMatrix[5] = matrix[5] / scaleY;
-  newMatrix[6] = matrix[6] / scaleZ;
-  newMatrix[7] = matrix[7] / scaleZ;
+  newMatrix[6] = matrix[6] / scaleY;
   newMatrix[8] = matrix[8] / scaleZ;
+  newMatrix[9] = matrix[9] / scaleZ;
+  newMatrix[10] = matrix[10] / scaleZ;
   return {
-    x: { key: 'scaleX', unit: '', val: scaleX },
-    y: { key: 'scaleY', unit: '', val: scaleY },
-    z: { key: 'scaleZ', unit: '', val: scaleZ },
+    x: { unit: '', val: scaleX },
+    y: { unit: '', val: scaleY },
+    z: { unit: '', val: scaleZ },
     matrix: newMatrix
   };
 }
@@ -59,18 +59,18 @@ function getRotate3D(matrix) {
     -1 * matrix[2],
     Math.sqrt(Math.pow(matrix[0], 2) + Math.pow(matrix[1], 2))
   );
-  var alpha = Math.atan2(matrix[5] / Math.cos(beta), matrix[8] / Math.cos(beta));
+  var alpha = Math.atan2(matrix[6] / Math.cos(beta), matrix[10] / Math.cos(beta));
   var gamma = Math.atan2(matrix[1] / Math.cos(beta), matrix[0] / Math.cos(beta));
   var newMatrix = [
-    1, 0, 0,
-    0, 1, 0,
-    0, 0, 1,
-    0, 0, 0
+    1, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, 1, 0,
+    0, 0, 0, 1
   ];
   return {
-    x: { key: 'rotateX', unit: 'rad', val: noNegZero(alpha) },
-    y: { key: 'rotateY', unit: 'rad', val: noNegZero(beta) },
-    z: { key: 'rotateZ', unit: 'rad', val: noNegZero(gamma) },
+    x: { unit: 'rad', val: noNegZero(alpha) },
+    y: { unit: 'rad', val: noNegZero(beta) },
+    z: { unit: 'rad', val: noNegZero(gamma) },
     matrix: newMatrix
   };
 }
@@ -80,17 +80,17 @@ export var decomposeTransformMatrix3D = function (matrix) {
   var translate = getTranslate3D(matrix);
   var scale = getScale3D(translate.matrix);
   var rotate = getRotate3D(scale.matrix);
-  return [
-    translate.x,
-    translate.y,
-    translate.z,
-    scale.x,
-    scale.y,
-    scale.z,
-    rotate.x,
-    rotate.y,
-    rotate.z
-  ];
+  return {
+    translateX: translate.x,
+    translateY: translate.y,
+    translateZ: translate.z,
+    scaleX: scale.x,
+    scaleY: scale.y,
+    scaleZ: scale.z,
+    rotateX: rotate.x,
+    rotateY: rotate.y,
+    rotateZ: rotate.z
+  };
 };
 
 export var matrix2DTo3D = function (m) {
@@ -98,14 +98,18 @@ export var matrix2DTo3D = function (m) {
     m[0],
     m[1],
     0,
+    0,
     m[2],
     m[3],
     0,
     0,
     0,
+    0,
     1,
+    0,
     m[4],
     m[5],
+    0,
     0
   ];
 };
