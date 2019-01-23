@@ -44,7 +44,7 @@
         );
         animol.ease(
           (progress) => {
-            myButton.style.boxShadow = `5px 5px 1px 1px rgba(0, 0, 0, ${(1 - progress) * 0.2})`;
+            myButton.style.boxShadow = `${(1 - progress) * 5}px ${(1 - progress) * 5}px 1px 1px rgba(0, 0, 0, 0.2)`;
           },
           300,
         );
@@ -60,7 +60,7 @@
         );
         animol.ease(
           (progress) => {
-            myButton.style.boxShadow = `5px 5px 1px 1px rgba(0, 0, 0, ${progress * 0.2})`;
+            myButton.style.boxShadow = `${progress * 5}px ${progress * 5}px 1px 1px rgba(0, 0, 0, 0.2)`;
           },
           300,
         );
