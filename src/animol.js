@@ -63,9 +63,12 @@ export var blend = function (colorA, colorB, progress) {
 export var css = function (element, duration, from, to, easingFunc, delay) {
   from = from || {};
   to = to || {};
-  var fromToList = buildFromToList(element, from, to);
+  var fromToList;
   // console.log(fromToList);
   var callback = function (progress) {
+    if (!fromToList) {
+      fromToList = buildFromToList(element, from, to);
+    }
     fromToList.forEach(function (item) {
       if (item.unit === 'color') {
         element.style[item.key] = blend(item.fromVal, item.toVal, progress);

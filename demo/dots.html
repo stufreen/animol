@@ -1,0 +1,65 @@
+<html>
+
+<head>
+  <title>Animol: Dots</title>
+  <link rel="stylesheet" type="text/css" href="theme.css">
+  <script src="animol.min.js"></script>
+  <style>
+    .container {
+      width: 100%;
+      height: 20em;
+      position: relative;
+      display: flex;
+      background-color: rgb(240, 240, 249)
+    }
+
+    .dot {
+      width: 1%;
+      height: 0;
+      padding-bottom: 1%;
+      background-color: rgb(230, 90, 90);
+      border-radius: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Dots</h1>
+  <div class="container"></div>
+  <script>
+
+    var dots = [];
+
+    // Add a bunch of elements
+    const container = document.getElementsByClassName('container');
+    for (let i = 0; i < 100; i++) {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      container[0].appendChild(dot);
+      dots.push(dot);
+    }
+
+    const easing = animol.Easing.easeInOutBack(1.5);
+
+    dots.forEach((dot, i) => {
+      animol.css(
+        dot,
+        2000,
+        { transform: { translateY: '0' } },
+        { transform: { translateY: '19em' } },
+        easing,
+        i * 30
+      );
+      animol.css(
+        dot,
+        2000,
+        {},
+        { transform: { translateY: '0em' } },
+        easing,
+        2500 + (i * 30)
+      );
+    });    
+  </script>
+</body>
+
+</html>
