@@ -10,7 +10,7 @@
       height: 20em;
       position: relative;
       display: flex;
-      background-color: rgb(240, 240, 249)
+      background-color: rgb(240, 240, 240)
     }
 
     .dot {
@@ -27,36 +27,40 @@
   <h1>Dots</h1>
   <div class="container"></div>
   <script>
+    // Parameters
+    const easing = animol.Easing.easeInOutBack(1.5);
+    const animationTime = 2000;
+    const numElements = 100;
+    const gateTime = 30;
 
     var dots = [];
 
     // Add a bunch of elements
     const container = document.getElementsByClassName('container');
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < numElements; i++) {
       const dot = document.createElement('div');
       dot.classList.add('dot');
       container[0].appendChild(dot);
       dots.push(dot);
     }
 
-    const easing = animol.Easing.easeInOutBack(1.5);
-
+    
     dots.forEach((dot, i) => {
       animol.css(
         dot,
-        2000,
+        animationTime,
         { transform: { translateY: '0' } },
         { transform: { translateY: '19em' } },
         easing,
-        i * 30
+        i * gateTime
       );
       animol.css(
         dot,
-        2000,
+        animationTime,
         {},
         { transform: { translateY: '0em' } },
         easing,
-        2500 + (i * 30)
+        animationTime + 100 + (i * gateTime)
       );
     });    
   </script>
