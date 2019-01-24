@@ -64,6 +64,7 @@ export var css = function (element, duration, from, to, easingFunc, delay) {
   from = from || {};
   to = to || {};
   var fromToList = buildFromToList(element, from, to);
+  // console.log(fromToList);
   var callback = function (progress) {
     fromToList.forEach(function (item) {
       if (item.unit === 'color') {

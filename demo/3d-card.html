@@ -14,6 +14,16 @@
       box-shadow: 0 0 rgba(0, 0, 0, 0);
     }
 
+    .shine {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      opacity: 0;
+      background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+    }
+
     .container {
       width: 20em;
       height: 20em;
@@ -26,39 +36,49 @@
 <body>
   <h1>Card</h1>
   <div class="container">
-    <div id="my-card" class="card"></div>
+    <div id="my-card" class="card">
+      <div id="shine" class="shine"></div>
+    </div>
   </div>
   <script>
     const myCard = document.getElementById('my-card');
+    const shine = document.getElementById('shine');
 
     myCard.addEventListener('mouseover', (evt) => {
-      console.log('mousover');
       animol.css(
         myCard,
-        200,
+        300,
         {},
-        { transform: { translateZ: '50px' } },
-        animol.Easing.easeOutCubic
+        { transform: { translateZ: '50px' } }
+      );
+      animol.css(
+        shine,
+        300,
+        { opacity: 0 },
+        { opacity: 1 }
       );
     });
 
     myCard.addEventListener('mouseleave', (evt) => {
-      console.log('mouseleave');
       animol.css(
         myCard,
-        200,
+        300,
         {},
-        { transform: { translateZ: '0px', rotateY: '0deg', rotateX: '0deg' } },
-        animol.Easing.easeOutCubic
+        { transform: { translateZ: '0px', rotateY: '0deg', rotateX: '0deg' } }
+      );
+      animol.css(
+        shine,
+        300,
+        { opacity: 1 },
+        { opacity: 0 }
       );
     });
 
     myCard.addEventListener('mousemove', (evt) => {
-      console.log('mousemove');
       const bb = myCard.getBoundingClientRect();
       const pctLeft = ((evt.x - bb.x) / bb.width) - 0.5;
       const pctTop = (((evt.y - bb.y) / bb.height) - 0.5) * -1;
-      const rotateAmount = 10;
+      const rotateAmount = 15;
       animol.css(
         myCard,
         200,
@@ -70,6 +90,7 @@
         } },
         animol.Easing.easeOutCubic
       );
+      shine.style.backgroundImage = `linear-gradient(rgba(255, 255, 255, ${(pctTop + 0.5) * 0.4}), rgba(255, 255, 255, 0))`;
     });
   </script>
 </body>
