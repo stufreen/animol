@@ -10,13 +10,14 @@
       height: 20em;
       position: relative;
       display: flex;
-      background-color: rgb(240, 240, 240)
+      background-color: rgb(240, 240, 240);
+      justify-content: space-between;
     }
 
     .dot {
-      width: 1%;
+      width: 0.9%;
       height: 0;
-      padding-bottom: 1%;
+      padding-bottom: 0.9%;
       background-color: rgb(230, 90, 90);
       border-radius: 100%;
     }
@@ -28,8 +29,8 @@
   <div class="container"></div>
   <script>
     // Parameters
-    const easing = animol.Easing.easeInOutBack(1.5);
-    const animationTime = 2000;
+    const easing = animol.Easing.easeInOutQuart;
+    const animationTime = 1000;
     const numElements = 100;
     const gateTime = 30;
 
