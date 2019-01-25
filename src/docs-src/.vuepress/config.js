@@ -6,12 +6,14 @@ module.exports = {
   theme: 'craftdocs',
   themeConfig: {
     sidebar: [
-      '/',
+      ['/', 'Home'],
       '/documentation',
+      '/demos',
     ],
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Documentation', link: '/documentation' },
+      { text: 'Demos', link: '/demos' },
       { text: 'Github', link: 'https://www.github.com/stufreen/animol/' },
     ]
   },
