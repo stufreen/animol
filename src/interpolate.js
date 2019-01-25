@@ -45,21 +45,24 @@ export var prepareTransformString = function (currentTransformsString, newTransf
   // Parse the transform string into a transform list
   var currentTransformsAr = currentTransformsString.split(' ');
   var currentTransforms = {};
-  currentTransformsAr.forEach(function (transformString) {
-    if (transformString !== '') {
-      var match = transformString.match(/(.*)\((.*)\)/);
-      currentTransforms[match[1]] = match[2];
+  for (var i = 0; i < currentTransformsAr.length; i++) {
+    if (currentTransformsAr[i] !== '') {
+      var parts = currentTransformsAr[i].split('(');
+      var key = parts[0];
+      var val = parts[1].substring(0, parts[1].length - 2);
+      currentTransforms[key] = val;
     }
-  });
+  }
 
   // Apply the new transforms to the old transforms
-  var transformsList = [];
-  applyOrder.forEach((tKey) => {
+  var transformsList = '';
+  for (var j = 0; j < applyOrder.length; j++) {
+    var tKey = applyOrder[j];
     if (typeof newTransforms[tKey] !== 'undefined') {
-      transformsList.push(`${tKey}(${newTransforms[tKey]})`);
+      transformsList += tKey + '(' + newTransforms[tKey] + ') ';
     } else if (typeof currentTransforms[tKey] !== 'undefined') {
-      transformsList.push(`${tKey}(${currentTransforms[tKey]})`);
+      transformsList += tKey + '(' + currentTransforms[tKey] + ') ';
     }
-  });
-  return transformsList.join(' ');
+  }
+  return transformsList;
 };
