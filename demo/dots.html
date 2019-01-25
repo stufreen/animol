@@ -29,7 +29,7 @@
   <div class="container"></div>
   <script>
     // Parameters
-    const easing = animol.Easing.easeInOutQuart;
+    const easing = animol.Easing.easeInOutBack(1);
     const animationTime = 1000;
     const numElements = 100;
     const gateTime = 30;
@@ -50,8 +50,8 @@
       animol.css(
         dot,
         animationTime,
-        { transform: { translateY: '0' } },
-        { transform: { translateY: '19em' } },
+        {},
+        { transform: { translateY: '19em' }, backgroundColor: '#335599' },
         easing,
         i * gateTime
       );
@@ -59,7 +59,7 @@
         dot,
         animationTime,
         {},
-        { transform: { translateY: '0em' } },
+        { transform: { translateY: '0em' }, backgroundColor: 'rgb(230, 90, 90)' },
         easing,
         animationTime + 100 + (i * gateTime)
       );
