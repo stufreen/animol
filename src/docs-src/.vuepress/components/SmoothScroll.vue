@@ -2,6 +2,7 @@
   <div id="scroll-container">
     <div id="scroll-inner">
       <button class="scroll-demo-button" id="scroll-to-bottom">Scroll to bottom</button>
+      <button class="scroll-demo-button" id="scroll-to-top">Scroll to top</button>
     </div>
   </div>
 </template>
@@ -18,9 +19,11 @@ module.exports = {
         // Get the current scroll position
         var startScrollY = scrollContainer.scrollTop;
         // Calculate the scroll position at the end of the page
-        var endScrollY = scrollInner.clientHeight - scrollContainer.clientHeight;
+        var endScrollY = scrollInner.clientHeight - scrollContainer.offsetHeight;
         // Calculate the total distance to scroll
         var distance = endScrollY - startScrollY;
+
+        console.log(scrollContainer.scrollHeight, scrollInner.scrollHeight)
 
         // Smooth scroll to the bottom using animol.ease
         animol.ease(
@@ -40,16 +43,19 @@ module.exports = {
 <style scoped>
 #scroll-container {
   background-color: #eaeef1;
-  padding: 3em;
   position: relative;
-  overflow: scroll;
+  overflow-y: scroll;
   height: 20em; 
-  box-sizing: border-box;
 }
 
 #scroll-inner {
+  padding: 3em;
   width: 100%;
   height: 40em;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .scroll-demo-button {
