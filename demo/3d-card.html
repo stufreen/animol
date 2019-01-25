@@ -78,10 +78,10 @@
       const bb = myCard.getBoundingClientRect();
       const pctLeft = ((evt.x - bb.x) / bb.width) - 0.5;
       const pctTop = (((evt.y - bb.y) / bb.height) - 0.5) * -1;
-      const rotateAmount = 15;
+      const rotateAmount = 10;
       animol.css(
         myCard,
-        200,
+        300,
         {},
         { transform: {
           rotateY: `${rotateAmount * pctLeft}deg`,

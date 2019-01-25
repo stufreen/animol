@@ -49,7 +49,7 @@ export var prepareTransformString = function (currentTransformsString, newTransf
     if (currentTransformsAr[i] !== '') {
       var parts = currentTransformsAr[i].split('(');
       var key = parts[0];
-      var val = parts[1].substring(0, parts[1].length - 2);
+      var val = parts[1].substring(0, parts[1].length - 1);
       currentTransforms[key] = val;
     }
   }
