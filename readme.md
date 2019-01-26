@@ -4,7 +4,7 @@ A minimal, super lightweight (<3KB minimized and gzipped), zero dependency, Java
 
 ## Installation
 ```
-npm install stufreen/animol --save
+npm install animol --save
 ```
 
 ## Basic usage
