@@ -12,6 +12,7 @@ module.exports = {
   mounted: () => {
     import('../../../../dist/animol.min.js').then(() => {
       const scrollToBottom = document.getElementById('scroll-to-bottom');
+      const scrollToTop = document.getElementById('scroll-to-top');
       const scrollContainer = document.getElementById('scroll-container');
       const scrollInner = document.getElementById('scroll-inner');
 
@@ -23,11 +24,23 @@ module.exports = {
         // Calculate the total distance to scroll
         var distance = endScrollY - startScrollY;
 
-        console.log(scrollContainer.scrollHeight, scrollInner.scrollHeight)
-
         // Smooth scroll to the bottom using animol.ease
         animol.ease(
-          function (progress) {
+          (progress) => {
+            var scrollY = startScrollY + (progress * distance);
+            scrollContainer.scrollTo(0, scrollY);
+          },
+          2000,
+          animol.Easing.easeInOutQuint
+        );
+      });
+
+      scrollToTop.addEventListener('click', function () {
+        var startScrollY = scrollContainer.scrollTop;
+        var endScrollY = 0;
+        var distance = endScrollY - startScrollY;
+        animol.ease(
+          (progress) => {
             var scrollY = startScrollY + (progress * distance);
             scrollContainer.scrollTo(0, scrollY);
           },
@@ -45,7 +58,8 @@ module.exports = {
   background-color: #eaeef1;
   position: relative;
   overflow-y: scroll;
-  height: 20em; 
+  height: 20em;
+  -webkit-overflow-scrolling: touch;
 }
 
 #scroll-inner {
@@ -56,6 +70,7 @@ module.exports = {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background: linear-gradient(#eaeef1, #abbac5);
 }
 
 .scroll-demo-button {
