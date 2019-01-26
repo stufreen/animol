@@ -119,7 +119,7 @@ function buildTransformFromToList(el, from, to) {
   };
 }
 
-export const buildFromToList = (el, from, to) => {
+export const buildFromToList = function (el, from, to) {
   from = from || {};
   to = to || {};
   var fromToList = [];

@@ -1,6 +1,6 @@
 {
   "name": "animol",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Super lightweight animation library",
   "main": "dist/animol.min.js",
   "scripts": {

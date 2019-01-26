@@ -87,5 +87,5 @@ export var parseMatrix = function (matrixString) {
     return false;
   }
 
-  return match[2].split(',').map(item => parseFloat(item));
+  return match[2].split(',').map(function (item) { return parseFloat(item); } );
 };
