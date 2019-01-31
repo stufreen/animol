@@ -56,24 +56,15 @@ function noNegZero(num) {
   return (Object.is(num, -0) ? 0 : num);
 }
 
-function getRotate3D(matrix) {
-  var beta = Math.atan2(
-    -1 * matrix[2],
-    Math.sqrt(Math.pow(matrix[0], 2) + Math.pow(matrix[1], 2))
-  );
-  var alpha = Math.atan2(matrix[6] / Math.cos(beta), matrix[10] / Math.cos(beta));
-  var gamma = Math.atan2(matrix[1] / Math.cos(beta), matrix[0] / Math.cos(beta));
-  var newMatrix = [
-    1, 0, 0, 0,
-    0, 1, 0, 0,
-    0, 0, 1, 0,
-    0, 0, 0, 1
-  ];
+function getRotate3D(values) {
+  var b = Math.asin(values[8]);
+  var cosB = Math.cos(b);
+  var a = Math.asin(-values[9] / cosB);
+  var c = Math.acos(values[0] / cosB);
   return {
-    x: { unit: 'rad', val: roundTo(noNegZero(alpha), 4) },
-    y: { unit: 'rad', val: roundTo(noNegZero(beta), 4) },
-    z: { unit: 'rad', val: roundTo(noNegZero(gamma), 4) },
-    matrix: newMatrix
+    x: { unit: 'rad', val: roundTo(noNegZero(a), 4) },
+    y: { unit: 'rad', val: roundTo(noNegZero(b), 4) },
+    z: { unit: 'rad', val: roundTo(noNegZero(c), 4) }
   };
 }
 
