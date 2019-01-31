@@ -16,7 +16,9 @@ export var IDENTITY = {
   scaleZ: { unit: '', val: 1 },
   rotateX: { unit: 'rad', val: 0 },
   rotateY: { unit: 'rad', val: 0 },
-  rotateZ: { unit: 'rad', val: 0 }
+  rotateZ: { unit: 'rad', val: 0 },
+  skewX: { unit: 'rad', val: 0 },
+  skewY: { unit: 'rad', val: 0 }
 };
 
 export var inferTransforms = function (el) {
@@ -95,6 +97,15 @@ function buildTransformFromToList(el, from, to) {
   var inferredTransforms = inferTransforms(el);
   var transformFrom = {};
   var transformTo = {};
+
+  // Iterate through the "inferredTransforms" keys to find transforms already applied
+  Object.keys(inferredTransforms).forEach(function (key) {
+    if (inferredTransforms[key].unit !== IDENTITY[key].unit
+      || inferredTransforms[key].val !== IDENTITY[key].val) {
+      transformFrom[key] = { unit: inferredTransforms[key].unit, val: inferredTransforms[key].val };
+      transformTo[key] = { unit: inferredTransforms[key].unit, val: inferredTransforms[key].val };
+    }
+  });
 
   // Iterate through the "from" keys, adding matching "to" values if possible
   Object.keys(from).forEach(function (key) {

@@ -1,3 +1,5 @@
+import { roundTo } from './math';
+
 function shallowCopy(ar) {
   var newAr = [];
   for (let i = 0; i < ar.length; i += 1 ) {
@@ -43,9 +45,9 @@ function getScale3D(matrix) {
   newMatrix[9] = matrix[9] / scaleZ;
   newMatrix[10] = matrix[10] / scaleZ;
   return {
-    x: { unit: '', val: scaleX },
-    y: { unit: '', val: scaleY },
-    z: { unit: '', val: scaleZ },
+    x: { unit: '', val: roundTo(scaleX, 4) },
+    y: { unit: '', val: roundTo(scaleY, 4) },
+    z: { unit: '', val: roundTo(scaleZ, 4) },
     matrix: newMatrix
   };
 }
@@ -68,9 +70,9 @@ function getRotate3D(matrix) {
     0, 0, 0, 1
   ];
   return {
-    x: { unit: 'rad', val: noNegZero(alpha) },
-    y: { unit: 'rad', val: noNegZero(beta) },
-    z: { unit: 'rad', val: noNegZero(gamma) },
+    x: { unit: 'rad', val: roundTo(noNegZero(alpha), 4) },
+    y: { unit: 'rad', val: roundTo(noNegZero(beta), 4) },
+    z: { unit: 'rad', val: roundTo(noNegZero(gamma), 4) },
     matrix: newMatrix
   };
 }
@@ -89,7 +91,9 @@ export var decomposeTransformMatrix3D = function (matrix) {
     scaleZ: scale.z,
     rotateX: rotate.x,
     rotateY: rotate.y,
-    rotateZ: rotate.z
+    rotateZ: rotate.z,
+    skewX: { unit: 'rad', val: 0 },
+    skewY: { unit: 'rad', val: 0 }
   };
 };
 
