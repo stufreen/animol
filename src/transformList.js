@@ -4,7 +4,7 @@ import {
   getVal,
   parseMatrix
 } from './parseCss.js';
-import { decomposeTransformMatrix3D, matrix2DTo3D } from './matrix.js';
+import { transformsFromMatrix3D, matrix2DTo3D } from './matrix.js';
 import { convenience } from './convenience.js';
 
 export var IDENTITY = {
@@ -28,7 +28,7 @@ export var inferTransforms = function (el) {
   }
   var matrix = parseMatrix(computedStyles.transform);
   var matrix3D = matrix.length === 6 ? matrix2DTo3D(matrix) : matrix;
-  return decomposeTransformMatrix3D(matrix3D);
+  return transformsFromMatrix3D(matrix3D);
 };
 
 function inferUnitVal(key, element) {

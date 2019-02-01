@@ -5,7 +5,7 @@ function noNegZero(num) {
   return (Object.is(num, -0) ? 0 : num);
 }
 
-export var decomposeTransformMatrix3D = function (matrix) {
+export var transformsFromMatrix3D = function (matrix) {
   var dec = qrDec(matrix);
   return {
     translateX: { unit: 'px', val: roundTo(matrix[12], 4) },

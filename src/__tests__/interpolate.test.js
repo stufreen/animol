@@ -59,17 +59,17 @@ describe('calculateColor', () => {
 });
 
 describe('calculateTransform', () => {
-  const startList = [{ key: 'translateX', unit: 'px', val: 100 }, { key: 'translateY', unit: 'px', val: 300 }];
-  const endList = [{ key: 'translateX', unit: 'px', val: 200 }, { key: 'translateY', unit: 'px', val: 400 }];
+  const startList = { translateX: { unit: 'px', val: 100 }, translateY: { unit: 'px', val: 300 } };
+  const endList = { translateX: { unit: 'px', val: 200 }, translateY: { unit: 'px', val: 400 } };
   test('it should return startVal if progress is 0', () => {
-    expect(calculateTransform(startList, endList, 0)).toEqual('translateX(100px) translateY(300px)');
+    expect(calculateTransform(startList, endList, 0)).toEqual({ translateX: '100px', translateY: '300px' });
   });
 
   test('it should return endVal if progress is 1', () => {
-    expect(calculateTransform(startList, endList, 1)).toEqual('translateX(200px) translateY(400px)');
+    expect(calculateTransform(startList, endList, 1)).toEqual({ translateX: '200px', translateY: '400px' });
   });
 
   test('it should return halfway between if progress is 0.5', () => {
-    expect(calculateTransform(startList, endList, 0.5)).toEqual('translateX(150px) translateY(350px)');
+    expect(calculateTransform(startList, endList, 0.5)).toEqual({ translateX: '150px', translateY: '350px' });
   });
 });
