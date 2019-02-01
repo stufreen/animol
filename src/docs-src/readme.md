@@ -5,7 +5,7 @@ lang: en-US
 
 <img src="./wordmark.svg" alt="animol logo" title="animol" style="width: 13em; margin-bottom: 2em; display: block;" width="250" />
 
-A minimal, super lightweight (<3KB minimized and gzipped), zero dependency, JavaScript animation library.
+A minimal, super lightweight (3KB minimized and gzipped), zero dependency, JavaScript animation library.
 
 <ClientOnly>
   <Frontpage/>

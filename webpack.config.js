@@ -12,6 +12,6 @@ module.exports = {
     contentBase: path.resolve(__dirname, 'demo'),
     compress: true,
     port: 9000
-  },
-  devtool: 'inline-source-map'
+  }
+  // devtool: 'inline-source-map'
 };
