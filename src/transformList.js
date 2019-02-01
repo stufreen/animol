@@ -98,15 +98,6 @@ function buildTransformFromToList(el, from, to) {
   var transformFrom = {};
   var transformTo = {};
 
-  // Iterate through the "inferredTransforms" keys to find transforms already applied
-  Object.keys(inferredTransforms).forEach(function (key) {
-    if (inferredTransforms[key].unit !== IDENTITY[key].unit
-      || inferredTransforms[key].val !== IDENTITY[key].val) {
-      transformFrom[key] = { unit: inferredTransforms[key].unit, val: inferredTransforms[key].val };
-      transformTo[key] = { unit: inferredTransforms[key].unit, val: inferredTransforms[key].val };
-    }
-  });
-
   // Iterate through the "from" keys, adding matching "to" values if possible
   Object.keys(from).forEach(function (key) {
     var transform = typeof to[key] === 'undefined' ? inferredTransforms[key] : getUnitVal(key, to);
