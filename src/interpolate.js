@@ -40,7 +40,7 @@ export var calculateTransform = function (startTransformList, endTransformList, 
 };
 
 export var prepareTransformString = function (currentTransformsString, newTransforms) {
-  var applyOrder = ['translateX', 'translateY', 'translateZ', 'rotateX', 'rotateY', 'rotateZ', 'scaleX', 'scaleY', 'scaleZ', 'skewX', 'skewY'];
+  var applyOrder = ['translateX', 'translateY', 'translateZ', 'rotateZ', 'rotateY', 'rotateX', 'scaleX', 'scaleY', 'scaleZ', 'skewY', 'skewX'];
 
   // Parse the transform string into a transform list
   var currentTransformsAr = currentTransformsString.split(' ');

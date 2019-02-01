@@ -58,14 +58,13 @@ function noNegZero(num) {
 }
 
 function getRotate3D(values) {
-  var b = Math.asin(values[8]);
-  var cosB = Math.cos(b);
-  var a = Math.asin(-values[9] / cosB);
-  var c = Math.acos(values[0] / cosB);
+  var x = Math.atan2(values[6], values[5]);
+  var y = Math.atan2(values[8], values[0]);
+  var z = Math.atan2(values[1], values[0]);
   return {
-    x: { unit: 'rad', val: roundTo(noNegZero(a), 4) },
-    y: { unit: 'rad', val: roundTo(noNegZero(b), 4) },
-    z: { unit: 'rad', val: roundTo(noNegZero(c), 4) }
+    x: { unit: 'rad', val: roundTo(noNegZero(x), 4) },
+    y: { unit: 'rad', val: roundTo(noNegZero(y), 4) },
+    z: { unit: 'rad', val: roundTo(noNegZero(z), 4) }
   };
 }
 
@@ -80,7 +79,6 @@ export var decomposeTransformMatrix3D = function (matrix) {
   var translate = getTranslate3D(matrix);
   var decomposed = qrDec(translate.matrix);
   console.log(decomposed);
-  // var scale = getScale3D(decomposed.r);
   var rotate = getRotate3D(decomposed.q);
   var skew = getSkew(decomposed.r);
   return {
