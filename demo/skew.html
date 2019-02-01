@@ -1,0 +1,33 @@
+<html>
+
+<head>
+  <title>Animol: Skew</title>
+  <link rel="stylesheet" type="text/css" href="theme.css">
+  <script src="animol.min.js"></script>
+  <style>
+    .block {
+      width: 300px;
+      height: 300px;
+      margin: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Skew</h1>
+  <div id="block" class="block"></div>
+  <script>
+    const block = document.getElementById('block');
+    const styles = window.getComputedStyle(block);
+    animol.css(
+      document.getElementById('block'),
+      2000,
+      {},
+      { transform: { skewX: '20deg' } },
+      animol.Easing.easeInOutCubic,
+      0
+    );
+  </script>
+</body>
+
+</html>

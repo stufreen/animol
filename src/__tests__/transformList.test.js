@@ -76,16 +76,8 @@ describe('buildFromToList', () => {
       {
         key: 'transform',
         unit: 'transformList',
-        fromVal: [{
-          key: 'rotateZ',
-          unit: 'rad',
-          val: 0
-        }],
-        toVal: [{
-          key: 'rotateZ',
-          unit: 'rad',
-          val: 1
-        }]
+        fromVal: { rotateZ: { unit: 'rad', val: 0} },
+        toVal: { rotateZ: { unit: 'rad', val: 1 } }
       }
     ]);
   });
@@ -95,16 +87,8 @@ describe('buildFromToList', () => {
       {
         key: 'transform',
         unit: 'transformList',
-        fromVal: [{
-          key: 'translateX',
-          unit: 'rem',
-          val: 0
-        }],
-        toVal: [{
-          key: 'translateX',
-          unit: 'rem',
-          val: 100
-        }]
+        fromVal: { translateX: { unit: 'rem', val: 0 } },
+        toVal: { translateX: { unit: 'rem', val: 100 } }
       }
     ]);
 
@@ -112,16 +96,8 @@ describe('buildFromToList', () => {
       {
         key: 'transform',
         unit: 'transformList',
-        fromVal: [{
-          key: 'translateX',
-          unit: 'rem',
-          val: 100
-        }],
-        toVal: [{
-          key: 'translateX',
-          unit: 'rem',
-          val: 0
-        }]
+        fromVal: { translateX: { unit: 'rem', val: 100 } },
+        toVal: { translateX: { unit: 'rem', val: 0 } }
       }
     ]);
   });
