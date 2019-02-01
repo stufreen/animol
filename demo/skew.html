@@ -9,7 +9,7 @@
       width: 300px;
       height: 300px;
       margin: 100px;
-      transform: rotateX(0.5rad) rotateY(0.6rad) rotateZ(0.7rad);
+      transform: skewX(0.1rad) skewY(0.2rad) rotateX(0.5rad) rotateY(0.6rad) rotateZ(0.7rad);
     }
   </style>
 </head>
@@ -24,7 +24,7 @@
       document.getElementById('block'),
       2000,
       {},
-      { transform: { skewY: '45deg' } },
+      { transform: { scaleX: 0.5, scaleY: 0.5 } },
       animol.Easing.easeInOutCubic,
       0
     );
