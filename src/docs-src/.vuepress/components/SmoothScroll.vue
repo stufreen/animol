@@ -28,7 +28,7 @@ module.exports = {
         animol.ease(
           (progress) => {
             var scrollY = startScrollY + (progress * distance);
-            scrollContainer.scrollTo(0, scrollY);
+            scrollContainer.scrollTop = scrollY;
           },
           2000,
           animol.Easing.easeInOutQuint
@@ -42,7 +42,7 @@ module.exports = {
         animol.ease(
           (progress) => {
             var scrollY = startScrollY + (progress * distance);
-            scrollContainer.scrollTo(0, scrollY);
+            scrollContainer.scrollTop = scrollY;
           },
           2000,
           animol.Easing.easeInOutQuint

@@ -47,8 +47,8 @@ module.exports = {
 
       myCard.addEventListener('mousemove', (evt) => {
         const bb = myCard.getBoundingClientRect();
-        const pctLeft = ((evt.x - bb.x) / bb.width) - 0.5;
-        const pctTop = (((evt.y - bb.y) / bb.height) - 0.5) * -1;
+        const pctLeft = ((evt.x - (bb.x || bb.left)) / bb.width) - 0.5;
+        const pctTop = (((evt.y - (bb.y || bb.top)) / bb.height) - 0.5) * -1;
         const rotateAmount = 15;
         animol.css(
           myCard,
