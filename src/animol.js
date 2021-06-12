@@ -61,6 +61,7 @@ export var blend = function (colorA, colorB, progress) {
 };
 
 export var css = function (element, duration, from, to, easingFunc, delay) {
+  if (typeof window === 'undefined') return;
   from = from || {};
   to = to || {};
   var fromToList;
