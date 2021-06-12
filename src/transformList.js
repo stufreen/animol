@@ -22,6 +22,7 @@ export var IDENTITY = {
 };
 
 export var inferTransforms = function (el) {
+  if (!window) return [];
   var computedStyles = window.getComputedStyle(el);
   if (computedStyles.transform === 'none') {
     return IDENTITY;
@@ -32,6 +33,7 @@ export var inferTransforms = function (el) {
 };
 
 function inferUnitVal(key, element) {
+  if (!window) return {unit: '', val: ''};
   var computedStyle = window.getComputedStyle(element);
   var styleString = computedStyle[key];
 

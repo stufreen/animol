@@ -42,13 +42,13 @@ export var ease = function (callback, duration, easingFunc, delay) {
       } else if (timestamp >= startTime) {
         callback(interpolate(startTime, endTime, timestamp, easingFunc));
       }
-      animationFrameRequest = window.requestAnimationFrame(step);
+      animationFrameRequest = window && window.requestAnimationFrame(step);
     };
-    animationFrameRequest = window.requestAnimationFrame(step);
+    animationFrameRequest = window && window.requestAnimationFrame(step);
   });
 
   var cancel = function () {
-    window.cancelAnimationFrame(animationFrameRequest);
+    window && window.cancelAnimationFrame(animationFrameRequest);
     if (typeof rej !== 'undefined') rej();
   };
 

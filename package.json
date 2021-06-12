@@ -1,13 +1,13 @@
 {
   "name": "animol",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Super lightweight animation library",
   "main": "dist/animol.min.js",
   "scripts": {
     "test": "jest",
     "lint": "eslint 'src/*.{js,jsx}'",
     "build": "webpack",
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --mode=\"development\"",
     "docs:dev": "vuepress dev src/docs-src",
     "docs:build": "vuepress build src/docs-src"
   },
@@ -17,8 +17,8 @@
     "transforms"
   ],
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/stufreen/animol"
+    "type": "git",
+    "url": "https://github.com/stufreen/animol"
   },
   "homepage": "https://stufreen.github.io/animol",
   "author": "Stu Freen",
@@ -39,7 +39,7 @@
     "vuepress-theme-craftdocs": "^1.3.6",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
-    "webpack-dev-server": "^3.1.14"
+    "webpack-dev-server": "^3.11.2"
   },
   "browserslist": [
     "last 1 version",
