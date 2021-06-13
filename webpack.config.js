@@ -8,6 +8,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     library: "animol",
     libraryTarget: "umd",
+    globalObject: 'this',
   },
   devServer: {
     contentBase: path.resolve(__dirname, "demo"),
