@@ -4,7 +4,7 @@ A minimal, super lightweight (3KB minimized and gzipped), zero dependency, JavaS
 
 ## Update (August 2021)
 
-Since this library was created a standards-based alternative has been introduced: the [Web Animation API](https://developer.mozilla.org/en-US/docs/Web/API/Element/animate). This API is well-supported in modern browsers. Unless you need to support old browsers like IE 10 you will be better off using it than this library.
+Since this library was created a standards-based alternative has been introduced: the [Web Animation API](https://developer.mozilla.org/en-US/docs/Web/API/Element/animate). This API is well-supported in modern browsers. Unless you need to support old browsers like IE 10 you will be better off using it than this library. If you do need to support older browsers, you should probably still use the Web Animation API with a [polyfill](https://github.com/web-animations/web-animations-js).
 
 ## Installation
 ```
