@@ -35,7 +35,7 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-react": "^7.12.4",
     "jest": "^23.6.0",
-    "vuepress": "^0.14.8",
+    "vuepress": "^1.9.7",
     "vuepress-theme-craftdocs": "^1.3.6",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
